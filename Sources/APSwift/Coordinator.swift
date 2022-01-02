@@ -21,6 +21,11 @@ open class Coordinator: NSObject {
     }
     
     // MARK: - Methods
+    func goTo(vc: Coordinatable) {
+        vc.coordinator = self
+        navigationController.pushViewController(vc, animated: true)
+    }
+    
     func developmentScreen(title: String) {
         goTo(vc: DevelopViewController(title: title))
     }
@@ -36,14 +41,5 @@ open class Coordinator: NSObject {
     
     func pop() {
         navigationController.popViewController(animated: true)
-    }
-}
-
-// MARK: - Supporting Methods
-extension Coordinator {
-    
-    private func goTo(vc: Coordinatable) {
-        vc.coordinator = self
-        navigationController.pushViewController(vc, animated: true)
     }
 }
