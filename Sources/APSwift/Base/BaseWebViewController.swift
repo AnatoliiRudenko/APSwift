@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-class BaseWebViewController: UIViewController {
+public class BaseWebViewController: UIViewController {
     
     var webView: WKWebView!
     private var urlString: String?
@@ -33,7 +33,7 @@ class BaseWebViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         addWebView()
         load()
@@ -42,7 +42,7 @@ class BaseWebViewController: UIViewController {
     
     func setupComponents() {}
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         title = titleToSet
     }

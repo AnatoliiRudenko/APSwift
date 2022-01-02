@@ -9,7 +9,9 @@ import UIKit
 
 open class BaseViewModel {}
 
-open class BaseViewController: UIViewController {
+open class BaseViewController: UIViewController, Coordinatable {
+    
+    var coordinator: Coordinator?
     
     // MARK: - Props
     open var _model: BaseViewModel?

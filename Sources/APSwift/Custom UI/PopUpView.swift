@@ -25,15 +25,6 @@ class PopUpView: BaseView {
         }
     }
     
-    func show() {
-        isHidden = true
-        UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.addSubview(self)
-        snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        setHidden(false)
-    }
-    
     // MARK: - UI Properties
     lazy var contentView = BaseView() // to override
     

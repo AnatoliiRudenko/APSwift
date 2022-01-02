@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ClickThroughView: AppView {
+class ClickThroughView: BaseView {
     
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         for subview in subviews {
