@@ -11,6 +11,8 @@ import UIKit
 class DevelopViewController: BaseViewController {
     
     // MARK: - Props
+    var text: String { "Данный раздел находится в разработке" }
+    
     private var titleText: String?
     
     // MARK: - Methods
@@ -39,7 +41,7 @@ class DevelopViewController: BaseViewController {
         let label = BaseLabel()
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.multiline = true
-        label.text = "Данный раздел находится в разработке"
+        label.text = self.text
         return label
     }()
 }

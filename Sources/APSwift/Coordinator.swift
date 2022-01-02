@@ -26,10 +26,6 @@ open class Coordinator: NSObject {
         navigationController.pushViewController(vc, animated: true)
     }
     
-    func developmentScreen(title: String) {
-        goTo(vc: DevelopViewController(title: title))
-    }
-    
     func showPopUp(_ popUpView: UIView) {
         popUpView.isHidden = true
         UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.addSubview(popUpView)
@@ -41,5 +37,9 @@ open class Coordinator: NSObject {
     
     func pop() {
         navigationController.popViewController(animated: true)
+    }
+    
+    func developmentScreen(title: String) {
+        goTo(vc: DevelopViewController(title: title))
     }
 }
