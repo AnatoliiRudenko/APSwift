@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Data {
+public extension Data {
     
     func decodedObject<T: Decodable>(stategy: JSONDecoder.KeyDecodingStrategy = .convertFromSnakeCase) throws -> T {
         let decoder = JSONDecoder()

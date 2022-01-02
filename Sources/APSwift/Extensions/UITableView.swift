@@ -7,9 +7,9 @@
 
 import UIKit
 
-typealias TableViewDelegates = UITableViewDelegate & UITableViewDataSource
+public typealias TableViewDelegates = UITableViewDelegate & UITableViewDataSource
 
-extension UITableView {
+public extension UITableView {
     
     func subscribe(_ object: TableViewDelegates) {
         delegate = object

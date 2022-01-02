@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Array {
+public extension Array {
     
     func cutToFirst(_ newCount: Int = 1) -> [Element] {
         guard self.count > newCount else { return self }

@@ -8,7 +8,7 @@
 import UIKit
 
 // MARK: - Functional
-extension UIView {
+public extension UIView {
     
     func addSubviews(_ subviews: [UIView]) {
         subviews.forEach({ addSubview($0) })
@@ -81,7 +81,7 @@ public extension UIView {
 }
 
 // MARK: - Corners Radius
-extension UIView {
+public extension UIView {
     
     func roundCorners(_ value: CGFloat = 20) {
         layer.cornerRadius = value
@@ -96,7 +96,7 @@ extension UIView {
 }
 
 // MARK: - Shadows
-extension UIView {
+public extension UIView {
     
     func addShadowLayer(index: Int, color: UIColor, offset: CGSize, radius: CGFloat, opacity: Float) {
         let shadowLayer = CAShapeLayer()
@@ -122,7 +122,7 @@ extension UIView {
 }
 
 // MARK: - Static
-extension UIView {
+public extension UIView {
     static func stackView(_ axis: NSLayoutConstraint.Axis, _ spacing: CGFloat, _ subviews: [UIView]) -> UIStackView {
         let stackView = UIStackView()
         stackView.axis = axis

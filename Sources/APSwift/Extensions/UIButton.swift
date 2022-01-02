@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-extension UIButton {
+public extension UIButton {
     
     func setImage(_ image: UIImage?) {
         setImage(image, for: .normal)

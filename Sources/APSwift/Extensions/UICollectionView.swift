@@ -7,9 +7,9 @@
 
 import UIKit
 
-typealias CollectionViewDelegates = UICollectionViewDelegate & UICollectionViewDataSource
+public typealias CollectionViewDelegates = UICollectionViewDelegate & UICollectionViewDataSource
 
-extension UICollectionView {
+public extension UICollectionView {
     
     func subscribe(_ object: CollectionViewDelegates) {
         delegate = object

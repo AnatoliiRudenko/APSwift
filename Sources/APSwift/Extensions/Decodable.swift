@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Decodable {
+public extension Decodable {
     
     var hasValues: Bool {
         Mirror(reflecting: self).children.reduce(false) { acc, val in

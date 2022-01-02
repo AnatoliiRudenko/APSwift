@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIResponder {
+public extension UIResponder {
     
     public var parentVC: UIViewController? {
         next as? UIViewController ?? next?.parentVC

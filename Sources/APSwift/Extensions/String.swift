@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension String {
+public extension String {
     
     var isDigital: Bool {
         CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: self))
@@ -49,7 +49,7 @@ extension String {
 }
 
 // MARK: - HTML String
-extension String {
+public extension String {
     
     var htmlToAttributedString: NSAttributedString? {
         guard let data = data(using: .utf8) else { return nil }

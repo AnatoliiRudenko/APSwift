@@ -1,5 +1,5 @@
 //
-//  Typealiases.swift
+//  public typealiases.swift
 //  Trade Union
 //
 //  Created by Анатолий Руденко on 07.12.2021.
@@ -11,4 +11,4 @@ public typealias Closure = () -> Void
 public typealias DataClosure<T> = (T) -> Void
 
 #warning("fix")
-//typealias Rstring = R.string.localizable
+//public typealias Rstring = R.string.localizable

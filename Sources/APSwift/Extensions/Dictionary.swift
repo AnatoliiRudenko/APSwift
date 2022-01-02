@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Dictionary {
+public extension Dictionary {
     
     var queryString: String {
         var output: String = "?"
@@ -25,11 +25,11 @@ extension Dictionary {
     }
 }
 
-extension Dictionary where Value: Comparable {
+public extension Dictionary where Value: Comparable {
     var sortedByValue: [(Key, Value)] { return Array(self).sorted { $0.1 < $1.1 } }
 }
 
-extension Dictionary where Key: Comparable {
+public extension Dictionary where Key: Comparable {
     var sortedByKey: [(Key, Value)] { return Array(self).sorted { $0.0 < $1.0 } }
     
     var valuesSortedByKey: [Value] { sortedByKey.map { $0.1 } }

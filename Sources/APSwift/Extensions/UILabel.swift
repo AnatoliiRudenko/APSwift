@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UILabel {
+public extension UILabel {
     
     func setLetterSpacing(_ value: Double) {
         if let textString = self.text {

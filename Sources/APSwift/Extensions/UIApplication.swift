@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIApplication {
+public extension UIApplication {
     
     var safeAreaInsets: UIEdgeInsets {
         self.windows.first?.safeAreaInsets ?? .zero
