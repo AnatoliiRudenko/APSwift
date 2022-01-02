@@ -26,12 +26,12 @@ extension UIColor {
         }
 
         let scanner = Scanner(string: hexWithoutSymbol)
-        var hexInt: UInt32 = 0x0
-        scanner.scanHexInt32(&hexInt)
+        var hexInt: UInt64 = 0x0
+        scanner.scanHexInt64(&hexInt)
 
-        var red: UInt32 = 0x0
-        var green: UInt32 = 0x0
-        var blue: UInt32 = 0x0
+        var red: UInt64 = 0x0
+        var green: UInt64 = 0x0
+        var blue: UInt64 = 0x0
         switch hexWithoutSymbol.count {
         case 3: // #RGB
             red = ((hexInt >> 4) & 0xf0 | (hexInt >> 8) & 0x0f)
