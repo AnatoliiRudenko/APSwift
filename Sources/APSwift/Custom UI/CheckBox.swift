@@ -10,7 +10,6 @@ import UIKit
 class CheckBox: BaseView {
     
     // MARK: - Props
-    
     var isChecked: Bool = false {
         didSet {
             imageView.image = isChecked ? checkedImage : uncheckedImage

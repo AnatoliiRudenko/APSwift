@@ -15,10 +15,6 @@ class Loader: UIView {
     var bgColor: UIColor = .white
     var spinnerStyle: UIActivityIndicatorView.Style = .large
     
-    private lazy var spinner = UIActivityIndicatorView(style: spinnerStyle)
-    private var loadingView: UIView = UIView()
-    private weak var parentView: UIView?
-    
     // MARK: - Init
     convenience init(parentView: UIView) {
         self.init(frame: parentView.bounds, parentView: parentView)
@@ -77,4 +73,9 @@ class Loader: UIView {
         self.loadingView.removeFromSuperview()
         self.removeFromSuperview()
     }
+    
+    // MARK: - UI Properties
+    private lazy var spinner = UIActivityIndicatorView(style: spinnerStyle)
+    private var loadingView: UIView = UIView()
+    private weak var parentView: UIView?
 }
