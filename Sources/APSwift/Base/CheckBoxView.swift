@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class BaseCheckBoxView: BaseView {
+class CheckBoxView: BaseView {
 
     // MARK: - Props
     var isChecked: Bool {
@@ -38,6 +38,7 @@ class BaseCheckBoxView: BaseView {
         }
     }
     
+    // MARK: - Init
     override func setupComponents() {
         super.setupComponents()
         
@@ -65,15 +66,10 @@ class BaseCheckBoxView: BaseView {
         }
     }
     
-    lazy var titleLabel: BaseLabel = {
-        let label = BaseLabel()
-        return label
-    }()
+    // MARK: - UI Properties
+    lazy var titleLabel = BaseLabel()
     
-    lazy var checkbox: CheckBox = {
-        let result = CheckBox()
-        return result
-    }()
+    lazy var checkbox = CheckBox()
     
     let stackView: UIStackView = {
         let stackView = UIStackView()

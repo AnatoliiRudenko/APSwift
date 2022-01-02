@@ -11,14 +11,14 @@ import WebKit
 class BaseWebViewController: UIViewController {
     
     var webView: WKWebView!
-    private var link: String?
+    private var urlString: String?
     private var url: URL?
     
     var titleToSet: String?
     
     // MARK: - Life Cycle
     init(urlString: String?, title: String? = nil) {
-        self.link = urlString
+        self.urlString = urlString
         self.titleToSet = title
         super.init(nibName: nil, bundle: nil)
     }
@@ -83,7 +83,7 @@ class BaseWebViewController: UIViewController {
     }
     
     private func getURL() -> URL? {
-        guard let link = link,
+        guard let link = urlString,
               let url = URL(string: link)
         else { return self.url }
         return url

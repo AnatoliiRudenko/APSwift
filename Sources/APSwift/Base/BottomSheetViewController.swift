@@ -35,14 +35,11 @@ class BottomSheetViewController<Content: BaseViewController>: BaseViewController
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        guard firstLayout else { return }
-        firstLayout = false
+        guard isOnFirstLayout else { return }
         configuration.hasInitialStage ? foldBottomSheet() : unfoldBottomSheet()
     }
     
-    private var firstLayout = true
-    
-    // MARK: - Bottom Sheet Actions
+    // MARK: - Display Actions
     public func unfoldBottomSheet(animated: Bool = true) {
         self.topConstraint.constant = -configuration.height
         willChangeState?(.full)
@@ -146,17 +143,6 @@ class BottomSheetViewController<Content: BaseViewController>: BaseViewController
         }
     }
     
-    private func addDismissTap() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        view.addGestureRecognizer(tapGesture)
-        view.isUserInteractionEnabled = true
-    }
-    
-    @objc
-    private func handleTap() {
-        removeBottomSheet()
-    }
-    
     // MARK: - Configuration
     public struct BottomSheetConfiguration {
         let height: CGFloat
@@ -204,6 +190,24 @@ class BottomSheetViewController<Content: BaseViewController>: BaseViewController
         return pan
     }()
     
+    // MARK: - UIGestureRecognizer Delegate
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        false
+    }
+    
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        switch state {
+        case .initial:
+            return true
+        case .full:
+            return false
+        }
+    }
+}
+
+// MARK: - Supporting Methods
+extension BottomSheetViewController {
+    
     // MARK: - UI Setup
     private func setupUI() {
         self.addChild(contentVC)
@@ -226,17 +230,14 @@ class BottomSheetViewController<Content: BaseViewController>: BaseViewController
         contentVC.didMove(toParent: self)
     }
     
-    // MARK: - UIGestureRecognizer Delegate
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        false
+    private func addDismissTap() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        view.addGestureRecognizer(tapGesture)
+        view.isUserInteractionEnabled = true
     }
     
-    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        switch state {
-        case .initial:
-            return true
-        case .full:
-            return false
-        }
+    @objc
+    private func handleTap() {
+        removeBottomSheet()
     }
 }

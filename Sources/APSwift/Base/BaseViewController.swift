@@ -7,9 +7,7 @@
 
 import UIKit
 
-open class BaseViewModel {
-    
-}
+open class BaseViewModel {}
 
 open class BaseViewController: UIViewController {
     

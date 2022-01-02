@@ -9,37 +9,32 @@ import UIKit
 
 class CheckBox: BaseView {
     
-    private var checkedImage: UIImage?
-    private var uncheckedImage: UIImage?
+    // MARK: - Props
+    
+    var isChecked: Bool = false {
+        didSet {
+            imageView.image = isChecked ? checkedImage : uncheckedImage
+        }
+    }
+    
+    var didTapToState: DataClosure<Bool>?
     
     func setImages(checkedImage: UIImage?, uncheckedImage: UIImage?) {
         self.checkedImage = checkedImage
         self.uncheckedImage = uncheckedImage
-        self.updateComponents()
+        imageView.image = isChecked ? checkedImage : uncheckedImage
     }
+    
+    // MARK: - Init
+    private var checkedImage: UIImage?
+    private var uncheckedImage: UIImage?
     
     convenience init(checkedImage: UIImage?, uncheckedImage: UIImage?) {
         self.init(frame: .zero)
         setImages(checkedImage: checkedImage, uncheckedImage: uncheckedImage)
         imageView.image = uncheckedImage
     }
-
-    // MARK: - Props
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
     
-    var isChecked: Bool = false {
-        didSet {
-            self.updateComponents()
-        }
-    }
-    
-    var didTapToState: DataClosure<Bool>?
-    
-    // MARK: - Methods
     override func setupComponents() {
         super.setupComponents()
         animateTap = false
@@ -53,11 +48,16 @@ class CheckBox: BaseView {
         }
     }
     
-    override func updateComponents() {
-        super.updateComponents()
-        
-        self.imageView.image = isChecked ? checkedImage : uncheckedImage
-    }
+    // MARK: - UI Properties
+    private let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+}
+
+// MARK: - Supporting methods
+extension CheckBox {
     
     private func handleTap() {
         self.isChecked.toggle()
