@@ -16,7 +16,7 @@ extension UIView {
 }
 
 // MARK: - Visual
-extension UIView {
+public extension UIView {
     
     func fadeTo(
         _ alpha: CGFloat,
