@@ -7,8 +7,6 @@
 
 import UIKit
 
-open class BaseViewModel {}
-
 open class BaseViewController: UIViewController, Coordinatable {
     
     var coordinator: Coordinator?
@@ -31,7 +29,6 @@ open class BaseViewController: UIViewController, Coordinatable {
         super.viewDidLoad()
         
         self.setupComponents()
-        self.updateComponents()
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
@@ -44,8 +41,6 @@ open class BaseViewController: UIViewController, Coordinatable {
     }
     
     open func setupComponents() {}
-    
-    open func updateComponents() {}
     
     // MARK: - Methods
     func presentNativeOKCancelAlert(title: String?, message: String?, okAction: Closure?) {
