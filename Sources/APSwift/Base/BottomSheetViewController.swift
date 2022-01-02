@@ -203,9 +203,20 @@ class BottomSheetViewController<Content: BaseViewController>: BaseViewController
             return false
         }
     }
+    
+    // MARK: - Supporting Methods
+    private func addDismissTap() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        view.addGestureRecognizer(tapGesture)
+        view.isUserInteractionEnabled = true
+    }
+    
+    @objc
+    private func handleTap() {
+        removeBottomSheet()
+    }
 }
 
-// MARK: - Supporting Methods
 extension BottomSheetViewController {
     
     // MARK: - UI Setup
@@ -228,16 +239,5 @@ extension BottomSheetViewController {
         }
         
         contentVC.didMove(toParent: self)
-    }
-    
-    private func addDismissTap() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        view.addGestureRecognizer(tapGesture)
-        view.isUserInteractionEnabled = true
-    }
-    
-    @objc
-    private func handleTap() {
-        removeBottomSheet()
     }
 }

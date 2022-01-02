@@ -7,7 +7,39 @@
 
 import UIKit
 
-class BaseCollectionView: UICollectionView {
+protocol CollectionViewContentDelegate: AnyObject {
+    func collectionView(_ collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: IndexPath, data: Any)
+}
+
+protocol CollectionViewSelectionDelegate: AnyObject {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath, data: Any)
+}
+
+class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionView, CollectionViewDelegates {
+    
+    // MARK: - Props
+    weak var contentDelegate: CollectionViewContentDelegate?
+    weak var selectionDelegate: CollectionViewSelectionDelegate?
+    
+    var data = [Data]()
+    
+    func setData(_ data: [Data], completion: Closure? = nil) {
+        self.data = data
+        DispatchQueue.main.async { [weak self] in
+            self?.reloadData {
+                completion?()
+            }
+        }
+    }
+    
+    var contentHeight: CGFloat {
+        layoutIfNeeded()
+        return contentSize.height
+    }
+    
+    var flowLayout: UICollectionViewFlowLayout? {
+        collectionViewLayout as? UICollectionViewFlowLayout
+    }
     
     // MARK: - Init
     convenience init() {
@@ -28,9 +60,24 @@ class BaseCollectionView: UICollectionView {
     
     func setupComponents() {}
     
-    var flowLayout: UICollectionViewFlowLayout? {
-        collectionViewLayout as? UICollectionViewFlowLayout
+    // MARK: - Delegates
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        data.count
     }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeue(cell: Cell.self, indexPath: indexPath) else { return UICollectionViewCell() }
+        contentDelegate?.collectionView(collectionView, cell: cell, indexPath: indexPath, data: data[indexPath.row])
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectionDelegate?.collectionView(collectionView, didSelectItemAt: indexPath, data: data[indexPath.row])
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {}
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {}
     
     // MARK: - Height Constraint
     var height: CGFloat? {
@@ -47,8 +94,4 @@ class BaseCollectionView: UICollectionView {
     private lazy var heightConstraint: NSLayoutConstraint = {
         self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
     }()
-}
-
-extension BaseCollectionView {
-    
 }
