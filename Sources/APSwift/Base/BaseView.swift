@@ -52,7 +52,6 @@ class BaseView: UIView {
                 self.heightConstraint.isActive = false
                 return
             }
-            
             self.heightConstraint.constant = value
             self.heightConstraint.isActive = true
         }

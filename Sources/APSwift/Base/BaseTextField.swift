@@ -30,15 +30,12 @@ class BaseTextField: UITextField {
                 self.heightConstraint.isActive = false
                 return
             }
-            
             self.heightConstraint.constant = value
             self.heightConstraint.isActive = true
         }
     }
     
     private lazy var heightConstraint: NSLayoutConstraint = {
-        let result = self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
-        
-        return result
+        self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
     }()
 }
