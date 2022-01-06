@@ -8,5 +8,5 @@
 import Foundation
 
 func copy<T>(_ value: T) -> T {
-    return value
+    value
 }

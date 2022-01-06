@@ -58,8 +58,6 @@ class BaseView: UIView {
     }
     
     private lazy var heightConstraint: NSLayoutConstraint = {
-        let result = self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
-        
-        return result
+        self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
     }()
 }
