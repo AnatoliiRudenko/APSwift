@@ -15,7 +15,7 @@ protocol TableViewSelectionDelegate: AnyObject {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath, data: Any)
 }
 
-class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDelegates {
+open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDelegates {
     
     // MARK: - Props
     weak var contentDelegate: TableViewContentDelegate?
@@ -53,7 +53,7 @@ class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDelegate
         setupComponents()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -69,17 +69,17 @@ class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDelegate
     }
     
     // MARK: - Delegates
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         data.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeue(cell: Cell.self, indexPath: indexPath) else { return UITableViewCell() }
         contentDelegate?.tableView(self, cell: cell, indexPath: indexPath)
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectionDelegate?.tableView(self, didSelectRowAt: indexPath, data: data[indexPath.row])
     }
     

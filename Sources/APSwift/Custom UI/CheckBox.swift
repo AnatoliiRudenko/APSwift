@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CheckBox: BaseView {
+open class CheckBox: BaseView {
     
     // MARK: - Props
     var isChecked: Bool = false {
@@ -34,7 +34,7 @@ class CheckBox: BaseView {
         imageView.image = uncheckedImage
     }
     
-    override func setupComponents() {
+    open override func setupComponents() {
         super.setupComponents()
         animateTap = false
         addSubview(imageView)

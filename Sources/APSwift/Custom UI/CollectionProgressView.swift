@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CollectionProgressView: BaseView {
+open class CollectionProgressView: BaseView {
     
     // MARK: - Props
     var activeColor: UIColor
@@ -41,11 +41,11 @@ class CollectionProgressView: BaseView {
         super.init(frame: .zero)
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func setupComponents() {
+    open override func setupComponents() {
         super.setupComponents()
         addSubview(stackView)
         stackView.snp.makeConstraints { make in

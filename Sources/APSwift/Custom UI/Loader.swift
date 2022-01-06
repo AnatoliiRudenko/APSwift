@@ -7,7 +7,7 @@
 
 import UIKit
 
-class Loader: UIView {
+open class Loader: UIView {
     
     // MARK: - Props
     var size: CGFloat = 80
@@ -25,7 +25,7 @@ class Loader: UIView {
         super.init(frame: frame)
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

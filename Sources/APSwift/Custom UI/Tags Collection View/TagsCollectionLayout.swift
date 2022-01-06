@@ -7,7 +7,7 @@
 
 import UIKit
 
-class Row {
+open class Row {
     var attributes = [UICollectionViewLayoutAttributes]()
     var spacing: CGFloat = 0
 
@@ -29,7 +29,7 @@ class Row {
     }
 }
 
-class TagsCollectionLayout: UICollectionViewFlowLayout {
+open class TagsCollectionLayout: UICollectionViewFlowLayout {
     
     var spacing: CGFloat = 10
     
@@ -38,7 +38,7 @@ class TagsCollectionLayout: UICollectionViewFlowLayout {
         self.spacing = spacing
     }
     
-    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    open override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         guard let attributes = super.layoutAttributesForElements(in: rect) else {
             return nil
         }

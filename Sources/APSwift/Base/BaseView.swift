@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class BaseView: UIView {
+open class BaseView: UIView {
     
     var didTap: (Closure)? {
         didSet {
@@ -23,7 +23,7 @@ public class BaseView: UIView {
         updateComponents()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

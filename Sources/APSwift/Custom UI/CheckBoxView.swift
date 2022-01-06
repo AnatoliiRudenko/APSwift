@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class CheckBoxView: BaseView {
+open class CheckBoxView: BaseView {
 
     // MARK: - Props
     var isChecked: Bool {
@@ -39,7 +39,7 @@ class CheckBoxView: BaseView {
     }
     
     // MARK: - Init
-    override func setupComponents() {
+    open override func setupComponents() {
         super.setupComponents()
         
         animateTap = false

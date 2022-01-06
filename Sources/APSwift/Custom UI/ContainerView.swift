@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class ContainerView<Content: UIView>: BaseView {
+open class ContainerView<Content: UIView>: BaseView {
 
     private(set) var content: Content
     private var insets: UIEdgeInsets = .zero
@@ -29,7 +29,7 @@ public class ContainerView<Content: UIView>: BaseView {
         super.init(frame: .zero)
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

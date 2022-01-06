@@ -7,14 +7,14 @@
 
 import UIKit
 
-class BaseLabel: UILabel {
+open class BaseLabel: UILabel {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupComponents()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -56,17 +56,17 @@ class BaseLabel: UILabel {
 // MARK: - Insets
 extension BaseLabel {
     
-    override func drawText(in rect: CGRect) {
+    open override func drawText(in rect: CGRect) {
         super.drawText(in: rect.inset(by: insets))
     }
     
-    override var intrinsicContentSize: CGSize {
+    open override var intrinsicContentSize: CGSize {
         let size = super.intrinsicContentSize
         return CGSize(width: size.width + insets.left + insets.right,
                       height: size.height + insets.top + insets.bottom)
     }
     
-    override var bounds: CGRect {
+    open override var bounds: CGRect {
         didSet {
             preferredMaxLayoutWidth = bounds.width - (insets.left + insets.right)
         }

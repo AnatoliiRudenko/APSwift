@@ -15,7 +15,7 @@ protocol CollectionViewSelectionDelegate: AnyObject {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath, data: Any)
 }
 
-class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionView, CollectionViewDelegates {
+open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionView, CollectionViewDelegates {
     
     // MARK: - Props
     weak var contentDelegate: CollectionViewContentDelegate?
@@ -53,7 +53,7 @@ class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionView, Co
         setupComponents()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         super.init(coder: coder)
         setupComponents()
     }
@@ -61,23 +61,23 @@ class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionView, Co
     func setupComponents() {}
     
     // MARK: - Delegates
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         data.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeue(cell: Cell.self, indexPath: indexPath) else { return UICollectionViewCell() }
         contentDelegate?.collectionView(collectionView, cell: cell, indexPath: indexPath, data: data[indexPath.row])
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectionDelegate?.collectionView(collectionView, didSelectItemAt: indexPath, data: data[indexPath.row])
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {}
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {}
     
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {}
+    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {}
     
     // MARK: - Height Constraint
     var height: CGFloat? {
