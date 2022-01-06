@@ -12,18 +12,10 @@ open class BaseViewController: UIViewController, Coordinatable {
     var coordinator: Coordinator?
     
     // MARK: - Props
-    open var _model: BaseViewModel?
     
     var isOnFirstLayout = true
     
     // MARK: - Lifecycle
-    public convenience init(
-        _model: BaseViewModel?
-    ) {
-        self.init(nibName: nil, bundle: nil)
-        
-        self._model = _model
-    }
     
     open override func viewDidLoad() {
         super.viewDidLoad()

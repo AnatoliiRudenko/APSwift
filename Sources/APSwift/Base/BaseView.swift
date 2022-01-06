@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BaseView: UIView {
+public class BaseView: UIView {
     
     var didTap: (Closure)? {
         didSet {

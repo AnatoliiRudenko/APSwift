@@ -7,12 +7,12 @@
 
 import UIKit
 
-class ContainerView<Content: UIView>: BaseView {
+public class ContainerView<Content: UIView>: BaseView {
 
     private(set) var content: Content
     private var insets: UIEdgeInsets = .zero
     
-    override func setupComponents() {
+    public override func setupComponents() {
         super.setupComponents()
         addSubview(content)
         content.snp.makeConstraints { make in

@@ -9,6 +9,3 @@ import Foundation
 
 public typealias Closure = () -> Void
 public typealias DataClosure<T> = (T) -> Void
-
-#warning("fix")
-//public typealias Rstring = R.string.localizable
