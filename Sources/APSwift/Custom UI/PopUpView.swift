@@ -7,9 +7,9 @@
 
 import UIKit
 
-class PopUpView: BaseView {
+open class PopUpView: BaseView {
     
-    override func setupComponents() {
+    open override func setupComponents() {
         super.setupComponents()
         
         addSubviews([bgTapView, contentView])

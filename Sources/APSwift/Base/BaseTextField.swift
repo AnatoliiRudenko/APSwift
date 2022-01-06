@@ -7,21 +7,18 @@
 
 import UIKit
 
-class BaseTextField: UITextField {
+open class BaseTextField: UITextField {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupComponents()
-        updateComponents()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     open func setupComponents() {}
-
-    open func updateComponents() {}
     
     // MARK: - Height Constraint
     var height: CGFloat? {
@@ -30,15 +27,12 @@ class BaseTextField: UITextField {
                 self.heightConstraint.isActive = false
                 return
             }
-            
             self.heightConstraint.constant = value
             self.heightConstraint.isActive = true
         }
     }
     
     private lazy var heightConstraint: NSLayoutConstraint = {
-        let result = self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
-        
-        return result
+        self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
     }()
 }

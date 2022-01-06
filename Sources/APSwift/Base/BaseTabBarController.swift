@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BaseTabBarController<Tab: UITabBarItem>: UITabBarController {
+open class BaseTabBarController<Tab: UITabBarItem>: UITabBarController {
     
     // MARK: - Props
     open var items = [Tab]()

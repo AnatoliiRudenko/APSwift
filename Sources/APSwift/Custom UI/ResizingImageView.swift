@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ResizingImageView: UIImageView {
+open class ResizingImageView: UIImageView {
     
     var expectedWidth: CGFloat = UIScreen.main.bounds.width
     
@@ -20,12 +20,12 @@ class ResizingImageView: UIImageView {
         contentMode = .scaleAspectFit
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         super.init(coder: coder)
         contentMode = .scaleAspectFit
     }
     
-    override var intrinsicContentSize: CGSize {
+    open override var intrinsicContentSize: CGSize {
         guard let myImage = self.image else { return CGSize() }
         let myImageWidth = myImage.size.width
         let myImageHeight = myImage.size.height

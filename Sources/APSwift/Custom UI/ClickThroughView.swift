@@ -7,9 +7,9 @@
 
 import UIKit
 
-class ClickThroughView: BaseView {
+open class ClickThroughView: BaseView {
     
-    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+    open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         for subview in subviews {
             if !subview.isHidden && subview.isUserInteractionEnabled && subview.point(inside: convert(point, to: subview), with: event) {
                 return true

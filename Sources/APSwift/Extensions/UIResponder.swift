@@ -9,12 +9,11 @@ import UIKit
 
 public extension UIResponder {
     
-    public var parentVC: UIViewController? {
+    var parentVC: UIViewController? {
         next as? UIViewController ?? next?.parentVC
     }
     
-    #warning("fix")
-//    public var parentBaseVC: BaseViewController? {
-//        next as? BaseViewController ?? next?.parentBaseVC
-//    }
+    var parentBaseVC: BaseViewController? {
+        next as? BaseViewController ?? next?.parentBaseVC
+    }
 }

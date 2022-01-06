@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TagsCollectionView<Cell: UICollectionViewCell, Data>: BaseCollectionView<Cell, Data>, UICollectionViewDelegateFlowLayout {
+open class TagsCollectionView<Cell: UICollectionViewCell, Data>: BaseCollectionView<Cell, Data>, UICollectionViewDelegateFlowLayout {
     
     var didCalculateTagsHeight: DataClosure<CGFloat>?
     
@@ -51,7 +51,7 @@ class TagsCollectionView<Cell: UICollectionViewCell, Data>: BaseCollectionView<C
         collectionViewLayout = layout
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         lineSpacing
     }
 }

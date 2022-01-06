@@ -7,31 +7,20 @@
 
 import UIKit
 
-open class BaseViewModel {}
-
 open class BaseViewController: UIViewController, Coordinatable {
     
     var coordinator: Coordinator?
     
     // MARK: - Props
-    open var _model: BaseViewModel?
     
     var isOnFirstLayout = true
     
     // MARK: - Lifecycle
-    public convenience init(
-        _model: BaseViewModel?
-    ) {
-        self.init(nibName: nil, bundle: nil)
-        
-        self._model = _model
-    }
     
     open override func viewDidLoad() {
         super.viewDidLoad()
         
         self.setupComponents()
-        self.updateComponents()
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
@@ -44,8 +33,6 @@ open class BaseViewController: UIViewController, Coordinatable {
     }
     
     open func setupComponents() {}
-    
-    open func updateComponents() {}
     
     // MARK: - Methods
     func presentNativeOKCancelAlert(title: String?, message: String?, okAction: Closure?) {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DevelopViewController: BaseViewController {
+open class DevelopViewController: BaseViewController {
     
     // MARK: - Props
     var text: String { "Данный раздел находится в разработке" }
@@ -21,7 +21,7 @@ class DevelopViewController: BaseViewController {
         self.titleText = title
     }
     
-    override func setupComponents() {
+    open override func setupComponents() {
         super.setupComponents()
         
         view.addSubview(label)
@@ -30,7 +30,7 @@ class DevelopViewController: BaseViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         title = titleText

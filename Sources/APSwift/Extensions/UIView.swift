@@ -131,8 +131,7 @@ public extension UIView {
         return stackView
     }
     
-    #warning("fix")
-//    static func container<Content: UIView>(content: Content, insets: UIEdgeInsets) -> ContainerView<Content> {
-//        ContainerView(content: content, insets: insets)
-//    }
+    static func container<Content: UIView>(content: Content, insets: UIEdgeInsets) -> ContainerView<Content> {
+        ContainerView(content: content, insets: insets)
+    }
 }

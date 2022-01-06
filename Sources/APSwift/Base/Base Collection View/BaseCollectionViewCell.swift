@@ -7,14 +7,14 @@
 
 import UIKit
 
-class BaseCollectionViewCell: UICollectionViewCell {
+open class BaseCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupComponents()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

@@ -7,12 +7,12 @@
 
 import UIKit
 
-class ContainerView<Content: UIView>: BaseView {
+open class ContainerView<Content: UIView>: BaseView {
 
     private(set) var content: Content
     private var insets: UIEdgeInsets = .zero
     
-    override func setupComponents() {
+    public override func setupComponents() {
         super.setupComponents()
         addSubview(content)
         content.snp.makeConstraints { make in
@@ -29,7 +29,7 @@ class ContainerView<Content: UIView>: BaseView {
         super.init(frame: .zero)
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

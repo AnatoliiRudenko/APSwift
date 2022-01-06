@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BottomSheetViewController<Content: BaseViewController>: BaseViewController {
+open class BottomSheetViewController<Content: BaseViewController>: BaseViewController {
     
     // MARK: - Props
     var presentAnimationDuration: TimeInterval = 0.3
@@ -32,7 +32,7 @@ class BottomSheetViewController<Content: BaseViewController>: BaseViewController
         fatalError("init(coder:) is not supported")
     }
     
-    override func viewDidLayoutSubviews() {
+    open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         guard isOnFirstLayout else { return }
@@ -195,7 +195,7 @@ class BottomSheetViewController<Content: BaseViewController>: BaseViewController
         false
     }
     
-    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    public override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         switch state {
         case .initial:
             return true

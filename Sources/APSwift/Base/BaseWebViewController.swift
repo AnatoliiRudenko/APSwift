@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-public class BaseWebViewController: UIViewController {
+open class BaseWebViewController: UIViewController {
     
     var webView: WKWebView!
     private var urlString: String?
@@ -29,7 +29,7 @@ public class BaseWebViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

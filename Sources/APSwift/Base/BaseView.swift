@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BaseView: UIView {
+open class BaseView: UIView {
     
     var didTap: (Closure)? {
         didSet {
@@ -23,7 +23,7 @@ class BaseView: UIView {
         updateComponents()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -52,15 +52,12 @@ class BaseView: UIView {
                 self.heightConstraint.isActive = false
                 return
             }
-            
             self.heightConstraint.constant = value
             self.heightConstraint.isActive = true
         }
     }
     
     private lazy var heightConstraint: NSLayoutConstraint = {
-        let result = self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
-        
-        return result
+        self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
     }()
 }
