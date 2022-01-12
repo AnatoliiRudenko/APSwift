@@ -13,6 +13,16 @@ public extension UIView {
     func addSubviews(_ subviews: [UIView]) {
         subviews.forEach({ addSubview($0) })
     }
+    
+    func fitSubviewIn(_ subview: UIView, insets: UIEdgeInsets = .zero) {
+        addSubview(subview)
+        subview.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(insets.top)
+            make.left.equalToSuperview().inset(insets.left)
+            make.right.equalToSuperview().inset(insets.right)
+            make.bottom.equalToSuperview().inset(insets.bottom)
+        }
+    }
 }
 
 // MARK: - Visual
@@ -59,8 +69,12 @@ public extension UIView {
         }
     }
     
-    private func show(completion: Closure? = nil) {
-        guard isHidden else { return }
+    private func show(animated: Bool = true, completion: Closure? = nil) {
+        guard animated else {
+            isHidden = false
+            completion?()
+            return
+        }
         self.alpha = 0
         self.isHidden = false
         UIView.animate(withDuration: 0.3) {
@@ -70,11 +84,17 @@ public extension UIView {
         }
     }
     
-    private func hide(completion: Closure? = nil) {
+    private func hide(animated: Bool = true, completion: Closure? = nil) {
+        guard animated else {
+            isHidden = true
+            completion?()
+            return
+        }
         UIView.animate(withDuration: 0.3) {
             self.alpha = 0
         } completion: { _ in
             self.isHidden = true
+            self.alpha = 1
             completion?()
         }
     }
