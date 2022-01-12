@@ -201,9 +201,11 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     
     // MARK: - Supporting Methods
     private func addDismissTap() {
+        let tapView = UIView()
+        self.view.fitSubviewIn(tapView)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        view.addGestureRecognizer(tapGesture)
-        view.isUserInteractionEnabled = true
+        tapView.addGestureRecognizer(tapGesture)
+        tapView.isUserInteractionEnabled = true
     }
     
     @objc
