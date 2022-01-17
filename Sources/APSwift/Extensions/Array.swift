@@ -14,4 +14,30 @@ public extension Array {
         let maxIndex = newCount - 1
         return Array(self[...maxIndex])
     }
+    
+    func queryString(values: [String], key: String) -> String {
+        values.map { key + "=" + $0 }.joined(separator: "&")
+    }
+}
+
+// MARK: - Query String
+public extension Array where Element == String {
+    func queryString(key: String) -> String {
+        queryString(values: compactMap({ String($0) }), key: key)
+    }
+}
+public extension Array where Element == Int {
+    func queryString(key: String) -> String {
+        queryString(values: compactMap({ String($0) }), key: key)
+    }
+}
+public extension Array where Element == Double {
+    func queryString(key: String) -> String {
+        queryString(values: compactMap({ String($0) }), key: key)
+    }
+}
+public extension Array where Element == Float {
+    func queryString(key: String) -> String {
+        queryString(values: compactMap({ String($0) }), key: key)
+    }
 }
