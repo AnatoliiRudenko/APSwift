@@ -8,8 +8,8 @@
 import UIKit
 
 public struct BottomSheetConfiguration {
-    let height: CGFloat
-    let initialOffset: CGFloat
+    let maxHeight: CGFloat
+    let initialHeight: CGFloat
     
-    var hasInitialStage: Bool { height > initialOffset }
+    var hasInitialStage: Bool { maxHeight > initialHeight }
 }
