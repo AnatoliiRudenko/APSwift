@@ -32,4 +32,17 @@ public extension UIButton {
         attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: text.count))
         self.setAttributedTitle(attributedString, for: .normal)
     }
+    
+    func setRightImage(_ image: UIImage?, offset: CGFloat = 16) {
+        let imageView: UIImageView = {
+            let imageView = UIImageView(image: image)
+            imageView.contentMode = .scaleAspectFit
+            return imageView
+        }()
+        addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.centerY.equalTo(snp.centerY)
+            make.right.equalTo(snp.right).inset(offset)
+        }
+    }
 }

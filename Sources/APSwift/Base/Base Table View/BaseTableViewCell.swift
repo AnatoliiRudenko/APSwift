@@ -7,7 +7,9 @@
 
 import UIKit
 
-open class BaseTableViewCell: UITableViewCell {
+open class BaseTableViewCell<Data>: UITableViewCell {
+    
+    public func setData(_ data: Data) {}
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

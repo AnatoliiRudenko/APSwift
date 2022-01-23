@@ -13,6 +13,23 @@ public extension UIView {
     func addSubviews(_ subviews: [UIView]) {
         subviews.forEach({ addSubview($0) })
     }
+    
+    func fitSubviewIn(_ subview: UIView, insets: UIEdgeInsets = .zero) {
+        addSubview(subview)
+        subview.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(insets.top)
+            make.left.equalToSuperview().inset(insets.left)
+            make.right.equalToSuperview().inset(insets.right)
+            make.bottom.equalToSuperview().inset(insets.bottom)
+        }
+    }
+    
+    func fitSubviewIn(_ subview: UIView, inset: CGFloat) {
+        addSubview(subview)
+        subview.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(inset)
+        }
+    }
 }
 
 // MARK: - Visual
@@ -51,7 +68,7 @@ public extension UIView {
         hide ? self.hide(completion: completion) : self.show(completion: completion)
     }
     
-    func animateTap() {
+    func animatesTap() {
         UIView.animate(withDuration: 0.15, delay: .zero, options: .curveLinear) { [weak self] in
             self?.alpha = 0.4
         } completion: { [weak self] _ in
@@ -59,8 +76,12 @@ public extension UIView {
         }
     }
     
-    private func show(completion: Closure? = nil) {
-        guard isHidden else { return }
+    private func show(animated: Bool = true, completion: Closure? = nil) {
+        guard animated else {
+            isHidden = false
+            completion?()
+            return
+        }
         self.alpha = 0
         self.isHidden = false
         UIView.animate(withDuration: 0.3) {
@@ -70,11 +91,17 @@ public extension UIView {
         }
     }
     
-    private func hide(completion: Closure? = nil) {
+    private func hide(animated: Bool = true, completion: Closure? = nil) {
+        guard animated else {
+            isHidden = true
+            completion?()
+            return
+        }
         UIView.animate(withDuration: 0.3) {
             self.alpha = 0
         } completion: { _ in
             self.isHidden = true
+            self.alpha = 1
             completion?()
         }
     }
@@ -123,11 +150,18 @@ public extension UIView {
 
 // MARK: - Static
 public extension UIView {
-    static func stackView(_ axis: NSLayoutConstraint.Axis, _ spacing: CGFloat, _ subviews: [UIView]) -> UIStackView {
+    
+    static func stackView(_ axis: NSLayoutConstraint.Axis, _ spacing: CGFloat, _ subviews: [UIView], insets: DirectionalInsets? = nil) -> UIStackView {
         let stackView = UIStackView()
         stackView.axis = axis
         stackView.spacing = spacing
         stackView.addArrangedSubviews(subviews)
+        if let insets = insets {
+            stackView.setInsets(NSDirectionalEdgeInsets(top: insets.vertical,
+                                                        leading: insets.horizontal,
+                                                        bottom: insets.vertical,
+                                                        trailing: insets.horizontal))
+        }
         return stackView
     }
     

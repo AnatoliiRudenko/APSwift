@@ -8,14 +8,14 @@
 import UIKit
 
 protocol CollectionViewContentDelegate: AnyObject {
-    func collectionView(_ collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: IndexPath, data: Any)
+    func collectionView(_ collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: IndexPath)
 }
 
 protocol CollectionViewSelectionDelegate: AnyObject {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath, data: Any)
 }
 
-open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionView, CollectionViewDelegates {
+open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionView, CollectionViewDelegates, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Props
     weak var contentDelegate: CollectionViewContentDelegate?
@@ -39,6 +39,20 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     
     var flowLayout: UICollectionViewFlowLayout? {
         collectionViewLayout as? UICollectionViewFlowLayout
+    }
+    
+    var cellHeight: CGFloat?
+    var cellsInRow: Int?
+    var cellSize: CGSize {
+        guard let cellsInRow = cellsInRow else {
+            return UICollectionViewFlowLayout.automaticSize
+        }
+        guard let flowLayout = flowLayout else { return .zero }
+        let totalSpace = flowLayout.sectionInset.left
+            + flowLayout.sectionInset.right
+            + (flowLayout.minimumInteritemSpacing * CGFloat(cellsInRow - 1))
+        let size = Int((bounds.width - totalSpace) / CGFloat(cellsInRow))
+        return CGSize(width: size, height: cellHeight ?? size)
     }
     
     // MARK: - Init
@@ -67,7 +81,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeue(cell: Cell.self, indexPath: indexPath) else { return UICollectionViewCell() }
-        contentDelegate?.collectionView(collectionView, cell: cell, indexPath: indexPath, data: data[indexPath.row])
+        contentDelegate?.collectionView(collectionView, cell: cell, indexPath: indexPath)
         return cell
     }
     
@@ -78,6 +92,11 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {}
     
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {}
+    
+    // MARK: - UICollectionViewDelegateFlowLayout
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        cellSize
+    }
     
     // MARK: - Height Constraint
     var height: CGFloat? {
