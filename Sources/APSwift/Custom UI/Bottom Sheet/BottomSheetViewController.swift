@@ -13,7 +13,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     var animationDuration: TimeInterval = .animation
     var animationType: UIView.AnimationOptions = .curveEaseOut
     var currentTopOffset: CGFloat { topConstraint.constant }
-    var foldsFromInitialStage = false
+    var foldsOnInitialStage = false
     
     // MARK: - Initialization
     public init(contentVC: Content,
@@ -130,7 +130,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
                 if velocity.y < -300 {
                     self.unfoldBottomSheet()
                 } else if velocity.y > 300 {
-                    self.foldsFromInitialStage ? self.foldBottomSheet() : self.removeBottomSheet()
+                    self.foldsOnInitialStage ? self.foldBottomSheet() : self.removeBottomSheet()
                 }
             }
         case .failed:
