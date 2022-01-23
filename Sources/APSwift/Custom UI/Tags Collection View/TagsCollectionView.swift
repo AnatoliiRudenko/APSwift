@@ -7,7 +7,7 @@
 
 import UIKit
 
-open class TagsCollectionView<Cell: UICollectionViewCell, Data>: BaseCollectionView<Cell, Data>, UICollectionViewDelegateFlowLayout {
+open class TagsCollectionView<Cell: UICollectionViewCell, Data>: BaseCollectionView<Cell, Data> {
     
     var didCalculateTagsHeight: DataClosure<CGFloat>?
     
