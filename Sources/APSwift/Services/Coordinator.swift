@@ -35,8 +35,13 @@ open class Coordinator: NSObject {
         popUpView.setHidden(false)
     }
     
-    func pop() {
-        navigationController.popViewController(animated: true)
+    func pop(animated: Bool = true) {
+        navigationController.popViewController(animated: animated)
+    }
+    
+    func popSeveralScreens(_ amount: Int, animated: Bool = true) {
+        let viewControllers: [UIViewController] = self.navigationController.viewControllers as [UIViewController]
+        navigationController.popToViewController(viewControllers[viewControllers.count - (1 + amount)], animated: animated)
     }
     
     func developmentScreen(title: String) {

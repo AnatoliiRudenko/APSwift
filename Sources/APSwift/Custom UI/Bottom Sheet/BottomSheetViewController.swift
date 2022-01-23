@@ -10,8 +10,10 @@ import UIKit
 open class BottomSheetViewController<Content: BaseViewController>: BaseViewController {
     
     // MARK: - Props
-    var presentAnimationDuration: TimeInterval = 0.3
+    var animationDuration: TimeInterval = .animation
+    var animationType: UIView.AnimationOptions = .curveEaseOut
     var currentTopOffset: CGFloat { topConstraint.constant }
+    var foldsOnInitialStage = false
     
     // MARK: - Initialization
     public init(contentVC: Content,
@@ -41,14 +43,14 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     
     // MARK: - Display Actions
     public func unfoldBottomSheet(animated: Bool = true) {
-        self.topConstraint.constant = -configuration.height
+        self.topConstraint.constant = -configuration.maxHeight
         willChangeState?(.full)
         if animated {
-            UIView.animate(withDuration: presentAnimationDuration, animations: {
+            UIView.animate(withDuration: animationDuration, delay: 0, options: animationType) {
                 self.view.layoutIfNeeded()
-            }, completion: { _ in
+            } completion: { _ in
                 self.state = .full
-            })
+            }
         } else {
             self.view.layoutIfNeeded()
             self.state = .full
@@ -57,14 +59,14 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     
     public func foldBottomSheet(animated: Bool = true) {
         guard configuration.hasInitialStage else { return removeBottomSheet() }
-        self.topConstraint.constant = -configuration.initialOffset
+        self.topConstraint.constant = -configuration.initialHeight
         willChangeState?(.initial)
         if animated {
-            UIView.animate(withDuration: presentAnimationDuration, animations: {
+            UIView.animate(withDuration: animationDuration, delay: 0, options: animationType) {
                             self.view.layoutIfNeeded()
-            }, completion: { _ in
+            } completion: { _ in
                 self.state = .initial
-            })
+            }
         } else {
             self.view.layoutIfNeeded()
             self.state = .initial
@@ -74,11 +76,11 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     public func removeBottomSheet(animated: Bool = true) {
         self.topConstraint.constant = UIScreen.main.bounds.height
         if animated {
-            UIView.animate(withDuration: presentAnimationDuration, animations: {
+            UIView.animate(withDuration: animationDuration, delay: 0, options: animationType) {
                 self.view.layoutIfNeeded()
-            }, completion: { _ in
+            } completion: { _ in
                 self.dismiss(animated: false, completion: nil)
-            })
+            }
         } else {
             self.view.layoutIfNeeded()
             self.dismiss(animated: false, completion: nil)
@@ -97,14 +99,14 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
         case .began, .changed:
             if self.state == .full {
                 guard translation.y > 0 else { return }
-                topConstraint.constant = -(configuration.height - yTranslationMagnitude)
+                topConstraint.constant = -(configuration.maxHeight - yTranslationMagnitude)
                 
                 self.view.layoutIfNeeded()
             } else {
-                let newConstant = -(configuration.initialOffset + yTranslationMagnitude)
+                let newConstant = -(configuration.initialHeight + yTranslationMagnitude)
                 
                 guard translation.y < 0 else { return }
-                guard newConstant.magnitude < configuration.height else {
+                guard newConstant.magnitude < configuration.maxHeight else {
                     self.unfoldBottomSheet()
                     return
                 }
@@ -118,19 +120,17 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
                 if velocity.y < 0 {
                     // Bottom Sheet was shown and the user is trying to move it to the top
                     self.unfoldBottomSheet()
-                } else if yTranslationMagnitude >= configuration.height / 3 || velocity.y > 300 {
+                } else if yTranslationMagnitude >= configuration.maxHeight / 3 || velocity.y > 300 {
                     self.foldBottomSheet()
                 } else {
 
                     self.unfoldBottomSheet()
                 }
             } else {
-                if yTranslationMagnitude >= configuration.height / 3 || velocity.y < -300 {
-                    
+                if velocity.y < -300 {
                     self.unfoldBottomSheet()
-                    
-                } else {
-                    self.foldBottomSheet()
+                } else if velocity.y > 300 {
+                    self.foldsOnInitialStage ? self.foldBottomSheet() : self.removeBottomSheet()
                 }
             }
         case .failed:
@@ -144,12 +144,6 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     }
     
     // MARK: - Configuration
-    public struct BottomSheetConfiguration {
-        let height: CGFloat
-        let initialOffset: CGFloat
-        
-        var hasInitialStage: Bool { height > initialOffset }
-    }
     
     private let configuration: BottomSheetConfiguration
     
@@ -206,9 +200,11 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     
     // MARK: - Supporting Methods
     private func addDismissTap() {
+        let tapView = UIView()
+        self.view.fitSubviewIn(tapView)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        view.addGestureRecognizer(tapGesture)
-        view.isUserInteractionEnabled = true
+        tapView.addGestureRecognizer(tapGesture)
+        tapView.isUserInteractionEnabled = true
     }
     
     @objc
@@ -234,7 +230,7 @@ extension BottomSheetViewController {
         topConstraint.isActive = true
         
         containerStackView.snp.makeConstraints { make in
-            make.height.equalTo(configuration.height)
+            make.height.equalTo(configuration.maxHeight)
             make.left.right.equalToSuperview()
         }
         

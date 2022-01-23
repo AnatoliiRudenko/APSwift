@@ -14,4 +14,15 @@ public extension Array {
         let maxIndex = newCount - 1
         return Array(self[...maxIndex])
     }
+    
+    func queryString(values: [String], key: String) -> String {
+        values.map { key + "=" + $0 }.joined(separator: "&")
+    }
+}
+
+// MARK: - Query String
+extension Array where Element: CustomStringConvertible {
+    func queryString(key: String) -> String {
+        queryString(values: compactMap({ String(describing: $0) }), key: key)
+    }
 }

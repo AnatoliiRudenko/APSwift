@@ -11,9 +11,9 @@ open class Loader: UIView {
     
     // MARK: - Props
     var size: CGFloat = 80
-    var bgAlpha = 0.7
-    var bgColor: UIColor = .white
+    var bgColor: UIColor = .white.withAlphaComponent(0.7)
     var spinnerStyle: UIActivityIndicatorView.Style = .large
+    var spinnerColor: UIColor?
     
     // MARK: - Init
     convenience init(parentView: UIView) {
@@ -40,25 +40,23 @@ open class Loader: UIView {
         
         guard let parentView = parentView else { return }
         self.loadingView = UIView()
-        self.loadingView.frame = parentView.bounds
         self.loadingView.backgroundColor = bgColor
-        self.loadingView.alpha = bgAlpha
-        self.loadingView.translatesAutoresizingMaskIntoConstraints = false
         
-        self.spinner = UIActivityIndicatorView(style: .large)
-        self.spinner.frame = CGRect(x: 0.0, y: 0.0, width: size, height: size)
-        self.spinner.center = CGPoint(x: self.loadingView.bounds.size.width * 0.5, y: self.loadingView.bounds.size.height * 0.5)
-        self.spinner.translatesAutoresizingMaskIntoConstraints = false
+        self.spinner = UIActivityIndicatorView(style: spinnerStyle)
+        if let spinnerColor = spinnerColor {
+            self.spinner.color = spinnerColor
+        }
         
         self.loadingView.addSubview(self.spinner)
         parentView.addSubview(self.loadingView)
         
-        NSLayoutConstraint.activate([
-            self.spinner.centerXAnchor.constraint(equalTo: loadingView.centerXAnchor),
-            self.spinner.centerYAnchor.constraint(equalTo: loadingView.centerYAnchor),
-            self.loadingView.centerXAnchor.constraint(equalTo: parentView.centerXAnchor),
-            self.loadingView.centerYAnchor.constraint(equalTo: parentView.centerYAnchor)
-        ])
+        self.spinner.snp.makeConstraints { make in
+            make.center.equalTo(self.loadingView.snp.center)
+            make.size.equalTo(80)
+        }
+        self.loadingView.snp.makeConstraints { make in
+            make.edges.equalTo(parentView.snp.edges)
+        }
         
         self.spinner.startAnimating()
     }

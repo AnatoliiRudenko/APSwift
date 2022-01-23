@@ -42,7 +42,7 @@ open class CheckBoxView: BaseView {
     open override func setupComponents() {
         super.setupComponents()
         
-        animateTap = false
+        animatesTap = false
         addSubview(stackView)
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()

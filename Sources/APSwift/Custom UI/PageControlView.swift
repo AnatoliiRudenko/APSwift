@@ -7,7 +7,7 @@
 
 import UIKit
 
-open class CollectionProgressView: BaseView {
+open class PageControlView: BaseView {
     
     // MARK: - Props
     var activeColor: UIColor
@@ -67,7 +67,7 @@ open class CollectionProgressView: BaseView {
 }
 
 // MARK: - Supporting Methods
-extension CollectionProgressView {
+extension PageControlView {
     
     private func drawProgress(currentPhase: Int) {
         var circles = [UIView]()

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol TableViewContentDelegate: AnyObject {
-    func tableView<Cell: UITableViewCell>(_ tableView: UITableView, cell: Cell, indexPath: IndexPath)
+    func tableView(_ tableView: UITableView, cell: UITableViewCell, indexPath: IndexPath)
 }
 
 protocol TableViewSelectionDelegate: AnyObject {

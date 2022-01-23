@@ -46,8 +46,8 @@ open class BaseButton: UIButton {
 extension BaseButton {
     
     @objc
-    private func handleTap() {
+    func handleTap() {
         didTap?()
-        animateTap()
+        animatesTap()
     }
 }
