@@ -21,23 +21,8 @@ public extension Array {
 }
 
 // MARK: - Query String
-public extension Array where Element == String {
+extension Array where Element: CustomStringConvertible {
     func queryString(key: String) -> String {
-        queryString(values: compactMap({ String($0) }), key: key)
-    }
-}
-public extension Array where Element == Int {
-    func queryString(key: String) -> String {
-        queryString(values: compactMap({ String($0) }), key: key)
-    }
-}
-public extension Array where Element == Double {
-    func queryString(key: String) -> String {
-        queryString(values: compactMap({ String($0) }), key: key)
-    }
-}
-public extension Array where Element == Float {
-    func queryString(key: String) -> String {
-        queryString(values: compactMap({ String($0) }), key: key)
+        queryString(values: compactMap({ String(describing: $0) }), key: key)
     }
 }
