@@ -23,6 +23,13 @@ public extension UIView {
             make.bottom.equalToSuperview().inset(insets.bottom)
         }
     }
+    
+    func fitSubviewIn(_ subview: UIView, inset: CGFloat) {
+        addSubview(subview)
+        subview.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(inset)
+        }
+    }
 }
 
 // MARK: - Visual
@@ -61,7 +68,7 @@ public extension UIView {
         hide ? self.hide(completion: completion) : self.show(completion: completion)
     }
     
-    func animateTap() {
+    func animatesTap() {
         UIView.animate(withDuration: 0.15, delay: .zero, options: .curveLinear) { [weak self] in
             self?.alpha = 0.4
         } completion: { [weak self] _ in

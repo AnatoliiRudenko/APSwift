@@ -15,7 +15,7 @@ open class BaseView: UIView {
         }
     }
     
-    var animateTap = true
+    var animatesTap = true
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -40,8 +40,8 @@ open class BaseView: UIView {
     @objc
     private func handleTap() {
         didTap?()
-        if animateTap {
-            animateTap()
+        if animatesTap {
+            animatesTap()
         }
     }
     
