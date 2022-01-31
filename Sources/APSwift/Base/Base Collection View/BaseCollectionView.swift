@@ -21,7 +21,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     weak var contentDelegate: CollectionViewContentDelegate?
     weak var selectionDelegate: CollectionViewSelectionDelegate?
     
-    var data = [Data]()
+    internal(set) open var data = [Data]()
     
     func setData(_ data: [Data], completion: Closure? = nil) {
         self.data = data

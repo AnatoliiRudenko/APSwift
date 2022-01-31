@@ -21,15 +21,13 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     weak var contentDelegate: TableViewContentDelegate?
     weak var selectionDelegate: TableViewSelectionDelegate?
     
-    private(set) var data = [Data]()
+    internal(set) open var data = [Data]()
     
-    var didReload: Closure?
-    
-    func setData(_ data: [Data]) {
+    func setData(_ data: [Data], completion: Closure? = nil) {
         self.data = data
         DispatchQueue.main.async { [weak self] in
             self?.reloadData {
-                self?.didReload?()
+                completion?()
             }
         }
     }
