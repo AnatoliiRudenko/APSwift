@@ -65,7 +65,27 @@ public extension UIView {
     }
     
     func setHidden(_ hide: Bool, animated: Bool = true, completion: Closure? = nil) {
-        hide ? self.hide(completion: completion) : self.show(completion: completion)
+        guard isHidden == !hide else { return }
+        guard animated else {
+            self.isHidden = hide
+            completion?()
+            return
+        }
+        if !hide {
+            self.alpha = 0
+            self.isHidden = false
+        }
+        let animator = UIViewPropertyAnimator(duration: animationDuration, curve: .linear) {
+            self.alpha = hide ? 0 : 1
+        }
+        animator.addCompletion { _ in
+            if hide {
+                self.isHidden = true
+                self.alpha = 1
+            }
+            completion?()
+        }
+        animator.startAnimation()
     }
     
     func animatesTap() {
@@ -73,36 +93,6 @@ public extension UIView {
             self?.alpha = 0.4
         } completion: { [weak self] _ in
             self?.alpha = 1
-        }
-    }
-    
-    private func show(animated: Bool = true, completion: Closure? = nil) {
-        guard animated else {
-            isHidden = false
-            completion?()
-            return
-        }
-        self.alpha = 0
-        self.isHidden = false
-        UIView.animate(withDuration: 0.3) {
-            self.alpha = 1
-        } completion: { _ in
-            completion?()
-        }
-    }
-    
-    private func hide(animated: Bool = true, completion: Closure? = nil) {
-        guard animated else {
-            isHidden = true
-            completion?()
-            return
-        }
-        UIView.animate(withDuration: 0.3) {
-            self.alpha = 0
-        } completion: { _ in
-            self.isHidden = true
-            self.alpha = 1
-            completion?()
         }
     }
 }
@@ -167,5 +157,10 @@ public extension UIView {
     
     static func container<Content: UIView>(content: Content, insets: UIEdgeInsets) -> ContainerView<Content> {
         ContainerView(content: content, insets: insets)
+    }
+    
+    static func animate(animations: Closure?, completion: DataClosure<Bool>? = nil) {
+        guard let animations = animations else { return }
+        animate(withDuration: animationDuration, animations: animations, completion: completion)
     }
 }
