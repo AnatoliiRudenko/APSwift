@@ -51,7 +51,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         let totalSpace = flowLayout.sectionInset.left
             + flowLayout.sectionInset.right
             + (flowLayout.minimumInteritemSpacing * CGFloat(cellsInRow - 1))
-        let size = Int((bounds.width - totalSpace) / CGFloat(cellsInRow))
+        let size = (bounds.width - totalSpace) / CGFloat(cellsInRow)
         return CGSize(width: size, height: cellHeight ?? size)
     }
     
