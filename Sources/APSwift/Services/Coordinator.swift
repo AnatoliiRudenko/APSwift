@@ -14,6 +14,7 @@ protocol Coordinatable: UIViewController {
 open class Coordinator: NSObject {
     
     var navigationController: UINavigationController
+    var popUpView: BaseView?
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -21,18 +22,9 @@ open class Coordinator: NSObject {
     }
     
     // MARK: - Methods
-    func goTo(vc: Coordinatable) {
+    func goTo(vc: Coordinatable, animated: Bool = true) {
         vc.coordinator = self
-        navigationController.pushViewController(vc, animated: true)
-    }
-    
-    func showPopUp(_ popUpView: UIView) {
-        popUpView.isHidden = true
-        UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.addSubview(popUpView)
-        popUpView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        popUpView.setHidden(false)
+        navigationController.pushViewController(vc, animated: animated)
     }
     
     func pop(animated: Bool = true) {
@@ -44,7 +36,33 @@ open class Coordinator: NSObject {
         navigationController.popToViewController(viewControllers[viewControllers.count - (1 + amount)], animated: animated)
     }
     
+    func openBaseWebView(urlString: String, title: String? = nil, animated: Bool = true) {
+        let vc = BaseWebViewController(urlString: urlString, title: title)
+        navigationController.pushViewController(vc, animated: animated)
+    }
+    
     func developmentScreen(title: String) {
         goTo(vc: DevelopViewController(title: title))
+    }
+}
+
+// MARK: - Pop up
+extension Coordinator {
+    
+    func showPopUp(_ popUpView: BaseView, animated: Bool = true) {
+        popUpView.isHidden = true
+        UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.addSubview(popUpView)
+        popUpView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        popUpView.setHidden(false, animated: animated)
+        self.popUpView = popUpView
+    }
+    
+    func removePopUp(animated: Bool = true) {
+        self.popUpView?.setHidden(true, animated: animated) {
+            self.popUpView?.removeFromSuperview()
+            self.popUpView = nil
+        }
     }
 }
