@@ -22,7 +22,6 @@ open class PageControlView: BaseView {
     var maxIndex: Int = 0 {
         didSet {
             drawProgress(currentPhase: index)
-            setHidden(false)
         }
     }
     
