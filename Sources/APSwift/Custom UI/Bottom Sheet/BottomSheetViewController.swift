@@ -43,8 +43,8 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     
     // MARK: - Display Actions
     public func unfoldBottomSheet(animated: Bool = true) {
-        self.topConstraint.constant = -configuration.maxHeight
         willChangeState?(.full)
+        self.topConstraint.constant = -configuration.maxHeight
         if animated {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationType) {
                 self.view.layoutIfNeeded()
@@ -52,15 +52,15 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
                 self.state = .full
             }
         } else {
-            self.view.layoutIfNeeded()
             self.state = .full
+            self.view.layoutIfNeeded()
         }
     }
     
     public func foldBottomSheet(animated: Bool = true) {
         guard configuration.hasInitialStage else { return removeBottomSheet() }
-        self.topConstraint.constant = -configuration.initialHeight
         willChangeState?(.initial)
+        self.topConstraint.constant = -configuration.initialHeight
         if animated {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationType) {
                             self.view.layoutIfNeeded()
@@ -68,20 +68,23 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
                 self.state = .initial
             }
         } else {
-            self.view.layoutIfNeeded()
             self.state = .initial
+            self.view.layoutIfNeeded()
         }
     }
     
     public func removeBottomSheet(animated: Bool = true) {
+        willChangeState?(.removed)
         self.topConstraint.constant = UIScreen.main.bounds.height
         if animated {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationType) {
                 self.view.layoutIfNeeded()
             } completion: { _ in
+                self.state = .removed
                 self.dismiss(animated: false, completion: nil)
             }
         } else {
+            self.state = .removed
             self.view.layoutIfNeeded()
             self.dismiss(animated: false, completion: nil)
         }
@@ -151,6 +154,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     public enum BottomSheetState {
         case initial
         case full
+        case removed
     }
     
     var willChangeState: DataClosure<BottomSheetState>?
@@ -194,6 +198,8 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
         case .initial:
             return true
         case .full:
+            return false
+        case .removed:
             return false
         }
     }
