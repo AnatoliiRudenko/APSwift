@@ -26,21 +26,35 @@ class BasePageViewController: UIPageViewController {
         pages.firstIndex(of: presentedViewController ?? UIViewController()) ?? 0
     }
     
+    var initialIndex = 0 {
+        didSet {
+            guard (0...pages.count - 1).contains(initialIndex) else { return initialIndex = 0 }
+            setContent()
+        }
+    }
+    
     var scrollView: UIScrollView {
         view.subviews.compactMap { $0 as? UIScrollView }.first ?? UIScrollView()
     }
     
     // MARK: - Init
-    convenience init(pages: [UIViewController]) {
-        self.init(pages: pages, transitionStyle: .scroll, navigationOrientation: .horizontal)
+    convenience init(pages: [UIViewController], initialIndex: Int = 0) {
+        self.init(pages: pages, transitionStyle: .scroll, navigationOrientation: .horizontal, initialIndex: initialIndex)
     }
     
-    init(pages: [UIViewController], transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey: Any]? = nil) {
+    init(pages: [UIViewController],
+         transitionStyle style: UIPageViewController.TransitionStyle,
+         navigationOrientation: UIPageViewController.NavigationOrientation,
+         options: [UIPageViewController.OptionsKey: Any]? = nil,
+         initialIndex: Int = 0) {
         self.pages = pages
+        self.initialIndex = initialIndex
         super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: options)
     }
     
-    override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey: Any]? = nil) {
+    override init(transitionStyle style: UIPageViewController.TransitionStyle,
+                  navigationOrientation: UIPageViewController.NavigationOrientation,
+                  options: [UIPageViewController.OptionsKey: Any]? = nil) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
     }
     
@@ -81,7 +95,7 @@ extension BasePageViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let vcIndex = pages.firstIndex(of: viewController) else { return nil }
         let previousIndex = vcIndex - 1
-        guard previousIndex >= 0 else { return pages.last }
+        guard previousIndex >= 0 else { return pages[initialIndex] }
         guard pages.count > previousIndex else { return nil }
         return pages[previousIndex]
     }
@@ -89,14 +103,15 @@ extension BasePageViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let vcIndex = pages.firstIndex(of: viewController) else { return nil }
         let nextIndex = vcIndex + 1
-        guard nextIndex < pages.count else { return pages.first }
+        guard nextIndex < pages.count else { return pages[initialIndex] }
         guard pages.count > nextIndex else { return nil }
         return pages[nextIndex]
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
         willTransitionToIndex?(pages.firstIndex(of: pendingViewControllers.first ?? UIViewController()) ?? 0)
-        self.setViewControllers(self.viewControllers, direction: .forward, animated: false, completion: nil)
+        // иногда крашит
+//        self.setViewControllers(self.viewControllers, direction: .forward, animated: false, completion: nil)
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
@@ -122,7 +137,6 @@ extension BasePageViewController: UIPageViewControllerDelegate {
 private extension BasePageViewController {
     
     func setContent() {
-        guard let vc = pages.first else { return }
-        setViewControllers([vc], direction: .forward, animated: false, completion: nil)
+        setViewControllers([pages[initialIndex]], direction: .forward, animated: false, completion: nil)
     }
 }
