@@ -9,6 +9,10 @@ import Foundation
 
 public extension String {
     
+    func tail(afterCount count: Int) -> String {
+        String(suffix(from: self.index(startIndex, offsetBy: count)))
+    }
+    
     var isDigital: Bool {
         CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: self))
     }
