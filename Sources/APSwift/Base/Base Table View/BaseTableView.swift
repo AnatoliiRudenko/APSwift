@@ -69,17 +69,17 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     }
     
     // MARK: - Delegates
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         data.count
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeue(cell: Cell.self, indexPath: indexPath) else { return UITableViewCell() }
         contentDelegate?.tableView(self, cell: cell, indexPath: indexPath)
         return cell
     }
     
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectionDelegate?.tableView(self, didSelectRowAt: indexPath, data: data[indexPath.row])
     }
     

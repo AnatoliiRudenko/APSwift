@@ -12,7 +12,7 @@ open class ContainerView<Content: UIView>: BaseView {
     private(set) var content: Content
     private var insets: UIEdgeInsets = .zero
     
-    public override func setupComponents() {
+    open override func setupComponents() {
         super.setupComponents()
         addSubview(content)
         content.snp.makeConstraints { make in

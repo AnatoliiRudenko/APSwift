@@ -42,7 +42,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     }
     
     // MARK: - Display Actions
-    public func unfoldBottomSheet(animated: Bool = true) {
+    open func unfoldBottomSheet(animated: Bool = true) {
         willChangeState?(.full)
         self.topConstraint.constant = -configuration.maxHeight
         if animated {
@@ -57,7 +57,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
         }
     }
     
-    public func foldBottomSheet(animated: Bool = true) {
+    open func foldBottomSheet(animated: Bool = true) {
         guard configuration.hasInitialStage else { return removeBottomSheet() }
         willChangeState?(.initial)
         self.topConstraint.constant = -configuration.initialHeight
@@ -73,7 +73,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
         }
     }
     
-    public func removeBottomSheet(animated: Bool = true) {
+    open func removeBottomSheet(animated: Bool = true) {
         willChangeState?(.removed)
         self.topConstraint.constant = UIScreen.main.bounds.height
         if animated {
@@ -189,11 +189,11 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     }()
     
     // MARK: - UIGestureRecognizer Delegate
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         false
     }
     
-    public override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    open override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         switch state {
         case .initial:
             return true
