@@ -23,18 +23,34 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     
     internal(set) open var data = [Data]()
     
+    var contentHeight: CGFloat {
+        layoutIfNeeded()
+        return contentSize.height
+    }
+    
+    var plugView: BaseView?
+    
+    // MARK: - Methods
     func setData(_ data: [Data], completion: Closure? = nil) {
         self.data = data
         DispatchQueue.main.async { [weak self] in
             self?.reloadData {
                 completion?()
             }
+            self?.showPlugView(data.isEmpty)
         }
     }
     
-    var contentHeight: CGFloat {
-        layoutIfNeeded()
-        return contentSize.height
+    func showPlugView(_ show: Bool) {
+        guard let plugView = plugView else { return }
+        if plugView.superview == nil && show {
+            addSubview(plugView)
+            plugView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+                make.center.equalToSuperview()
+            }
+        }
+        plugView.setHidden(!show)
     }
     
     // MARK: - Init
