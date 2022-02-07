@@ -20,15 +20,15 @@ public struct StoredParameter<T> {
     
     public var value: T? {
         get {
-            arStoredParameter.get()
+            get()
         }
         set {
             guard let newValue = newValue else {
-                arStoredParameter.remove()
+                remove()
                 return
             }
 
-            arStoredParameter.set(newValue)
+            set(newValue)
         }
     }
     
