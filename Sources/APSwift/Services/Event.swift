@@ -48,16 +48,13 @@ open class Event<Object>: NSObject {
         let sender: Event<Object>
         let object: Object?
     }
-}
-
-// MARK: - Supporting methods
-private extension Event {
     
+    // MARK: - Supporting methods
     @objc
     func handleNotification(_ notification: Notification) {
         guard let data = notification.object as? NotificationObjectType else { return }
         
-        if !self.handleSameRecipientSenders, data.sender == self {
+        if !self.handlesSameRecipientSenders, data.sender == self {
             return
         }
         
