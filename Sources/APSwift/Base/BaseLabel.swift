@@ -35,11 +35,6 @@ open class BaseLabel: UILabel {
     }
     
     var insets: UIEdgeInsets = .zero
-    var directionalInsets: DirectionalInsets = .zero {
-        didSet {
-            insets = directionalInsets.asUIEdgeInsets
-        }
-    }
     
     // MARK: - Height Constraint
     var height: CGFloat? {
