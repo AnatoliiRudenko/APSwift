@@ -9,6 +9,12 @@ import Foundation
 
 public extension String {
     
+    var isValidEmail: Bool {
+        let emailRegEx = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{1,4}$"
+        let emailTest = NSPredicate(format: "SELF MATCHES[c] %@", emailRegEx)
+        return emailTest.evaluate(with: self)
+    }
+    
     func tail(afterCount count: Int) -> String {
         String(suffix(from: self.index(startIndex, offsetBy: count)))
     }
