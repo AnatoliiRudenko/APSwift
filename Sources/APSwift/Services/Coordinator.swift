@@ -15,6 +15,9 @@ open class Coordinator: NSObject {
     
     var navigationController: UINavigationController
     var popUpView: BaseView?
+    var bottomSheet: BottomSheet? {
+        UIApplication.topViewController as? BottomSheet
+    }
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -34,6 +37,10 @@ open class Coordinator: NSObject {
     func popSeveralScreens(_ amount: Int, animated: Bool = true) {
         let viewControllers: [UIViewController] = self.navigationController.viewControllers as [UIViewController]
         navigationController.popToViewController(viewControllers[viewControllers.count - (1 + amount)], animated: animated)
+    }
+    
+    func dismiss(animated: Bool = true, completion: Closure? = nil) {
+        navigationController.dismiss(animated: animated, completion: completion)
     }
     
     func openBaseWebView(urlString: String, title: String? = nil, animated: Bool = true) {
