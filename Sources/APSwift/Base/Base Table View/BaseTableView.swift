@@ -23,12 +23,20 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     
     internal(set) open var data = [Data]()
     
+    var onPaging: Closure?
+    var onScrollingBeyondTop: Closure?
+    
+    var plugView: BaseView?
+    
     var contentHeight: CGFloat {
         layoutIfNeeded()
         return contentSize.height
     }
     
-    var plugView: BaseView?
+    var isLastCellVisible: Bool {
+        guard let indexes = self.indexPathsForVisibleRows else { return false }
+        return indexes.contains { $0.row == data.count - 1 }
+    }
     
     // MARK: - Methods
     func setData(_ data: [Data], completion: Closure? = nil) {
@@ -90,11 +98,27 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeue(cell: Cell.self, indexPath: indexPath) else { return UITableViewCell() }
         contentDelegate?.tableView(self, cell: cell, indexPath: indexPath)
+        if indexPath.row == data.count - 1 {
+           onPaging?()
+        }
         return cell
     }
     
     open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectionDelegate?.tableView(self, didSelectRowAt: indexPath, data: data[indexPath.row])
+    }
+    
+    // MARK: - UIScrollView Delegate
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if isLastCellVisible {
+            onPaging?()
+        }
+    }
+    
+    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if targetContentOffset.pointee.y <= 0 && scrollView.contentOffset.y <= 0 {
+            onScrollingBeyondTop?()
+        }
     }
     
     // MARK: - Height Constraint
