@@ -37,7 +37,7 @@ public extension UIView {
     
     func fadeTo(
         _ alpha: CGFloat,
-        duration: TimeInterval = 0.3,
+        duration: TimeInterval = animationDuration,
         delay: TimeInterval = 0,
         completion: (() -> Void)? = nil) {
             
@@ -56,11 +56,11 @@ public extension UIView {
             }
         }
     
-    func fadeIn(duration: TimeInterval = 0.3, delay: TimeInterval = 0, completion: (() -> Void)? = nil) {
+    func fadeIn(duration: TimeInterval = animationDuration, delay: TimeInterval = 0, completion: (() -> Void)? = nil) {
         fadeTo(1, duration: duration, delay: delay, completion: completion)
     }
     
-    func fadeOut(duration: TimeInterval = 0.3, delay: TimeInterval = 0, completion: (() -> Void)? = nil) {
+    func fadeOut(duration: TimeInterval = animationDuration, delay: TimeInterval = 0, completion: (() -> Void)? = nil) {
         fadeTo(0, duration: duration, delay: delay, completion: completion)
     }
     
@@ -89,7 +89,7 @@ public extension UIView {
     }
     
     func animatesTap() {
-        UIView.animate(withDuration: 0.15, delay: .zero, options: .curveLinear) { [weak self] in
+        UIView.animate(withDuration: animationDuration * 0.5, delay: .zero, options: .curveLinear) { [weak self] in
             self?.alpha = 0.4
         } completion: { [weak self] _ in
             self?.alpha = 1
@@ -100,7 +100,7 @@ public extension UIView {
 // MARK: - Corners Radius
 public extension UIView {
     
-    func roundCorners(_ value: CGFloat = 20) {
+    func roundCorners(_ value: CGFloat = 16) {
         layer.cornerRadius = value
     }
     
