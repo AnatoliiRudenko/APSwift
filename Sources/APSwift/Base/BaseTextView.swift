@@ -18,6 +18,14 @@ open class BaseTextView: UITextView {
             self.textColor = placeholderColor
         }
     }
+    open override var text: String! {
+        get {
+            super.text == placeholder ? "" : super.text
+        }
+        set {
+            super.text = newValue
+        }
+    }
     
     // MARK: - Init
     override init(frame: CGRect, textContainer: NSTextContainer?) {
@@ -32,6 +40,7 @@ open class BaseTextView: UITextView {
 
     open func setupComponents() {
         delegate = self
+        backgroundColor = .clear
     }
 }
 
