@@ -9,17 +9,16 @@ import UIKit
 
 open class BaseLabel: UILabel {
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.setupComponents()
-    }
+    var hidesIfEmpty = false
     
-    required public init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setupComponents() {
-        text = ""
+    open override var text: String? {
+        get { super.text }
+        set {
+            super.text = newValue
+            if hidesIfEmpty {
+                self.isHidden = newValue?.isEmpty == true || newValue == nil
+            }
+        }
     }
     
     var multiline: Bool = false {
@@ -51,6 +50,20 @@ open class BaseLabel: UILabel {
     private lazy var heightConstraint: NSLayoutConstraint = {
         self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
     }()
+    
+    // MARK: - Init
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.setupComponents()
+    }
+    
+    required public init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupComponents() {
+        text = ""
+    }
 }
 
 // MARK: - Insets
