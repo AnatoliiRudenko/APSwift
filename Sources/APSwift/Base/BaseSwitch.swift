@@ -56,3 +56,21 @@ class BaseSwitch: UISwitch {
         addTarget(self, action: #selector(didSwitch), for: .valueChanged)
     }
 }
+
+// MARK: - Supporting methods
+private extension BaseSwitch {
+    
+    @objc
+    func didSwitch(_ sender: UISwitch) {
+        didSwitchTo?(sender.isOn)
+        setThumbColor()
+    }
+    
+    func setThumbColor() {
+        guard let onThumbTintColor = onThumbTintColor,
+              let offThumbTintColor = offThumbTintColor
+        else { return }
+        thumbTintColor = isOn ? onThumbTintColor : offThumbTintColor
+    }
+}
+
