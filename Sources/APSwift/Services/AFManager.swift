@@ -22,7 +22,7 @@ open class AFManager: NSObject {
         case authBasic(user: String, password: String)
     }
     
-    struct UnhandledResponse: Decodable { // нужен для обозначения отсутствия необходимости в дешифровке респонса
+    struct UnhandledResponse: Decodable { // нужен для обозначения отсутствия необходимости в дешифровке респонса. Может понадобится при работе с дерьмовым бэком
         let nothing: String?
     }
     
@@ -34,6 +34,15 @@ open class AFManager: NSObject {
                     method: .get,
                     headers: nil) { data in
             completion?(self.handleData(data))
+        }
+    }
+    
+    func externalArrayRequest<Response: Decodable>(_ path: String,
+                                                   completion: DataClosure<[Response]?>?) {
+        requestData(path,
+                    method: .get,
+                    headers: nil) { data in
+            completion?(self.handleArrayData(data))
         }
     }
 }
@@ -64,20 +73,8 @@ public extension AFManager {
             }
             
             switch response.result {
-            case .success(let json):
-                do {
-                    let data = try JSONSerialization.data(withJSONObject: json, options: [])
-                    
-                    if self.shouldLog {
-                        self.checkForErrorResponse(data)
-                    }
-                    
-                    completion?(data)
-                    
-                } catch {
-                    print("JSON decoding error: \(error)")
-                    completion?(nil)
-                }
+            case .success:
+                completion?(response.data)
             case .failure(let error):
                 print("Request error: \(error)")
                 completion?(nil)
@@ -96,6 +93,17 @@ public extension AFManager {
         }
         do {
             let result: Response = try data.decodedObject()
+            return result
+        } catch {
+            print("Custom decoding error: \(error)")
+            return nil
+        }
+    }
+    
+    func handleArrayData<Response: Decodable>(_ data: Data?) -> [Response]? {
+        guard let data = data else { return nil }
+        do {
+            let result: [Response] = try data.decodedArray()
             return result
         } catch {
             print("Custom decoding error: \(error)")
