@@ -12,37 +12,34 @@ open class AFManager: NSObject {
     
     static var shared = AFManager()
     
-    var shouldLog = true
+    // MARK: - Props
     
-    enum HeaderType {
-        case none
-        case regular
-        case temporary
-        case adaptive
-        case authBasic(user: String, password: String)
-    }
-    
-    struct UnhandledResponse: Decodable { // нужен для обозначения отсутствия необходимости в дешифровке респонса. Может понадобится при работе с дерьмовым бэком
-        let nothing: String?
-    }
+    lazy var decoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return decoder
+    }()
     
     // MARK: - Methods
     
     func externalRequest<Response: Decodable>(_ path: String,
-                                              completion: DataClosure<Response?>?) {
-        requestData(path,
-                    method: .get,
-                    headers: nil) { data in
-            completion?(self.handleData(data))
+                                               method: HTTPMethod,
+                                               parameters: [String: Any]? = nil,
+                                               queryParameters: [String: Any]? = nil,
+                                               headers: HTTPHeaders? = nil,
+                                               completion: DataClosure<Response?>?) {
+      
+        let request = createDataRequest(path, method: method, parameters: parameters, queryParameters: queryParameters, headers: headers)
+        requestDecodable(request) { (response: Response?) in
+            completion?(response)
         }
     }
     
     func externalArrayRequest<Response: Decodable>(_ path: String,
                                                    completion: DataClosure<[Response]?>?) {
-        requestData(path,
-                    method: .get,
-                    headers: nil) { data in
-            completion?(self.handleArrayData(data))
+        let request = createDataRequest(path, method: method, parameters: parameters, queryParameters: queryParameters, headers: headers)
+        requestDecodable(request) { (response: [Response]?) in
+            completion?(response)
         }
     }
 }
@@ -50,64 +47,30 @@ open class AFManager: NSObject {
 // MARK: - Supporting methods
 public extension AFManager {
     
-    func requestData(_ path: String,
-                     method: HTTPMethod,
-                     parameters: [String: Any]? = nil,
-                     queryParameters: [String: Any]? = nil,
-                     headers: HTTPHeaders?,
-                     completion: DataClosure<Data?>?) {
+    func requestDecodable<Response: Decodable>(_ request: DataRequest, completion: DataClosure<Response?>?) {
+        request.responseDecodable(of: Response.self, decoder: decoder) { response in
+            completion?(response.value)
+        }
+    }
+    
+    func createDataRequest(_ path: String,
+                           method: HTTPMethod,
+                           parameters: [String: Any]? = nil,
+                           queryParameters: [String: Any]? = nil,
+                           headers: HTTPHeaders? = nil) -> DataRequest {
         
         var urlString = path
         if let queryParameters = queryParameters {
             urlString += queryParameters.queryString
         }
         let encoding: ParameterEncoding = method == .get ? URLEncoding.default : JSONEncoding.default
-        
-        AF.request(urlString, method: method, parameters: parameters, encoding: encoding, headers: headers).responseJSON { (response) in
-            if self.shouldLog {
-                print(response)
-            }
-            
-            if self.shouldLog, let httpStatusCode = response.response?.statusCode {
-                print("RESPONSE CODE: \(httpStatusCode)")
-            }
-            
-            switch response.result {
-            case .success:
-                completion?(response.data)
-            case .failure(let error):
-                print("Request error: \(error)")
-                completion?(nil)
-            }
-        }
+        return AF.request(urlString, method: method, parameters: parameters, encoding: encoding, headers: headers)
     }
+}
+
+public extension AFManager {
     
-    // to override for custom decoding and printing errors
-    func checkForErrorResponse(_ data: Data) {}
-    
-    func handleData<Response: Decodable>(_ data: Data?) -> Response? {
-        guard let data = data,
-              Response.self != UnhandledResponse.self
-        else {
-            return nil
-        }
-        do {
-            let result: Response = try data.decodedObject()
-            return result
-        } catch {
-            print("Custom decoding error: \(error)")
-            return nil
-        }
-    }
-    
-    func handleArrayData<Response: Decodable>(_ data: Data?) -> [Response]? {
-        guard let data = data else { return nil }
-        do {
-            let result: [Response] = try data.decodedArray()
-            return result
-        } catch {
-            print("Custom decoding error: \(error)")
-            return nil
-        }
+    struct UnhandledResponse: Decodable { // нужен для обозначения отсутствия необходимости в дешифровке респонса. Может понадобится при работе с дерьмовым бэком
+        let nothing: String?
     }
 }
