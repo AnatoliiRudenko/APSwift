@@ -5,7 +5,6 @@
 //  Created by Анатолий Руденко on 07.12.2021.
 //
 
-import Foundation
 import UIKit
 
 public extension UIButton {
@@ -44,5 +43,16 @@ public extension UIButton {
             make.centerY.equalTo(snp.centerY)
             make.right.equalTo(snp.right).inset(offset)
         }
+    }
+    
+    func setInsets(contentPadding: UIEdgeInsets, imageTitleOffset: CGFloat) {
+        self.contentEdgeInsets = UIEdgeInsets(top: contentPadding.top,
+                                              left: contentPadding.left,
+                                              bottom: contentPadding.bottom,
+                                              right: contentPadding.right + imageTitleOffset)
+        self.titleEdgeInsets = UIEdgeInsets(top: 0,
+                                            left: imageTitleOffset,
+                                            bottom: 0,
+                                            right: -imageTitleOffset)
     }
 }
