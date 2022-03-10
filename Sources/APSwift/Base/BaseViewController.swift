@@ -9,7 +9,7 @@ import UIKit
 
 open class BaseViewController: UIViewController, Coordinatable {
     
-    var coordinator: Coordinator?
+    public var coordinator: Coordinator?
     
     // MARK: - Props
     

@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol Coordinatable: UIViewController {
+public protocol Coordinatable: UIViewController {
     var coordinator: Coordinator? { get set }
 }
 
