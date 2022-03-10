@@ -20,7 +20,7 @@ open class BaseTableViewCell<Data>: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setupComponents() {
+    open func setupComponents() {
         selectionStyle = .none
     }
 }

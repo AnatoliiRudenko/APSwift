@@ -39,7 +39,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     }
     
     // MARK: - Methods
-    func setData(_ data: [Data], completion: Closure? = nil) {
+    open func setData(_ data: [Data], completion: Closure? = nil) {
         self.data = data
         DispatchQueue.main.async { [weak self] in
             self?.reloadData {
@@ -49,7 +49,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
         }
     }
     
-    func showPlugView(_ show: Bool) {
+    open func showPlugView(_ show: Bool) {
         guard let plugView = plugView else { return }
         if plugView.superview == nil && show {
             addSubview(plugView)
@@ -79,7 +79,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupComponents() {
+    open func setupComponents() {
         registerCell(Cell.self)
         subscribe(self)
         separatorStyle = .none

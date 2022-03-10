@@ -19,7 +19,7 @@ open class PopUpView: BaseView {
     }
     
     // MARK: - Methods
-    func dismiss() {
+    open func dismiss() {
         setHidden(true) { [weak self] in
             self?.removeFromSuperview()
         }

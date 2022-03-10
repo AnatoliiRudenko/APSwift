@@ -21,7 +21,6 @@ open class BaseView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupComponents()
-        updateComponents()
     }
     
     required public init?(coder: NSCoder) {
@@ -29,7 +28,6 @@ open class BaseView: UIView {
     }
     
     open func setupComponents() {}
-    open func updateComponents() {}
     
     // MARK: - Tap
     private func enableTap() {

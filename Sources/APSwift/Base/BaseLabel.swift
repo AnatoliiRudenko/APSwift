@@ -28,7 +28,7 @@ open class BaseLabel: UILabel {
         }
     }
     
-    func multiline(_ lines: Int) {
+    open func multiline(_ lines: Int) {
         numberOfLines = lines
         lineBreakMode = .byWordWrapping
     }
@@ -36,7 +36,7 @@ open class BaseLabel: UILabel {
     var insets: UIEdgeInsets = .zero
     
     // MARK: - Height Constraint
-    var height: CGFloat? {
+    open var height: CGFloat? {
         didSet {
             guard let value = self.height else {
                 self.heightConstraint.isActive = false
@@ -61,7 +61,7 @@ open class BaseLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupComponents() {
+    open func setupComponents() {
         text = ""
     }
 }

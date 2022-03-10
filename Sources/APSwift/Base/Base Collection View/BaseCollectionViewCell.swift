@@ -20,5 +20,5 @@ open class BaseCollectionViewCell<Data>: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupComponents() {}
+    open func setupComponents() {}
 }

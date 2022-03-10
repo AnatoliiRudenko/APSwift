@@ -23,7 +23,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     
     internal(set) open var data = [Data]()
     
-    func setData(_ data: [Data], completion: Closure? = nil) {
+    open func setData(_ data: [Data], completion: Closure? = nil) {
         self.data = data
         DispatchQueue.main.async { [weak self] in
             self?.reloadData {
@@ -72,7 +72,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         setupComponents()
     }
     
-    func setupComponents() {}
+    open func setupComponents() {}
     
     // MARK: - Delegates
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

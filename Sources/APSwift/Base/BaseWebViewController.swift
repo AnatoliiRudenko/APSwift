@@ -40,7 +40,7 @@ open class BaseWebViewController: UIViewController {
         setupComponents()
     }
     
-    func setupComponents() {}
+    open func setupComponents() {}
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -76,7 +76,7 @@ open class BaseWebViewController: UIViewController {
     }
     
     // MARK: - Load URL
-    func load() {
+    open func load() {
         guard let url = getURL() else { return }
         let urlRequest = URLRequest(url: url)
         webView.load(urlRequest)
