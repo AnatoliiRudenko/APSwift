@@ -84,7 +84,8 @@ open class BaseWebViewController: UIViewController {
     
     private func getURL() -> URL? {
         guard let link = urlString,
-              let url = URL(string: link)
+              let encodedLink = link.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let url = URL(string: encodedLink)
         else { return self.url }
         return url
     }

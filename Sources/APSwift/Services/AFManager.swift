@@ -36,7 +36,11 @@ open class AFManager: NSObject {
     }
     
     func externalArrayRequest<Response: Decodable>(_ path: String,
-                                                   completion: DataClosure<[Response]?>?) {
+                                                   method: HTTPMethod,
+                                                   parameters: [String: Any]? = nil,
+                                                   queryParameters: [String: Any]? = nil,
+                                                   headers: HTTPHeaders? = nil,
+                                                   completion: DataClosure<[Response?]?>?) {
         let request = createDataRequest(path, method: method, parameters: parameters, queryParameters: queryParameters, headers: headers)
         requestDecodable(request) { (response: [Response]?) in
             completion?(response)

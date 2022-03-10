@@ -63,7 +63,7 @@ open class BaseView: UIView {
     }()
     
     // MARK: - Tap Through
-    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+    open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         guard tapsThrough else { return super.point(inside: point, with: event) }
         for subview in subviews {
             if !subview.isHidden && subview.isUserInteractionEnabled && subview.point(inside: convert(point, to: subview), with: event) {
