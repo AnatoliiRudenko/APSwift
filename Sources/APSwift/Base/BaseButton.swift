@@ -21,7 +21,7 @@ open class BaseButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupComponents() {
+    open func setupComponents() {
         self.addTarget(self, action: #selector(self.handleTap), for: .touchUpInside)
     }
     
