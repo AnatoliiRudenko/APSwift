@@ -16,6 +16,7 @@ open class BaseView: UIView {
     }
     
     var animatesTap = true
+    var tapsThrough = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -60,4 +61,15 @@ open class BaseView: UIView {
     private lazy var heightConstraint: NSLayoutConstraint = {
         self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
     }()
+    
+    // MARK: - Tap Through
+    open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        guard tapsThrough else { return super.point(inside: point, with: event) }
+        for subview in subviews {
+            if !subview.isHidden && subview.isUserInteractionEnabled && subview.point(inside: convert(point, to: subview), with: event) {
+                return true
+            }
+        }
+        return false
+    }
 }

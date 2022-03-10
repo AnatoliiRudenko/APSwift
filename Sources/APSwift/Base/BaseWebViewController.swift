@@ -33,7 +33,7 @@ open class BaseWebViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         addWebView()
         load()
@@ -42,7 +42,7 @@ open class BaseWebViewController: UIViewController {
     
     func setupComponents() {}
     
-    public override func viewWillAppear(_ animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         title = titleToSet
     }
@@ -84,7 +84,8 @@ open class BaseWebViewController: UIViewController {
     
     private func getURL() -> URL? {
         guard let link = urlString,
-              let url = URL(string: link)
+              let encodedLink = link.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let url = URL(string: encodedLink)
         else { return self.url }
         return url
     }

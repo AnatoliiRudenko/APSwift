@@ -7,7 +7,13 @@
 
 import UIKit
 
-open class BottomSheetViewController<Content: BaseViewController>: BaseViewController {
+public protocol BottomSheet {
+    func unfoldBottomSheet(animated: Bool, completion: Closure?)
+    func foldBottomSheet(animated: Bool, completion: Closure?)
+    func removeBottomSheet(animated: Bool, completion: Closure?)
+}
+
+open class BottomSheetViewController<Content: BaseViewController>: BaseViewController, BottomSheet {
     
     // MARK: - Props
     var animationDuration: TimeInterval = .animation
@@ -42,48 +48,57 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     }
     
     // MARK: - Display Actions
-    public func unfoldBottomSheet(animated: Bool = true) {
-        self.topConstraint.constant = -configuration.maxHeight
+    public func unfoldBottomSheet(animated: Bool = true, completion: Closure? = nil) {
         willChangeState?(.full)
+        self.topConstraint.constant = -configuration.maxHeight
         if animated {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationType) {
                 self.view.layoutIfNeeded()
             } completion: { _ in
                 self.state = .full
+                completion?()
             }
         } else {
-            self.view.layoutIfNeeded()
             self.state = .full
+            self.view.layoutIfNeeded()
+            completion?()
         }
     }
     
-    public func foldBottomSheet(animated: Bool = true) {
-        guard configuration.hasInitialStage else { return removeBottomSheet() }
-        self.topConstraint.constant = -configuration.initialHeight
+    public func foldBottomSheet(animated: Bool = true, completion: Closure? = nil) {
+        guard configuration.hasInitialStage else { return removeBottomSheet(animated: animated, completion: completion) }
         willChangeState?(.initial)
+        self.topConstraint.constant = -configuration.initialHeight
         if animated {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationType) {
                             self.view.layoutIfNeeded()
             } completion: { _ in
                 self.state = .initial
+                completion?()
             }
         } else {
-            self.view.layoutIfNeeded()
             self.state = .initial
+            self.view.layoutIfNeeded()
+            completion?()
         }
     }
     
-    public func removeBottomSheet(animated: Bool = true) {
+    public func removeBottomSheet(animated: Bool = true, completion: Closure? = nil) {
+        willChangeState?(.removed)
         self.topConstraint.constant = UIScreen.main.bounds.height
         if animated {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationType) {
                 self.view.layoutIfNeeded()
             } completion: { _ in
+                self.state = .removed
                 self.dismiss(animated: false, completion: nil)
+                completion?()
             }
         } else {
+            self.state = .removed
             self.view.layoutIfNeeded()
             self.dismiss(animated: false, completion: nil)
+            completion?()
         }
     }
     
@@ -151,6 +166,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     public enum BottomSheetState {
         case initial
         case full
+        case removed
     }
     
     var willChangeState: DataClosure<BottomSheetState>?
@@ -185,15 +201,17 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     }()
     
     // MARK: - UIGestureRecognizer Delegate
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         false
     }
     
-    public override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    open override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         switch state {
         case .initial:
             return true
         case .full:
+            return false
+        case .removed:
             return false
         }
     }

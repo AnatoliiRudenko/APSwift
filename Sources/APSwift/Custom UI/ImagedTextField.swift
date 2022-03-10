@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class ImagedTextField: BaseTextField {
+open class ImagedTextField: BaseTextField {
     
     enum ImageSide {
         case left
@@ -55,15 +55,15 @@ public class ImagedTextField: BaseTextField {
     }()
     
     // MARK: - Insets
-    public override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
+    open override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
         .init(x: insets.left, y: 0, width: imageWidth, height: bounds.height)
     }
     
-    public override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
+    open override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
         .init(x: bounds.width - insets.right - imageWidth, y: 0, width: imageWidth, height: bounds.height)
     }
     
-    public override func textRect(forBounds bounds: CGRect) -> CGRect {
+    open override func textRect(forBounds bounds: CGRect) -> CGRect {
         switch imageSide {
         case .left:
             return bounds.inset(by: .init(top: insets.top, left: insets.left + imageWidth + textToImageSpacing, bottom: insets.bottom, right: insets.right))
@@ -72,11 +72,11 @@ public class ImagedTextField: BaseTextField {
         }
     }
     
-    public override func editingRect(forBounds bounds: CGRect) -> CGRect {
+    open override func editingRect(forBounds bounds: CGRect) -> CGRect {
         textRect(forBounds: bounds)
     }
     
-    public override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+    open override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
         textRect(forBounds: bounds)
     }
 }

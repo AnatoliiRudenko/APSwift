@@ -21,7 +21,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     weak var contentDelegate: CollectionViewContentDelegate?
     weak var selectionDelegate: CollectionViewSelectionDelegate?
     
-    var data = [Data]()
+    internal(set) open var data = [Data]()
     
     func setData(_ data: [Data], completion: Closure? = nil) {
         self.data = data
@@ -51,7 +51,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         let totalSpace = flowLayout.sectionInset.left
             + flowLayout.sectionInset.right
             + (flowLayout.minimumInteritemSpacing * CGFloat(cellsInRow - 1))
-        let size = Int((bounds.width - totalSpace) / CGFloat(cellsInRow))
+        let size = (bounds.width - totalSpace) / CGFloat(cellsInRow)
         return CGSize(width: size, height: cellHeight ?? size)
     }
     
@@ -75,26 +75,26 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     func setupComponents() {}
     
     // MARK: - Delegates
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         data.count
     }
     
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeue(cell: Cell.self, indexPath: indexPath) else { return UICollectionViewCell() }
         contentDelegate?.collectionView(collectionView, cell: cell, indexPath: indexPath)
         return cell
     }
     
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectionDelegate?.collectionView(collectionView, didSelectItemAt: indexPath, data: data[indexPath.row])
     }
     
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {}
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {}
     
-    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {}
+    open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {}
     
     // MARK: - UICollectionViewDelegateFlowLayout
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         cellSize
     }
     

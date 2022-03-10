@@ -9,8 +9,8 @@ import Foundation
 
 public extension String {
     
-    var isDigital: Bool {
-        CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: self))
+    func tail(afterCount count: Int) -> String {
+        String(suffix(from: self.index(startIndex, offsetBy: count)))
     }
     
     func applyPatternOnNumbers(pattern: String, replacementCharacter: Character) -> String {
@@ -30,6 +30,24 @@ public extension String {
         return self.filter { okayChars.contains($0) }
     }
     
+    var phoneNumberFormat: String {
+        let pattern = "+# (###) ### ## ##"
+        return self.applyPatternOnNumbers(pattern: pattern, replacementCharacter: "#")
+    }
+    
+    // MARK: - Validity checks
+    var isValidEmail: Bool {
+        let emailRegEx = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{1,4}$"
+        let emailTest = NSPredicate(format: "SELF MATCHES[c] %@", emailRegEx)
+        return emailTest.evaluate(with: self)
+    }
+    
+    var isValidPhoneNumber: Bool {
+        filteredPhoneNumber.starts(with: "+7") && filteredPhoneNumber.count == 12
+    }
+    
+    // MARK: - Content checks
+    
     var containsLetters: Bool {
         rangeOfCharacter(from: NSCharacterSet.letters as CharacterSet) != nil
     }
@@ -43,8 +61,8 @@ public extension String {
         return self.rangeOfCharacter(from: set) == nil
     }
     
-    static func className(_ aClass: AnyClass) -> String {
-        return NSStringFromClass(aClass).components(separatedBy: ".").last ?? ""
+    var isDigital: Bool {
+        CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: self))
     }
 }
 
@@ -67,5 +85,13 @@ public extension String {
     
     var strippingHTMLTags: String {
         replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil);
+    }
+}
+
+// MARK: - Static
+public extension String {
+    
+    static func className(_ aClass: AnyClass) -> String {
+        return NSStringFromClass(aClass).components(separatedBy: ".").last ?? ""
     }
 }

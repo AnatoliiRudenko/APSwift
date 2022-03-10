@@ -21,22 +21,44 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     weak var contentDelegate: TableViewContentDelegate?
     weak var selectionDelegate: TableViewSelectionDelegate?
     
-    private(set) var data = [Data]()
+    internal(set) open var data = [Data]()
     
-    var didReload: Closure?
+    var onPaging: Closure?
+    var onScrollingBeyondTop: Closure?
     
-    func setData(_ data: [Data]) {
-        self.data = data
-        DispatchQueue.main.async { [weak self] in
-            self?.reloadData {
-                self?.didReload?()
-            }
-        }
-    }
+    var plugView: BaseView?
     
     var contentHeight: CGFloat {
         layoutIfNeeded()
         return contentSize.height
+    }
+    
+    var isLastCellVisible: Bool {
+        guard let indexes = self.indexPathsForVisibleRows else { return false }
+        return indexes.contains { $0.row == data.count - 1 }
+    }
+    
+    // MARK: - Methods
+    func setData(_ data: [Data], completion: Closure? = nil) {
+        self.data = data
+        DispatchQueue.main.async { [weak self] in
+            self?.reloadData {
+                completion?()
+            }
+            self?.showPlugView(data.isEmpty)
+        }
+    }
+    
+    func showPlugView(_ show: Bool) {
+        guard let plugView = plugView else { return }
+        if plugView.superview == nil && show {
+            addSubview(plugView)
+            plugView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+                make.center.equalToSuperview()
+            }
+        }
+        plugView.setHidden(!show)
     }
     
     // MARK: - Init
@@ -69,18 +91,34 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     }
     
     // MARK: - Delegates
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         data.count
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeue(cell: Cell.self, indexPath: indexPath) else { return UITableViewCell() }
         contentDelegate?.tableView(self, cell: cell, indexPath: indexPath)
+        if indexPath.row == data.count - 1 {
+           onPaging?()
+        }
         return cell
     }
     
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectionDelegate?.tableView(self, didSelectRowAt: indexPath, data: data[indexPath.row])
+    }
+    
+    // MARK: - UIScrollView Delegate
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if isLastCellVisible {
+            onPaging?()
+        }
+    }
+    
+    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if targetContentOffset.pointee.y <= 0 && scrollView.contentOffset.y <= 0 {
+            onScrollingBeyondTop?()
+        }
     }
     
     // MARK: - Height Constraint

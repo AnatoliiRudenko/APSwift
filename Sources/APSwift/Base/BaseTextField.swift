@@ -12,11 +12,6 @@ open class BaseTextField: UITextField {
     // MARK: - Props
     // MARK: - Insets Props
     var insets: UIEdgeInsets = .zero
-    var directionalInsets: DirectionalInsets = .zero {
-        didSet {
-            insets = directionalInsets.asUIEdgeInsets
-        }
-    }
     
     // MARK: - Max Length props
     var maxLength: Int? {
