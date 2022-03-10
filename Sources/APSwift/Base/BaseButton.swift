@@ -12,7 +12,7 @@ open class BaseButton: UIButton {
     var didTap: (Closure)?
     
     // MARK: - Init
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         setupComponents()
     }
