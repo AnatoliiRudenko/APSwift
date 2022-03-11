@@ -23,17 +23,17 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     
     internal(set) open var data = [Data]()
     
-    var onPaging: Closure?
-    var onScrollingBeyondTop: Closure?
+    public var onPaging: Closure?
+    public var onScrollingBeyondTop: Closure?
     
-    var plugView: BaseView?
+    public var plugView: BaseView?
     
-    var contentHeight: CGFloat {
+    public var contentHeight: CGFloat {
         layoutIfNeeded()
         return contentSize.height
     }
     
-    var isLastCellVisible: Bool {
+    public var isLastCellVisible: Bool {
         guard let indexes = self.indexPathsForVisibleRows else { return false }
         return indexes.contains { $0.row == data.count - 1 }
     }
@@ -122,7 +122,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     }
     
     // MARK: - Height Constraint
-    var height: CGFloat? {
+    public var height: CGFloat? {
         didSet {
             guard let value = self.height else {
                 self.heightConstraint.isActive = false

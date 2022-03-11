@@ -15,8 +15,8 @@ open class BaseView: UIView {
         }
     }
     
-    var animatesTap = true
-    var tapsThrough = false
+    public var animatesTap = true
+    public var tapsThrough = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,7 +45,7 @@ open class BaseView: UIView {
     }
     
     // MARK: - Height Constraint
-    var height: CGFloat? {
+    public var height: CGFloat? {
         didSet {
             guard let value = self.height else {
                 self.heightConstraint.isActive = false

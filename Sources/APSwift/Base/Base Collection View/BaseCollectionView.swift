@@ -32,18 +32,18 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         }
     }
     
-    var contentHeight: CGFloat {
+    public var contentHeight: CGFloat {
         layoutIfNeeded()
         return contentSize.height
     }
     
-    var flowLayout: UICollectionViewFlowLayout? {
+    public var flowLayout: UICollectionViewFlowLayout? {
         collectionViewLayout as? UICollectionViewFlowLayout
     }
     
-    var cellHeight: CGFloat?
-    var cellsInRow: Int?
-    var cellSize: CGSize {
+    public var cellHeight: CGFloat?
+    public var cellsInRow: Int?
+    public var cellSize: CGSize {
         guard let cellsInRow = cellsInRow else {
             return UICollectionViewFlowLayout.automaticSize
         }
@@ -99,7 +99,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     }
     
     // MARK: - Height Constraint
-    var height: CGFloat? {
+    public var height: CGFloat? {
         didSet {
             guard let value = self.height else {
                 self.heightConstraint.isActive = false

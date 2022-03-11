@@ -9,7 +9,7 @@ import UIKit
 
 open class BaseLabel: UILabel {
     
-    var hidesIfEmpty = false
+    public var hidesIfEmpty = false
     
     open override var text: String? {
         get { super.text }
@@ -21,7 +21,7 @@ open class BaseLabel: UILabel {
         }
     }
     
-    var multiline: Bool = false {
+    public var multiline: Bool = false {
         didSet {
             numberOfLines = multiline ? 0 : 1
             lineBreakMode = .byWordWrapping
@@ -33,10 +33,10 @@ open class BaseLabel: UILabel {
         lineBreakMode = .byWordWrapping
     }
     
-    var insets: UIEdgeInsets = .zero
+    public var insets: UIEdgeInsets = .zero
     
     // MARK: - Height Constraint
-    open var height: CGFloat? {
+    public var height: CGFloat? {
         didSet {
             guard let value = self.height else {
                 self.heightConstraint.isActive = false

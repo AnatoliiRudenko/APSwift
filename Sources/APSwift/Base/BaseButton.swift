@@ -9,7 +9,7 @@ import UIKit
 
 open class BaseButton: UIButton {
     
-    var didTap: (Closure)?
+    public var didTap: (Closure)?
     
     // MARK: - Init
     public override init(frame: CGRect) {
@@ -34,7 +34,7 @@ open class BaseButton: UIButton {
     }
     
     // MARK: - Height Constraint
-    var height: CGFloat? {
+    public var height: CGFloat? {
         didSet {
             guard let value = self.height else {
                 self.heightConstraint.isActive = false
