@@ -76,7 +76,8 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     }
     
     required public init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        setupComponents()
     }
     
     open func setupComponents() {
