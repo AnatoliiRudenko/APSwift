@@ -17,6 +17,10 @@ open class BaseView: UIView {
     
     public var animatesTap = true
     public var tapsThrough = false
+    
+    public convenience init() {
+        self.init(frame: .zero)
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)

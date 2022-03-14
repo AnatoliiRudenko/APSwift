@@ -38,6 +38,10 @@ open class BaseTextField: UITextField {
     }
 
     // MARK: - Init
+    public convenience init() {
+        self.init(frame: .zero)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupComponents()
