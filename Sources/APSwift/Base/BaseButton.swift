@@ -28,7 +28,7 @@ open class BaseButton: UIButton {
     
     // MARK: - Resize to fit title label
     open override var intrinsicContentSize: CGSize {
-        let labelSize = titleLabel?.sizeThatFits(CGSize(width: titleLabel?.frame.size.width ?? 0, height: CGFloat.greatestFiniteMagnitude)) ?? .zero
+        let labelSize = titleLabel?.sizeThatFits(CGSize(width: titleLabel?.frame.size.width ?? 0, height: .greatestFiniteMagnitude)) ?? .zero
         let desiredButtonSize = CGSize(width: labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right + contentEdgeInsets.left + contentEdgeInsets.right + imageEdgeInsets.left + imageEdgeInsets.right + (image(for: .normal)?.size.width ?? 0),
                                        height: labelSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom + contentEdgeInsets.top + contentEdgeInsets.bottom)
         return desiredButtonSize

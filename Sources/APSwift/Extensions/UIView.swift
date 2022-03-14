@@ -110,6 +110,14 @@ public extension UIView {
         mask.path = path.cgPath
         layer.mask = mask
     }
+    
+    func roundBottomCorners(radius: CGFloat) {
+        roundCorners(corners: [.bottomLeft, .bottomRight], radius: radius)
+    }
+    
+    func roundTopCorners(radius: CGFloat) {
+        roundCorners(corners: [.topLeft, .topRight], radius: radius)
+    }
 }
 
 // MARK: - Shadows
