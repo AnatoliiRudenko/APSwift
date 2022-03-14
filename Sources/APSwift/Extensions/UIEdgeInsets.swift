@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIEdgeInsets {
+public extension UIEdgeInsets {
     
     static func allAround(_ value: CGFloat) -> UIEdgeInsets {
         .init(top: value, left: value, bottom: value, right: value)
