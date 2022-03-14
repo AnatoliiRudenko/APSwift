@@ -23,13 +23,13 @@ open class ContainerView<Content: UIView>: BaseView {
         }
     }
 
-    open init(content: Content, insets: UIEdgeInsets = .zero) {
+    public init(content: Content, insets: UIEdgeInsets = .zero) {
         self.content = content
         self.insets = insets
         super.init(frame: .zero)
     }
     
-    open required public init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
