@@ -42,7 +42,7 @@ open class BaseTextField: UITextField {
         self.init(frame: .zero)
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         setupComponents()
     }
