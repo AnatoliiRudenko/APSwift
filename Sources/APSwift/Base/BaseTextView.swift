@@ -10,9 +10,9 @@ import UIKit
 open class BaseTextView: UITextView {
 
     // MARK: - Props
-    lazy var mainTextColor: UIColor = textColor ?? .black
-    lazy var placeholderColor: UIColor = mainTextColor.withAlphaComponent(0.5)
-    var placeholder: String? {
+    public lazy var mainTextColor: UIColor = textColor ?? .black
+    public lazy var placeholderColor: UIColor = mainTextColor.withAlphaComponent(0.5)
+    public var placeholder: String? {
         didSet {
             self.text = placeholder
             self.textColor = placeholderColor
@@ -28,7 +28,7 @@ open class BaseTextView: UITextView {
     }
     
     // MARK: - Init
-    override init(frame: CGRect, textContainer: NSTextContainer?) {
+    public override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         setupComponents()
     }
