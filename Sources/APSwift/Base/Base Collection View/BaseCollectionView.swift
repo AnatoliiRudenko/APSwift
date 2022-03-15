@@ -72,7 +72,10 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         setupComponents()
     }
     
-    open func setupComponents() {}
+    open func setupComponents() {
+        subscribe(self)
+        registerCell(Cell.self)
+    }
     
     // MARK: - Delegates
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
