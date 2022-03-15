@@ -11,7 +11,7 @@ import SnapKit
 open class CheckBoxView: BaseView {
 
     // MARK: - Props
-    var isChecked: Bool {
+    open var isChecked: Bool {
         get {
             self.checkbox.isChecked
         }
@@ -20,7 +20,7 @@ open class CheckBoxView: BaseView {
         }
     }
     
-    var didTapToState: DataClosure<Bool>? {
+    open var didTapToState: DataClosure<Bool>? {
         get {
             self.checkbox.didTapToState
         }
@@ -29,7 +29,7 @@ open class CheckBoxView: BaseView {
         }
     }
     
-    var title: String? {
+    open var title: String? {
         get {
             self.titleLabel.text
         }
@@ -67,11 +67,11 @@ open class CheckBoxView: BaseView {
     }
     
     // MARK: - UI Properties
-    lazy var titleLabel = BaseLabel()
+    public lazy var titleLabel = BaseLabel()
     
-    lazy var checkbox = CheckBox()
+    public lazy var checkbox = CheckBox()
     
-    let stackView: UIStackView = {
+    public let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 16

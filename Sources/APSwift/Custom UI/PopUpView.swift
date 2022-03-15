@@ -26,7 +26,7 @@ open class PopUpView: BaseView {
     }
     
     // MARK: - UI Properties
-    lazy var contentView = BaseView() // to override
+    open lazy var contentView = BaseView() // to override
     
     private lazy var bgTapView: BaseView = {
         let view = BaseView()

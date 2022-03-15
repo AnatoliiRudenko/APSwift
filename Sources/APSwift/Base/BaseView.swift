@@ -9,7 +9,7 @@ import UIKit
 
 open class BaseView: UIView {
     
-    var didTap: (Closure)? {
+    public var didTap: (Closure)? {
         didSet {
             self.enableTap()
         }
