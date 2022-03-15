@@ -18,8 +18,8 @@ protocol TableViewSelectionDelegate: AnyObject {
 open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDelegates {
     
     // MARK: - Props
-    weak var contentDelegate: TableViewContentDelegate?
-    weak var selectionDelegate: TableViewSelectionDelegate?
+    public weak var contentDelegate: TableViewContentDelegate?
+    public weak var selectionDelegate: TableViewSelectionDelegate?
     
     internal(set) open var data = [Data]()
     
@@ -62,11 +62,11 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     }
     
     // MARK: - Init
-    convenience init() {
+    convenience public init() {
         self.init(frame: .zero, style: .grouped)
     }
     
-    convenience init(style: UITableView.Style) {
+    convenience public init(style: UITableView.Style) {
         self.init(frame: .zero, style: style)
     }
     

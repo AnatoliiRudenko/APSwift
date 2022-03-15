@@ -18,8 +18,8 @@ protocol CollectionViewSelectionDelegate: AnyObject {
 open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionView, CollectionViewDelegates, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Props
-    weak var contentDelegate: CollectionViewContentDelegate?
-    weak var selectionDelegate: CollectionViewSelectionDelegate?
+    public weak var contentDelegate: CollectionViewContentDelegate?
+    public weak var selectionDelegate: CollectionViewSelectionDelegate?
     
     internal(set) open var data = [Data]()
     
@@ -56,13 +56,13 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     }
     
     // MARK: - Init
-    convenience init() {
+    convenience public init() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         self.init(frame: .zero, collectionViewLayout: layout)
     }
 
-    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
+    public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         setupComponents()
     }

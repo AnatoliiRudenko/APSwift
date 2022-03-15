@@ -10,7 +10,6 @@ import UIKit
 open class BaseTextField: UITextField {
     
     // MARK: - Props
-    // MARK: - Insets Props
     public var insets: UIEdgeInsets = .zero
     
     // MARK: - Max Length props
