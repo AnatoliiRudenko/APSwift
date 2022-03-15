@@ -7,11 +7,11 @@
 
 import UIKit
 
-protocol CollectionViewContentDelegate: AnyObject {
+public protocol CollectionViewContentDelegate: AnyObject {
     func collectionView(_ collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: IndexPath)
 }
 
-protocol CollectionViewSelectionDelegate: AnyObject {
+public protocol CollectionViewSelectionDelegate: AnyObject {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath, data: Any)
 }
 

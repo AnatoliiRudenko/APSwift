@@ -7,11 +7,11 @@
 
 import UIKit
 
-protocol TableViewContentDelegate: AnyObject {
+public protocol TableViewContentDelegate: AnyObject {
     func tableView(_ tableView: UITableView, cell: UITableViewCell, indexPath: IndexPath)
 }
 
-protocol TableViewSelectionDelegate: AnyObject {
+public protocol TableViewSelectionDelegate: AnyObject {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath, data: Any)
 }
 
