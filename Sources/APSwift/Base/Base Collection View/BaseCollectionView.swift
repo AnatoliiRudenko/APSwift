@@ -73,9 +73,8 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     }
     
     open func setupComponents() {
-        super.setupComponents()
-        subscribe(self)
         registerCell(Cell.self)
+        subscribe(self)
     }
     
     // MARK: - Delegates
