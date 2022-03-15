@@ -7,9 +7,7 @@
 
 import UIKit
 
-open class BaseCollectionViewCell<Data>: UICollectionViewCell {
-
-    open func setData(_ data: Data) {}
+open class BaseCollectionViewCell UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
