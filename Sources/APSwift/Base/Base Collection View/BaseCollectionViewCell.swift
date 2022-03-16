@@ -9,13 +9,18 @@ import UIKit
 
 open class BaseCollectionViewCell: UICollectionViewCell {
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         setupComponents()
     }
     
     required public init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        setupComponents()
+    }
+    
+    public override func awakeFromNib() {
+        setupComponents()
     }
     
     open func setupComponents() {}
