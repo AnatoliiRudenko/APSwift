@@ -19,9 +19,5 @@ open class BaseCollectionViewCell: UICollectionViewCell {
         setupComponents()
     }
     
-    public override func awakeFromNib() {
-        setupComponents()
-    }
-    
     open func setupComponents() {}
 }
