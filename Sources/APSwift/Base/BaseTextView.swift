@@ -79,6 +79,6 @@ extension BaseTextView: UITextViewDelegate {
     open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         guard let maxLength = maxLength else { return true }
         let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
-        return newText.count < maxLength
+        return newText.count <= maxLength
     }
 }
