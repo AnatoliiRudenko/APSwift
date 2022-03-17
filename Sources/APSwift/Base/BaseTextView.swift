@@ -64,19 +64,19 @@ open class BaseTextView: UITextView {
 // MARK: - UITextViewDelegate
 extension BaseTextView: UITextViewDelegate {
     
-    public func textViewDidBeginEditing(_ textView: UITextView) {
+    open func textViewDidBeginEditing(_ textView: UITextView) {
         guard textView.textColor == placeholderColor else { return }
         textView.text = ""
         textView.textColor = mainTextColor
     }
     
-    public func textViewDidEndEditing(_ textView: UITextView) {
+    open func textViewDidEndEditing(_ textView: UITextView) {
         guard textView.text.isEmpty else { return }
         textView.text = placeholder
         textView.textColor = placeholderColor
     }
     
-    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         guard let maxLength = maxLength else { return true }
         let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
         return newText.count < maxLength
