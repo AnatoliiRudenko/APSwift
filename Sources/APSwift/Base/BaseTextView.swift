@@ -10,6 +10,7 @@ import UIKit
 open class BaseTextView: UITextView {
 
     // MARK: - Props
+    public var maxLength: Int?
     public lazy var mainTextColor: UIColor = textColor ?? .black
     public lazy var placeholderColor: UIColor = mainTextColor.withAlphaComponent(0.5)
     public var placeholder: String? {
@@ -73,5 +74,11 @@ extension BaseTextView: UITextViewDelegate {
         guard textView.text.isEmpty else { return }
         textView.text = placeholder
         textView.textColor = placeholderColor
+    }
+    
+    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        guard let maxLength = maxLength else { return true }
+        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
+        return newText.count < maxLength
     }
 }
