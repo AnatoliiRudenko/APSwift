@@ -38,6 +38,8 @@ open class CheckBoxView: BaseView {
         }
     }
     
+    public var checkBoxLocatedToTheRightSide = true
+    
     // MARK: - Init
     open override func setupComponents() {
         super.setupComponents()
@@ -47,7 +49,8 @@ open class CheckBoxView: BaseView {
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        stackView.addArrangedSubviews([titleLabelContainerView, checkboxContainerView])
+        let arrangedSubviews = checkBoxLocatedToTheRightSide ? [titleLabelContainerView, checkboxContainerView] : [checkboxContainerView, titleLabelContainerView]
+        stackView.addArrangedSubviews(subviews)
         titleLabelContainerView.addSubview(titleLabel)
         checkboxContainerView.addSubview(checkbox)
         
