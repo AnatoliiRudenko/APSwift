@@ -50,7 +50,7 @@ open class CheckBoxView: BaseView {
             make.edges.equalToSuperview()
         }
         let arrangedSubviews = checkBoxLocatedToTheRightSide ? [titleLabelContainerView, checkboxContainerView] : [checkboxContainerView, titleLabelContainerView]
-        stackView.addArrangedSubviews(subviews)
+        stackView.addArrangedSubviews(arrangedSubviews)
         titleLabelContainerView.addSubview(titleLabel)
         checkboxContainerView.addSubview(checkbox)
         
