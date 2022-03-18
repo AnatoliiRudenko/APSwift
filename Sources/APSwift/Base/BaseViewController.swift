@@ -7,7 +7,9 @@
 
 import UIKit
 
-open class BaseViewModel {}
+open class BaseViewModel {
+    public init() {}
+}
 
 open class BaseViewController: UIViewController, Coordinatable {
     
