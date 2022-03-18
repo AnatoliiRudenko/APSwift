@@ -7,6 +7,8 @@
 
 import UIKit
 
+open class BaseViewModel {}
+
 open class BaseViewController: UIViewController, Coordinatable {
     
     public var coordinator: Coordinator?
