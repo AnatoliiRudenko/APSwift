@@ -18,10 +18,16 @@ public extension Array {
     func queryString(values: [String], key: String) -> String {
         values.map { key + "=" + $0 }.joined(separator: "&")
     }
+    
+    mutating func byRemovingElement(at index: Int) -> Array {
+        var currentArray = self
+        currentArray.remove(at: index)
+        return currentArray
+    }
 }
 
 // MARK: - Query String
-extension Array where Element: CustomStringConvertible {
+public extension Array where Element: CustomStringConvertible {
     func queryString(key: String) -> String {
         queryString(values: compactMap({ String(describing: $0) }), key: key)
     }
