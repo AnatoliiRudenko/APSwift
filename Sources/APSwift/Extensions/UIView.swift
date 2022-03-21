@@ -100,6 +100,8 @@ public extension UIView {
 // MARK: - Corners Radius
 public extension UIView {
     
+    static var cornersLayerName: String { "corners" }
+    
     func roundCorners(_ value: CGFloat = 16) {
         layer.cornerRadius = value
     }
@@ -107,6 +109,7 @@ public extension UIView {
     func roundCorners(corners: UIRectCorner, radius: CGFloat) {
         let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
         let mask = CAShapeLayer()
+        mask.name = UIView.cornersLayerName
         mask.path = path.cgPath
         layer.mask = mask
     }
@@ -123,9 +126,11 @@ public extension UIView {
 // MARK: - Shadows
 public extension UIView {
     
+    static var shadowLayerName: String { "shadow" }
+    
     func addShadowLayer(index: Int, color: UIColor, offset: CGSize, radius: CGFloat, opacity: Float) {
         let shadowLayer = CAShapeLayer()
-        shadowLayer.name = "shadow"
+        shadowLayer.name = UIView.shadowLayerName
         shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
         shadowLayer.fillColor = backgroundColor?.cgColor
         shadowLayer.shadowPath = shadowLayer.path
