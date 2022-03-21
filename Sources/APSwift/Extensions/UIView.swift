@@ -116,6 +116,11 @@ public extension UIView {
     func roundTopCorners(radius: CGFloat) {
         roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner], radius: radius)
     }
+    
+    func removeRoundedCorners() {
+        layer.maskedCorners = []
+        layer.cornerRadius = 0
+    }
 }
 
 // MARK: - Shadows
