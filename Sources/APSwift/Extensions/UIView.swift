@@ -100,26 +100,21 @@ public extension UIView {
 // MARK: - Corners Radius
 public extension UIView {
     
-    static var cornersLayerName: String { "corners" }
-    
     func roundCorners(_ value: CGFloat = 16) {
         layer.cornerRadius = value
     }
     
-    func roundCorners(corners: UIRectCorner, radius: CGFloat) {
-        let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-        let mask = CAShapeLayer()
-        mask.name = UIView.cornersLayerName
-        mask.path = path.cgPath
-        layer.mask = mask
+    func roundCorners(corners: CACornerMask, radius: CGFloat) {
+        layer.cornerRadius = radius
+        layer.maskedCorners = corners
     }
     
     func roundBottomCorners(radius: CGFloat) {
-        roundCorners(corners: [.bottomLeft, .bottomRight], radius: radius)
+        roundCorners(corners: [.layerMinXMaxYCorner, .layerMaxXMaxYCorner], radius: radius)
     }
     
     func roundTopCorners(radius: CGFloat) {
-        roundCorners(corners: [.topLeft, .topRight], radius: radius)
+        roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner], radius: radius)
     }
 }
 
