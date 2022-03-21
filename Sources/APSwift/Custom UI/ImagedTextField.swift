@@ -9,42 +9,26 @@ import UIKit
 
 open class ImagedTextField: BaseTextField {
     
-    enum ImageSide {
+    public enum ImageSide {
         case left
         case right
     }
 
     // MARK: - Props
-    var imageSide: ImageSide = .right
-    var image: UIImage? {
+    public var imageSide: ImageSide = .right
+    public var image: UIImage? {
         didSet {
             imageView.image = image
         }
     }
-    var imageWidth: CGFloat = 24
-    var textToImageSpacing: CGFloat = 8
+    public var imageWidth: CGFloat = 24
+    public var textToImageSpacing: CGFloat = 8
     
     // MARK: - Init
     convenience init(imageSide: ImageSide, image: UIImage?) {
         self.init(frame: .zero)
         self.imageSide = imageSide
         self.setImageView()
-    }
-    
-    // MARK: - Methods
-    private func setImageView() {
-        switch imageSide {
-        case .left:
-            leftViewMode = .always
-            leftView = imageView
-            rightViewMode = .never
-            rightView = nil
-        case .right:
-            rightViewMode = .always
-            rightView = imageView
-            leftViewMode = .never
-            leftView = nil
-        }
     }
     
     // MARK: - UI Properties
@@ -78,5 +62,24 @@ open class ImagedTextField: BaseTextField {
     
     open override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
         textRect(forBounds: bounds)
+    }
+}
+
+// MARK: - Supporting methods
+private extension ImagedTextField {
+    
+    func setImageView() {
+        switch imageSide {
+        case .left:
+            leftViewMode = .always
+            leftView = imageView
+            rightViewMode = .never
+            rightView = nil
+        case .right:
+            rightViewMode = .always
+            rightView = imageView
+            leftViewMode = .never
+            leftView = nil
+        }
     }
 }
