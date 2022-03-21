@@ -15,7 +15,11 @@ open class ImagedTextField: BaseTextField {
     }
 
     // MARK: - Props
-    public var imageSide: ImageSide = .right
+    public var imageSide: ImageSide = .right {
+        didSet {
+            setImageView()
+        }
+    }
     public var image: UIImage? {
         didSet {
             imageView.image = image
