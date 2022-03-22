@@ -103,9 +103,8 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
         if indexPath.row == data.count - 1 {
            onPaging?()
         }
-        if hidesLastSeparator, indexPath.row == data.count - 1 {
-            cell.separatorInset = .init(top: 0, left: UIScreen.main.bounds.width, bottom: 0, right: 0)
-        }
+        let shouldHideSeparator = hidesLastSeparator && indexPath.row == data.count - 1
+        cell.separatorInset = shouldHideSeparator ? .init(top: 0, left: UIScreen.main.bounds.width, bottom: 0, right: 0) : separatorInset
         return cell
     }
     
