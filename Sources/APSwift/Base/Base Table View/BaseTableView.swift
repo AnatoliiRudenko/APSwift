@@ -70,7 +70,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
         self.init(frame: .zero, style: style)
     }
     
-    override init(frame: CGRect, style: UITableView.Style) {
+    override public init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
         setupComponents()
     }
@@ -110,13 +110,13 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     }
     
     // MARK: - UIScrollView Delegate
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if isLastCellVisible {
             onPaging?()
         }
     }
     
-    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         if targetContentOffset.pointee.y <= 0 && scrollView.contentOffset.y <= 0 {
             onScrollingBeyondTop?()
         }
