@@ -27,6 +27,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     public var onScrollingBeyondTop: Closure?
     
     public var plugView: BaseView?
+    public var hidesLastSeparator = true
     
     public var contentHeight: CGFloat {
         layoutIfNeeded()
@@ -101,6 +102,9 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
         contentDelegate?.tableView(self, cell: cell, indexPath: indexPath)
         if indexPath.row == data.count - 1 {
            onPaging?()
+        }
+        if hidesLastSeparator, indexPath.row == data.count - 1 {
+            cell.separatorInset = .init(top: 0, left: UIScreen.main.bounds.width, bottom: 0, right: 0)
         }
         return cell
     }
