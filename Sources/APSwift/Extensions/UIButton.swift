@@ -23,8 +23,8 @@ public extension UIButton {
         UIView.setAnimationsEnabled(true)
     }
     
-    func setTile(_ title: String?) {
-        setTitle(title, for: .normal)
+    func setTileColor(_ title: String?) {
+        setTitleColor(title, for: .normal)
     }
     
     func underline() {
