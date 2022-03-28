@@ -23,6 +23,10 @@ public extension UIButton {
         UIView.setAnimationsEnabled(true)
     }
     
+    func setTile(_ title: String?) {
+        setTitle(title, for: .normal)
+    }
+    
     func underline() {
         guard let text = self.title(for: .normal) else { return }
         let attributedString = NSMutableAttributedString(string: text)

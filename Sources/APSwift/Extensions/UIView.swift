@@ -100,7 +100,7 @@ public extension UIView {
 // MARK: - Corners Radius
 public extension UIView {
     
-    func roundCorners(_ value: CGFloat = 16) {
+    func roundCorners(_ value: CGFloat) {
         layer.cornerRadius = value
     }
     
