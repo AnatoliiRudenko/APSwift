@@ -94,19 +94,21 @@ private extension BaseButton {
     }
     
     func setImage(_ image: UIImage?, left: Bool) {
-        var leftContentInset: CGFloat = imageEdgeInsets.left + textToImageOffset
-        var rightContentInset: CGFloat = imageEdgeInsets.right + textToImageOffset
+        var inset: CGFloat = 0
         if left {
             leftImageView.image = image
-            leftContentInset += image?.size.width ?? 0
+            inset = imageEdgeInsets.left + textToImageOffset (image?.size.width ?? 0)
         } else {
             imageView?.snp.remakeConstraints { make in
-                make.right.equalToSuperview().inset(contentEdgeInsets.right + imageEdgeInsets.right)
+                make.right.equalToSuperview().inset(imageEdgeInsets.right)
                 make.centerY.equalToSuperview()
             }
             setImage(image)
             rightContentInset += image?.size.width ?? 0
         }
-        contentEdgeInsets = .init(top: 0, left: leftContentInset, bottom: 0, right: rightContentInset)
+        contentEdgeInsets = .init(top: contentEdgeInsets.top,
+                                  left: left ? inset : contentEdgeInsets.left,
+                                  bottom: contentEdgeInsets.bottom,
+                                  right: left ? 0 : imageEdgeInsets.right + textToImageOffset)
     }
 }
