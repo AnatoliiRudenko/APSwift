@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIViewController {
+public extension UIViewController {
     
     var navBarHeight: CGFloat {
         navigationController?.navigationBar.frame.height ?? 0
