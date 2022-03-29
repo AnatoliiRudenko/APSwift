@@ -110,7 +110,7 @@ private extension BaseButton {
             titleEdgeInsets = .init(top: titleEdgeInsets.top,
                                     left: titleEdgeInsets.left,
                                     bottom: titleEdgeInsets.bottom,
-                                    right: inset - (image?.size.width ?? 0))
+                                    right: -(image?.size.width ?? 0))
         }
     }
     
