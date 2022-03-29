@@ -110,6 +110,12 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
         selectionDelegate?.tableView(self, didSelectRowAt: indexPath, data: data[indexPath.row])
     }
     
+    // MARK: - Header
+    open func numberOfSections(in tableView: UITableView) -> Int {
+        guard let mainHeader = mainHeader else { return 0 }
+        return 0
+    }
+    
     open override func headerView(forSection section: Int) -> UITableViewHeaderFooterView? {
         guard let mainHeader = mainHeader else { return nil }
         return mainHeader.view as? UITableViewHeaderFooterView
