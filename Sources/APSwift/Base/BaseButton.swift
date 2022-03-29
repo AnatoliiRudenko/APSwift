@@ -107,9 +107,9 @@ private extension BaseButton {
 //                                bottom: titleEdgeInsets.bottom,
 //                                right: left ? titleEdgeInsets.right : inset)
         contentEdgeInsets = .init(top: contentEdgeInsets.top,
-                                  left: left ? inset + contentEdgeInsets.left : contentEdgeInsets.left,
+                                  left: left ? inset : contentEdgeInsets.left,
                                   bottom: contentEdgeInsets.bottom,
-                                  right: left ? contentEdgeInsets.right : inset + contentEdgeInsets.right)
+                                  right: left ? contentEdgeInsets.right : inset)
     }
     
     func adjustToSettingImage() {
