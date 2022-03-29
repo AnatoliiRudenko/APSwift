@@ -116,14 +116,12 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
 //        return 1
 //    }
     
-    open override func headerView(forSection section: Int) -> UITableViewHeaderFooterView? {
-        guard let mainHeader = mainHeader else { return nil }
-        return mainHeader.view as? UITableViewHeaderFooterView
+    open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        mainHeader?.view
     }
     
     open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard let mainHeader = mainHeader else { return 0 }
-        return mainHeader.height ?? 0
+        mainHeader?.height ?? sectionHeaderHeight
     }
     
     // MARK: - UIScrollView Delegate
