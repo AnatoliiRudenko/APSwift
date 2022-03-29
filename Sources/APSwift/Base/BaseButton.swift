@@ -52,8 +52,8 @@ open class BaseButton: UIButton {
     // MARK: - Resize to fit title label
     open override var intrinsicContentSize: CGSize {
         let labelSize = titleLabel?.sizeThatFits(CGSize(width: titleLabel?.frame.size.width ?? 0, height: .greatestFiniteMagnitude)) ?? .zero
-        let width: CGFloat = labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right + contentEdgeInsets.left + contentEdgeInsets.right + imagesRelatedInsets.left + imagesRelatedInsets.right
-        let height: CGFloat = labelSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom + contentEdgeInsets.top + contentEdgeInsets.bottom + imagesRelatedInsets.top + imagesRelatedInsets.bottom
+        let width: CGFloat = labelSize.width + titleImagesRelatedInsets.left + titleImagesRelatedInsets.right + contentEdgeInsets.left + contentEdgeInsets.right + imagesRelatedInsets.left + imagesRelatedInsets.right
+        let height: CGFloat = labelSize.height + titleImagesRelatedInsets.top + titleImagesRelatedInsets.bottom + contentEdgeInsets.top + contentEdgeInsets.bottom + imagesRelatedInsets.top + imagesRelatedInsets.bottom
         return CGSize(width: width, height: height)
     }
     
@@ -74,6 +74,7 @@ open class BaseButton: UIButton {
     }()
     
     private lazy var imagesRelatedInsets: UIEdgeInsets = .zero
+    private lazy var titleImagesRelatedInsets: UIEdgeInsets = .zero
 }
 
 // MARK: - Supporting Methods
@@ -105,10 +106,10 @@ private extension BaseButton {
                                     left: left ? inset : imagesRelatedInsets.left,
                                     bottom: imagesRelatedInsets.bottom,
                                     right: left ? imagesRelatedInsets.right : inset)
-//        titleEdgeInsets = .init(top: titleEdgeInsets.top,
-//                                left: left ? inset : titleEdgeInsets.left,
-//                                bottom: titleEdgeInsets.bottom,
-//                                right: left ? titleEdgeInsets.right : inset)
+        titleImagesRelatedInsets = .init(top: titleImagesRelatedInsets.top,
+                                         left: left ? inset : titleImagesRelatedInsets.left,
+                                         bottom: titleImagesRelatedInsets.bottom,
+                                         right: left ? titleImagesRelatedInsets.right : inset)
     }
     
     func adjustToSettingImage() {
