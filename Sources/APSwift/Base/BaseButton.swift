@@ -59,8 +59,7 @@ open class BaseButton: UIButton {
     // MARK: - Resize to fit title label
     open override var intrinsicContentSize: CGSize {
         let labelSize = titleLabel?.sizeThatFits(CGSize(width: titleLabel?.frame.size.width ?? 0, height: .greatestFiniteMagnitude)) ?? .zero
-        let imagesWidth: CGFloat = (leftImage?.size.width ?? 0) + (rightImage?.size.width ?? 0)
-        let width: CGFloat = labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right + contentEdgeInsets.left + contentEdgeInsets.right + imagesWidth
+        let width: CGFloat = labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right + contentEdgeInsets.left + contentEdgeInsets.right
         let height: CGFloat = labelSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom + contentEdgeInsets.top + contentEdgeInsets.bottom
         return CGSize(width: width, height: height)
     }
@@ -97,7 +96,7 @@ private extension BaseButton {
             leftImageView.image = image
         } else {
             imageView?.snp.remakeConstraints { make in
-                make.right.equalToSuperview().inset(imageEdgeInsets.right)
+                make.right.equalToSuperview().inset(contentEdgeInsets.right + imageEdgeInsets.right)
                 make.centerY.equalToSuperview()
             }
             setImage(image)
