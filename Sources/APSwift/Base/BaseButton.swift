@@ -101,9 +101,9 @@ private extension BaseButton {
             }
             setImage(image)
         }
-        contentEdgeInsets = .init(top: contentEdgeInsets.top,
-                                  left: left ? inset : contentEdgeInsets.left,
-                                  bottom: contentEdgeInsets.bottom,
-                                  right: left ? contentEdgeInsets.right : inset)
+        titleEdgeInsets = .init(top: contentEdgeInsets.top,
+                                left: left ? inset : contentEdgeInsets.left,
+                                bottom: contentEdgeInsets.bottom,
+                                right: left ? contentEdgeInsets.right : inset)
     }
 }
