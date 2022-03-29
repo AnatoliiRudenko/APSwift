@@ -28,6 +28,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     
     public var plugView: BaseView?
     public var hidesLastSeparator = true
+    public var mainHeader: (view: UIView, height: CGFloat?)?
     
     public var contentHeight: CGFloat {
         layoutIfNeeded()
@@ -107,6 +108,16 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     
     open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectionDelegate?.tableView(self, didSelectRowAt: indexPath, data: data[indexPath.row])
+    }
+    
+    open override func headerView(forSection section: Int) -> UITableViewHeaderFooterView? {
+        guard let mainHeader = mainHeader else { return nil }
+        return mainHeader.view as? UITableViewHeaderFooterView
+    }
+    
+    open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard let mainHeader = mainHeader else { return nil }
+        return mainHeader.height ?? 0
     }
     
     // MARK: - UIScrollView Delegate
