@@ -39,9 +39,6 @@ open class BaseButton: UIButton {
     
     open func setupComponents() {
         self.addTarget(self, action: #selector(self.handleTap), for: .touchUpInside)
-        contentHorizontalAlignment = .left
-        semanticContentAttribute = .forceRightToLeft
-        contentMode = .scaleToFill
     }
     
     // MARK: - UI Properties
@@ -88,7 +85,14 @@ private extension BaseButton {
         animatesTap()
     }
     
+    func adjustToSettingImage() {
+        contentHorizontalAlignment = .left
+        semanticContentAttribute = .forceRightToLeft
+        contentMode = .scaleToFill
+    }
+    
     func setImage(_ image: UIImage?, left: Bool) {
+        adjustToSettingImage()
         let inset: CGFloat = textToImageOffset + (left ? imageEdgeInsets.left : imageEdgeInsets.right) + (image?.size.width ?? 0)
         if left {
             leftImageView.image = image
