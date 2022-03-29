@@ -49,18 +49,14 @@ open class BaseButton: UIButton {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(contentEdgeInsets.left + imageEdgeInsets.left)
-            make.centerY.equalToSuperview()
-        }
         return imageView
     }()
     
     // MARK: - Resize to fit title label
     open override var intrinsicContentSize: CGSize {
         let labelSize = titleLabel?.sizeThatFits(CGSize(width: titleLabel?.frame.size.width ?? 0, height: .greatestFiniteMagnitude)) ?? .zero
-        let width: CGFloat = labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right + contentEdgeInsets.left + contentEdgeInsets.right
-        let height: CGFloat = labelSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom + contentEdgeInsets.top + contentEdgeInsets.bottom
+        let width: CGFloat = labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right + contentEdgeInsets.left + contentEdgeInsets.right _ imagesRelatedInsets.left + imagesRelatedInsets.right
+        let height: CGFloat = labelSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom + contentEdgeInsets.top + contentEdgeInsets.bottom + imagesRelatedInsets.top + imagesRelatedInsets.bottom
         return CGSize(width: width, height: height)
     }
     
@@ -79,6 +75,8 @@ open class BaseButton: UIButton {
     private lazy var heightConstraint: NSLayoutConstraint = {
         self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
     }()
+    
+    private lazy var imagesRelatedInsets: UIEdgeInsets = .zero
 }
 
 // MARK: - Supporting Methods
@@ -94,6 +92,10 @@ private extension BaseButton {
         let inset: CGFloat = textToImageOffset + (left ? imageEdgeInsets.left : imageEdgeInsets.right) + (image?.size.width ?? 0)
         if left {
             leftImageView.image = image
+            leftImageView.snp.remakeConstraints { make in
+                make.left.equalToSuperview().inset(contentEdgeInsets.left + imageEdgeInsets.left)
+                make.centerY.equalToSuperview()
+            }
         } else {
             imageView?.snp.remakeConstraints { make in
                 make.right.equalToSuperview().inset(contentEdgeInsets.right + imageEdgeInsets.right)
@@ -101,9 +103,9 @@ private extension BaseButton {
             }
             setImage(image)
         }
-        titleEdgeInsets = .init(top: contentEdgeInsets.top,
-                                left: left ? inset : contentEdgeInsets.left,
-                                bottom: contentEdgeInsets.bottom,
-                                right: left ? contentEdgeInsets.right : inset)
+        imagesRelatedInsets = .init(top: imagesRelatedInsets.top,
+                                    left: left ? inset : imagesRelatedInsets.left,
+                                    bottom: imagesRelatedInsets.bottom,
+                                    right: left ? imagesRelatedInsets.right : inset)
     }
 }
