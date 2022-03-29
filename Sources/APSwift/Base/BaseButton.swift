@@ -10,6 +10,17 @@ import UIKit
 open class BaseButton: UIButton {
     
     public var didTap: (Closure)?
+    public var leftImage: UIImage? {
+        didSet {
+            setImage(leftImage, left: true)
+        }
+    }
+    public var rightImage: UIImage? {
+        didSet {
+            setImage(rightImage, left: false)
+        }
+    }
+    public var textToImageOffset: CGFloat = 16
     
     // MARK: - Init
     public convenience init() {
@@ -28,18 +39,32 @@ open class BaseButton: UIButton {
     
     open func setupComponents() {
         self.addTarget(self, action: #selector(self.handleTap), for: .touchUpInside)
+        contentHorizontalAlignment = .left
+        semanticContentAttribute = .forceRightToLeft
+        contentMode = .scaleToFill
     }
+    
+    // MARK: - UI Properties
+    private lazy var leftImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.left.equalToSuperview().inset(contentEdgeInsets.left + imageEdgeInsets.left)
+            make.centerY.equalToSuperview()
+        }
+        return imageView
+    }()
     
     // MARK: - Resize to fit title label
     open override var intrinsicContentSize: CGSize {
         let labelSize = titleLabel?.sizeThatFits(CGSize(width: titleLabel?.frame.size.width ?? 0, height: .greatestFiniteMagnitude)) ?? .zero
-        let width: CGFloat = labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right + contentEdgeInsets.left + contentEdgeInsets.right + imageEdgeInsets.left + imageEdgeInsets.right + (image?.size.width ?? 0)
+        let imagesWidth: CGFloat = (leftImage?.size.width ?? 0) + (rightImage?.size.width ?? 0)
+        let leftImageHorizontalInset = leftImage != nil ? imageEdgeInsets.left + textToImageOffset : 0
+        let rightImageHorizontalInset = rightImage != nil ? imageEdgeInsets.right + textToImageOffset : 0
+        let width: CGFloat = labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right + contentEdgeInsets.left + contentEdgeInsets.right + leftImageHorizontalInset + rightImageHorizontalInset + imagesWidth
         let height: CGFloat = labelSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom + contentEdgeInsets.top + contentEdgeInsets.bottom
         return CGSize(width: width, height: height)
-    }
-    
-    open var image: UIImage? {
-        image(for: .normal)
     }
     
     // MARK: - Height Constraint
@@ -60,11 +85,28 @@ open class BaseButton: UIButton {
 }
 
 // MARK: - Supporting Methods
-extension BaseButton {
+private extension BaseButton {
     
     @objc
     func handleTap() {
         didTap?()
         animatesTap()
+    }
+    
+    func setImage(_ image: UIImage?, left: Bool) {
+        var leftContentInset: CGFloat = imageEdgeInsets.left + textToImageOffset
+        var rightContentInset: CGFloat = imageEdgeInsets.right + textToImageOffset
+        if left {
+            leftImageView.image = image
+            leftContentInset += image?.size.width ?? 0
+        } else {
+            imageView?.snp.remakeConstraints { make in
+                make.right.equalToSuperview().inset(contentEdgeInsets.right + imageEdgeInsets.right)
+                make.centerY.equalToSuperview()
+            }
+            setImage(image)
+            rightContentInset += image?.size.width ?? 0
+        }
+        contentEdgeInsets = .init(top: 0, left: leftContentInset, bottom: 0, right: rightContentInset)
     }
 }
