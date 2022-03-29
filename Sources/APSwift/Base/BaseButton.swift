@@ -60,9 +60,7 @@ open class BaseButton: UIButton {
     open override var intrinsicContentSize: CGSize {
         let labelSize = titleLabel?.sizeThatFits(CGSize(width: titleLabel?.frame.size.width ?? 0, height: .greatestFiniteMagnitude)) ?? .zero
         let imagesWidth: CGFloat = (leftImage?.size.width ?? 0) + (rightImage?.size.width ?? 0)
-        let leftImageHorizontalInset = leftImage != nil ? imageEdgeInsets.left + textToImageOffset : 0
-        let rightImageHorizontalInset = rightImage != nil ? imageEdgeInsets.right + textToImageOffset : 0
-        let width: CGFloat = labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right + contentEdgeInsets.left + contentEdgeInsets.right + leftImageHorizontalInset + rightImageHorizontalInset + imagesWidth
+        let width: CGFloat = labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right + contentEdgeInsets.left + contentEdgeInsets.right + imagesWidth
         let height: CGFloat = labelSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom + contentEdgeInsets.top + contentEdgeInsets.bottom
         return CGSize(width: width, height: height)
     }
@@ -94,17 +92,15 @@ private extension BaseButton {
     }
     
     func setImage(_ image: UIImage?, left: Bool) {
-        var inset: CGFloat = 0
+        let inset: CGFloat = textToImageOffset + (left ? imageEdgeInsets.left : imageEdgeInsets.right)
         if left {
             leftImageView.image = image
-            inset = imageEdgeInsets.left + textToImageOffset + (image?.size.width ?? 0)
         } else {
             imageView?.snp.remakeConstraints { make in
                 make.right.equalToSuperview().inset(imageEdgeInsets.right)
                 make.centerY.equalToSuperview()
             }
             setImage(image)
-            inset = imageEdgeInsets.right + textToImageOffset + (image?.size.width ?? 0)
         }
         contentEdgeInsets = .init(top: contentEdgeInsets.top,
                                   left: left ? inset : contentEdgeInsets.left,
