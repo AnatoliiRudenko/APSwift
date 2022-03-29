@@ -93,12 +93,12 @@ private extension BaseButton {
         if left {
             leftImageView.image = image
             leftImageView.snp.remakeConstraints { make in
-                make.left.equalToSuperview().inset(contentEdgeInsets.left + imageEdgeInsets.left)
+                make.left.equalToSuperview().inset(contentEdgeInsets.left + imageEdgeInsets.left + inset)
                 make.centerY.equalToSuperview()
             }
         } else {
             imageView?.snp.remakeConstraints { make in
-                make.right.equalToSuperview().inset(contentEdgeInsets.right + imageEdgeInsets.right)
+                make.right.equalToSuperview().inset(contentEdgeInsets.right + imageEdgeInsets.right + inset)
                 make.centerY.equalToSuperview()
             }
             setImage(image)
