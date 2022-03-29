@@ -113,7 +113,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     // MARK: - Header
     open func numberOfSections(in tableView: UITableView) -> Int {
         guard let mainHeader = mainHeader else { return 0 }
-        return 0
+        return 1
     }
     
     open override func headerView(forSection section: Int) -> UITableViewHeaderFooterView? {
