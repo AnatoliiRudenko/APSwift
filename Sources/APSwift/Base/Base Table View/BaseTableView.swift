@@ -116,7 +116,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     }
     
     open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard let mainHeader = mainHeader else { return nil }
+        guard let mainHeader = mainHeader else { return 0 }
         return mainHeader.height ?? 0
     }
     
