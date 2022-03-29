@@ -85,12 +85,6 @@ private extension BaseButton {
         animatesTap()
     }
     
-    func adjustToSettingImage() {
-        contentHorizontalAlignment = .left
-        semanticContentAttribute = .forceRightToLeft
-        contentMode = .scaleToFill
-    }
-    
     func setImage(_ image: UIImage?, left: Bool) {
         adjustToSettingImage()
         let inset: CGFloat = textToImageOffset + (left ? imageEdgeInsets.left : imageEdgeInsets.right) + (image?.size.width ?? 0)
@@ -111,9 +105,15 @@ private extension BaseButton {
                                     left: left ? inset : imagesRelatedInsets.left,
                                     bottom: imagesRelatedInsets.bottom,
                                     right: left ? imagesRelatedInsets.right : inset)
-        titleEdgeInsets = .init(top: titleEdgeInsets.top,
-                                left: left ? inset : titleEdgeInsets.left,
-                                bottom: titleEdgeInsets.bottom,
-                                right: left ? titleEdgeInsets.right : inset)
+//        titleEdgeInsets = .init(top: titleEdgeInsets.top,
+//                                left: left ? inset : titleEdgeInsets.left,
+//                                bottom: titleEdgeInsets.bottom,
+//                                right: left ? titleEdgeInsets.right : inset)
+    }
+    
+    func adjustToSettingImage() {
+        contentHorizontalAlignment = .left
+        semanticContentAttribute = .forceRightToLeft
+        contentMode = .scaleToFill
     }
 }
