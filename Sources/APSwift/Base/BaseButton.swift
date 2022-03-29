@@ -102,18 +102,10 @@ private extension BaseButton {
             }
             setImage(image)
         }
-        imagesRelatedInsets = .init(top: imagesRelatedInsets.top,
-                                    left: left ? inset : imagesRelatedInsets.left,
-                                    bottom: imagesRelatedInsets.bottom,
-                                    right: left ? imagesRelatedInsets.right : inset)
-//        titleImagesRelatedInsets = .init(top: titleImagesRelatedInsets.top,
-//                                         left: left ? inset : titleImagesRelatedInsets.left,
-//                                         bottom: titleImagesRelatedInsets.bottom,
-//                                         right: left ? titleImagesRelatedInsets.right : inset)
         titleEdgeInsets = .init(top: titleEdgeInsets.top,
-                                left: left ? inset + textToImageOffset : titleEdgeInsets.left,
+                                left: left ? inset : titleEdgeInsets.left,
                                 bottom: titleEdgeInsets.bottom,
-                                right: left ? titleEdgeInsets.right : inset + textToImageOffset)
+                                right: left ? titleEdgeInsets.right : inset)
     }
     
     func adjustToSettingImage() {
