@@ -88,7 +88,7 @@ private extension BaseButton {
     
     func setImage(_ image: UIImage?, left: Bool) {
         adjustToSettingImage()
-        let inset: CGFloat = textToImageOffset + (left ? imageEdgeInsets.left : imageEdgeInsets.right) + (image?.size.width ?? 0)
+        let inset: CGFloat = textToImageOffset + (left ? imageEdgeInsets.left : imageEdgeInsets.right) + (left ? contentEdgeInsets.left : contentEdgeInsets.right) + (image?.size.width ?? 0)
         if left {
             leftImageView.image = image
             leftImageView.snp.remakeConstraints { make in
