@@ -110,7 +110,7 @@ private extension BaseButton {
             titleEdgeInsets = .init(top: titleEdgeInsets.top,
                                     left: titleEdgeInsets.left,
                                     bottom: titleEdgeInsets.bottom,
-                                    right: -(image?.size.width ?? 0))
+                                    right: -(image?.size.width ?? 0)) // потому для правой картинки используется нативный imageView, он автоматически учитвается при подсчете размера для лэйбла
         }
     }
     
