@@ -97,18 +97,18 @@ private extension BaseButton {
         var inset: CGFloat = 0
         if left {
             leftImageView.image = image
-            inset = imageEdgeInsets.left + textToImageOffset (image?.size.width ?? 0)
+            inset = imageEdgeInsets.left + textToImageOffset + (image?.size.width ?? 0)
         } else {
             imageView?.snp.remakeConstraints { make in
                 make.right.equalToSuperview().inset(imageEdgeInsets.right)
                 make.centerY.equalToSuperview()
             }
             setImage(image)
-            rightContentInset += image?.size.width ?? 0
+            inset = imageEdgeInsets.right + textToImageOffset + (image?.size.width ?? 0)
         }
         contentEdgeInsets = .init(top: contentEdgeInsets.top,
                                   left: left ? inset : contentEdgeInsets.left,
                                   bottom: contentEdgeInsets.bottom,
-                                  right: left ? 0 : imageEdgeInsets.right + textToImageOffset)
+                                  right: left ? contentEdgeInsets.right : inset)
     }
 }
