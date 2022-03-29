@@ -52,8 +52,8 @@ open class BaseButton: UIButton {
     // MARK: - Resize to fit title label
     open override var intrinsicContentSize: CGSize {
         let labelSize = titleLabel?.sizeThatFits(CGSize(width: titleLabel?.frame.size.width ?? 0, height: .greatestFiniteMagnitude)) ?? .zero
-        let width: CGFloat = labelSize.width + contentEdgeInsets.left + contentEdgeInsets.right + titleEdgeInsets.left + titleEdgeInsets.right
-        let height: CGFloat = labelSize.height + contentEdgeInsets.top + contentEdgeInsets.bottom + titleEdgeInsets.top + titleEdgeInsets.bottom
+        let width: CGFloat = labelSize.width + contentEdgeInsets.left + contentEdgeInsets.right
+        let height: CGFloat = labelSize.height + contentEdgeInsets.top + contentEdgeInsets.bottom
         return CGSize(width: width, height: height)
     }
     
@@ -105,13 +105,13 @@ private extension BaseButton {
         contentEdgeInsets = .init(top: contentEdgeInsets.top,
                                   left: left ? inset : contentEdgeInsets.left,
                                   bottom: contentEdgeInsets.bottom,
-                                  right: left ? contentEdgeInsets.right : inset)
-        if !left {
-            titleEdgeInsets = .init(top: titleEdgeInsets.top,
-                                    left: titleEdgeInsets.left,
-                                    bottom: titleEdgeInsets.bottom,
-                                    right: -(image?.size.width ?? 0))
-        }
+                                  right: left ? contentEdgeInsets.right : inset - (image?.size.width ?? 0))
+//        if !left {
+//            titleEdgeInsets = .init(top: titleEdgeInsets.top,
+//                                    left: titleEdgeInsets.left,
+//                                    bottom: titleEdgeInsets.bottom,
+//                                    right: -(image?.size.width ?? 0))
+//        }
     }
     
     func adjustToSettingImage() {
