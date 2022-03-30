@@ -9,6 +9,7 @@ import UIKit
 
 open class BaseView: UIView {
     
+    // MARK: - Props
     public var didTap: (Closure)? {
         didSet {
             self.enableTap()
@@ -17,7 +18,15 @@ open class BaseView: UIView {
     
     public var animatesTap = true
     public var tapsThrough = false
+    public lazy var swipe: Swipe = {
+        var swipe = Swipe()
+        swipe.didSetDirection = { [weak self] direction in
+            self?.addSwipe(direction)
+        }
+        return swipe
+    }()
     
+    // MARK: - Init
     public convenience init() {
         self.init(frame: .zero)
     }
@@ -74,5 +83,31 @@ open class BaseView: UIView {
             }
         }
         return false
+    }
+}
+
+// MARK: - Supporting methods
+private extension BaseView {
+    
+    func addSwipe(_ direction: UISwipeGestureRecognizer.Direction) {
+        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(self.handleSwipe(gesture:)))
+        swipe.direction = direction
+        addGestureRecognizer(swipe)
+    }
+    
+    @objc
+    func handleSwipe(gesture: UISwipeGestureRecognizer) {
+        switch gesture.direction {
+        case .left:
+            swipe.onLeft?(gesture)
+        case .right:
+            swipe.onRight?(gesture)
+        case .down:
+            swipe.onDown?(gesture)
+        case .up:
+            swipe.onUp?(gesture)
+        default:
+            break
+        }
     }
 }
