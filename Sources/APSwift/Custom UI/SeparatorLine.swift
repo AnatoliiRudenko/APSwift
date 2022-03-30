@@ -8,6 +8,11 @@
 import UIKit
 
 open class SeparatorLine: BaseView {
+    
+    public convenience init(color: UIColor?) {
+        self.init(frame: .zero)
+        backgroundColor = color
+    }
 
     open override func setupComponents() {
         super.setupComponents()
