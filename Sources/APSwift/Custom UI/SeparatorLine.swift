@@ -9,8 +9,9 @@ import UIKit
 
 open class SeparatorLine: BaseView {
     
-    public convenience init(color: UIColor?) {
+    public convenience init(color: UIColor? = nil) {
         self.init(frame: .zero)
+        guard let color = color else { return }
         backgroundColor = color
     }
 
@@ -24,7 +25,7 @@ open class SeparatorLine: BaseView {
 }
 
 public extension UIView {
-    static func separator() -> SeparatorLine {
-        .init(frame: .zero)
+    static func separator(color: UIColor? = nil) -> SeparatorLine {
+        .init(color: color)
     }
 }
