@@ -11,7 +11,7 @@ open class GradientView: BaseView {
     
     public var colors = [UIColor]() {
         didSet {
-            gradient.colors = colors
+            gradient.colors = colors.map { $0.cgColor }
         }
     }
     public var color: UIColor = .white {
