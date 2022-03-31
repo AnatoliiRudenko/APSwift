@@ -16,17 +16,17 @@ open class GradientView: BaseView {
     }
     public var color: UIColor = .white {
         didSet {
-            gradient.colors = [color.withAlphaComponent(0).cgColor, color.cgColor]
-        }
-    }
-    public var endPoint = CGPoint(x: 0, y: 0) {
-        didSet {
-            gradient.endPoint = endPoint
+            gradient.colors = [color.cgColor, color.withAlphaComponent(0).cgColor]
         }
     }
     public var startPoint = CGPoint(x: 0, y: 1) {
         didSet {
             gradient.startPoint = startPoint
+        }
+    }
+    public var endPoint = CGPoint(x: 0, y: 0) {
+        didSet {
+            gradient.endPoint = endPoint
         }
     }
     
