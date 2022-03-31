@@ -9,12 +9,12 @@ import UIKit
 
 open class GradientView: BaseView {
     
-    public var colors: [UIColor]? {
+    public var colors = [UIColor]() {
         didSet {
             gradient.colors = colors
         }
     }
-    public var color: UIColor? {
+    public var color: UIColor = .white {
         didSet {
             gradient.colors = [color.withAlphaComponent(0).cgColor, color.cgColor]
         }
