@@ -147,7 +147,7 @@ public extension UIView {
     }
     
     var shadowLayers: [CALayer] {
-        layer.sublayers?.filter { $0.name == shadowLayerName } ?? []
+        layer.sublayers?.filter { $0.name == UIView.shadowLayerName } ?? []
     }
 }
 
