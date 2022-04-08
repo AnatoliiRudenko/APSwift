@@ -15,13 +15,32 @@ public protocol BottomSheet {
 
 open class BottomSheetViewController<Content: BaseViewController>: BaseViewController, BottomSheet {
     
-    // MARK: - Props
-    var animationDuration: TimeInterval = .animation
-    var animationType: UIView.AnimationOptions = .curveEaseOut
-    var currentTopOffset: CGFloat { topConstraint.constant }
-    var foldsOnInitialStage = false
+    // MARK: - State
+    public enum BottomSheetState {
+        case initial
+        case full
+        case removed
+    }
     
-    // MARK: - Initialization
+    // MARK: - Props
+    public var animationDuration: TimeInterval = .animation
+    public var animationType: UIView.AnimationOptions = .curveEaseOut
+    public var currentTopOffset: CGFloat { topConstraint.constant }
+    public var foldsOnInitialStage = false
+    
+    public var willChangeState: DataClosure<BottomSheetState>?
+    public var didChangeState: DataClosure<BottomSheetState>?
+    
+    private(set) var state: BottomSheetState = .initial {
+        didSet {
+            didChangeState?(state)
+        }
+    }
+    private let configuration: BottomSheetConfiguration
+    private let contentVC: Content
+    private var topConstraint = NSLayoutConstraint()
+    
+    // MARK: - Init
     public init(contentVC: Content,
                 bottomSheetConfiguration: BottomSheetConfiguration) {
         
@@ -102,9 +121,40 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
         }
     }
     
-    // MARK: - Pan Action
+    // MARK: - Content stack view
+    public let containerStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 0
+        return stackView
+    }()
+    
+    // MARK: - UIGestureRecognizer Delegate
+    open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        false
+    }
+    
+    open override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        switch state {
+        case .initial:
+            return true
+        case .full:
+            return false
+        case .removed:
+            return false
+        }
+    }
+    
+    // MARK: - Pan Gesture
+    private lazy var panGesture: UIPanGestureRecognizer = {
+        let pan = UIPanGestureRecognizer()
+        pan.delegate = self
+        pan.addTarget(self, action: #selector(handlePan))
+        return pan
+    }()
+    
     @objc
-    func handlePan(_ sender: UIPanGestureRecognizer) {
+    private func handlePan(_ sender: UIPanGestureRecognizer) {
         let translation = sender.translation(in: contentVC.view)
         let velocity = sender.velocity(in: contentVC.view)
         
@@ -158,65 +208,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
         }
     }
     
-    // MARK: - Configuration
-    
-    private let configuration: BottomSheetConfiguration
-    
-    // MARK: - State
-    public enum BottomSheetState {
-        case initial
-        case full
-        case removed
-    }
-    
-    var willChangeState: DataClosure<BottomSheetState>?
-    var didChangeState: DataClosure<BottomSheetState>?
-    
-    private(set) var state: BottomSheetState = .initial {
-        didSet {
-            didChangeState?(state)
-        }
-    }
-    
-    // MARK: - Children
-    let contentVC: Content
-    
-    // MARK: - Contents stack view
-    let containerStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 0
-        return stackView
-    }()
-    
-    // MARK: - Top Constraint
-    private var topConstraint = NSLayoutConstraint()
-    
-    // MARK: - Pan Gesture
-    lazy var panGesture: UIPanGestureRecognizer = {
-        let pan = UIPanGestureRecognizer()
-        pan.delegate = self
-        pan.addTarget(self, action: #selector(handlePan))
-        return pan
-    }()
-    
-    // MARK: - UIGestureRecognizer Delegate
-    open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        false
-    }
-    
-    open override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        switch state {
-        case .initial:
-            return true
-        case .full:
-            return false
-        case .removed:
-            return false
-        }
-    }
-    
-    // MARK: - Supporting Methods
+    // MARK: - Dismiss Tap
     private func addDismissTap() {
         let tapView = UIView()
         self.view.fitSubviewIn(tapView)
@@ -231,10 +223,11 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     }
 }
 
-extension BottomSheetViewController {
+// MARK: - Supporting methods
+private extension BottomSheetViewController {
     
     // MARK: - UI Setup
-    private func setupUI() {
+    func setupUI() {
         self.addChild(contentVC)
         
         containerStackView.addArrangedSubviews([contentVC.view])
