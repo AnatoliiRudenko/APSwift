@@ -232,7 +232,7 @@ private extension BottomSheetViewController {
     func setupUI() {
         self.addChild(contentVC)
         
-        containerStackView.addArrangedSubviews([contentVC.view])
+        containerStackView.addArrangedSubviews([contentVC.view, UIView()])
         
         self.view.addSubview(containerStackView)
         containerStackView.addGestureRecognizer(panGesture)
@@ -257,20 +257,17 @@ private extension BottomSheetViewController {
     }
     
     func adjustContentHeightToState(_ state: BottomSheetState) {
-        guard state != .removed else { return }
-        let height: CGFloat = {
-            switch state {
-            case .initial:
-                return configuration.initialHeight
-            case .full:
-                return configuration.maxHeight
-            case .removed:
-                return 0
-            }
-        }()
-        containerStackView.snp.remakeConstraints { make in
-            make.height.equalTo(height)
-            make.left.right.equalToSuperview()
-        }
+//        guard state != .removed else { return }
+//        let height: CGFloat = {
+//            switch state {
+//            case .initial:
+//                return configuration.initialHeight
+//            case .full:
+//                return configuration.maxHeight
+//            case .removed:
+//                return 0
+//            }
+//        }()
+//        topConstraint.
     }
 }
