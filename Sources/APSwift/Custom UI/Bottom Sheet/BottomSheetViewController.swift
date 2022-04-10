@@ -31,13 +31,14 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     public var willChangeState: DataClosure<BottomSheetState>?
     public var didChangeState: DataClosure<BottomSheetState>?
     
+    public let contentVC: Content
+    public let configuration: BottomSheetConfiguration
+    
     private(set) var state: BottomSheetState = .initial {
         didSet {
             didChangeState?(state)
         }
     }
-    private let configuration: BottomSheetConfiguration
-    private let contentVC: Content
     private var topConstraint = NSLayoutConstraint()
     
     // MARK: - Init
@@ -90,7 +91,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
         self.topConstraint.constant = -configuration.initialHeight
         if animated {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationType) {
-                            self.view.layoutIfNeeded()
+                self.view.layoutIfNeeded()
             } completion: { _ in
                 self.state = .initial
                 completion?()
@@ -188,7 +189,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
                 } else if yTranslationMagnitude >= configuration.maxHeight / 3 || velocity.y > 300 {
                     self.foldBottomSheet()
                 } else {
-
+                    
                     self.unfoldBottomSheet()
                 }
             } else {
