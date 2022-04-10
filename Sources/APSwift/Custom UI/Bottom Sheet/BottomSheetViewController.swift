@@ -38,8 +38,6 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     private(set) var state: BottomSheetState = .initial {
         didSet {
             didChangeState?(state)
-            guard adjustsContentHeightToState else { return }
-            adjustContentHeightToState()
         }
     }
     private var topConstraint = NSLayoutConstraint()
@@ -72,7 +70,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     
     // MARK: - Display Actions
     public func unfoldBottomSheet(animated: Bool = true, completion: Closure? = nil) {
-        willChangeState?(.full)
+        callWillChangeState(to: .full)
         self.topConstraint.constant = -configuration.maxHeight
         if animated {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationType) {
@@ -90,7 +88,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     
     public func foldBottomSheet(animated: Bool = true, completion: Closure? = nil) {
         guard configuration.hasInitialStage else { return removeBottomSheet(animated: animated, completion: completion) }
-        willChangeState?(.initial)
+        callWillChangeState(to: .initial)
         self.topConstraint.constant = -configuration.initialHeight
         if animated {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationType) {
@@ -107,7 +105,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     }
     
     public func removeBottomSheet(animated: Bool = true, completion: Closure? = nil) {
-        willChangeState?(.removed)
+        callWillChangeState(to: .removed)
         self.topConstraint.constant = UIScreen.main.bounds.height
         if animated {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationType) {
@@ -252,7 +250,13 @@ private extension BottomSheetViewController {
         contentVC.didMove(toParent: self)
     }
     
-    func adjustContentHeightToState() {
+    func callWillChangeState(to state: BottomSheetState) {
+        willChangeState?(state)
+        guard adjustsContentHeightToState else { return }
+        adjustContentHeightToState(state)
+    }
+    
+    func adjustContentHeightToState(_ state: BottomSheetState) {
         guard state != .removed else { return }
         let height: CGFloat = {
             switch state {
