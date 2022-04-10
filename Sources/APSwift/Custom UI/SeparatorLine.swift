@@ -11,14 +11,14 @@ open class SeparatorLine: BaseView {
     
     private var lineHeight: CGFloat = 1 {
         didSet {
-            height = 1
-            roundCorners(0.5)
+            setHeight()
         }
     }
     
     public convenience init(color: UIColor? = nil, height: CGFloat = 1) {
         self.init(frame: .zero)
         self.lineHeight = height
+        self.setHeight()
         guard let color = color else { return }
         backgroundColor = color
     }
@@ -27,6 +27,14 @@ open class SeparatorLine: BaseView {
         super.setupComponents()
         
         backgroundColor = .black
+    }
+}
+
+// MARK: - Supporting methods
+private extension SeparatorLine {
+    func setHeight() {
+        height = lineHeight
+        roundCorners(lineHeight * 0.5)
     }
 }
 
