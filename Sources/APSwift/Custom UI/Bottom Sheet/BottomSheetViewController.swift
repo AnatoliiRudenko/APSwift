@@ -28,15 +28,18 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     public var currentTopOffset: CGFloat { topConstraint.constant }
     public var foldsOnInitialStage = false
     
-    public var willChangeState: DataClosure<BottomSheetState>?
-    public var didChangeState: DataClosure<BottomSheetState>?
-    
     public let contentVC: Content
     public let configuration: BottomSheetConfiguration
+    
+    public var willChangeState: DataClosure<BottomSheetState>?
+    public var didChangeState: DataClosure<BottomSheetState>?
+    public var adjustsContentHeightToState = false
     
     private(set) var state: BottomSheetState = .initial {
         didSet {
             didChangeState?(state)
+            guard adjustsContentHeightToState else { return }
+            adjustContentHeightToState()
         }
     }
     private var topConstraint = NSLayoutConstraint()
@@ -247,5 +250,23 @@ private extension BottomSheetViewController {
         }
         
         contentVC.didMove(toParent: self)
+    }
+    
+    func adjustContentHeightToState() {
+        guard state != .removed else { return }
+        let height: CGFloat = {
+            switch state {
+            case .initial:
+                return configuration.initialHeight
+            case .full:
+                return configuration.maxHeight
+            case .removed:
+                return 0
+            }
+        }()
+        containerStackView.snp.remakeConstraints { make in
+            make.height.equalTo(height)
+            make.left.right.equalToSuperview()
+        }
     }
 }
