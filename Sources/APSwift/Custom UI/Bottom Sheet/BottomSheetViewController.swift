@@ -34,6 +34,12 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     public var willChangeState: DataClosure<BottomSheetState>?
     public var didChangeState: DataClosure<BottomSheetState>?
     public var adjustsContentHeightToState = false
+    public var backgroundColor: UIColor = .white {
+        didSet {
+            containerStackView.backgroundColor = backgroundColor
+            bottomAdjustmentView.backgroundColor = backgroundColor
+        }
+    }
     
     private(set) var state: BottomSheetState = .initial {
         didSet {
@@ -223,6 +229,8 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     private func handleTap() {
         removeBottomSheet()
     }
+    
+    private let bottomAdjustmentView = BaseView()
 }
 
 // MARK: - Supporting methods
@@ -232,9 +240,9 @@ private extension BottomSheetViewController {
     func setupUI() {
         self.addChild(contentVC)
         
-        containerStackView.addArrangedSubviews([contentVC.view, UIView()])
+        containerStackView.addArrangedSubviews([contentVC.view])
         
-        self.view.addSubview(containerStackView)
+        self.view.addSubviews([containerStackView, bottomAdjustmentView])
         containerStackView.addGestureRecognizer(panGesture)
         
         topConstraint = containerStackView.topAnchor
@@ -245,6 +253,11 @@ private extension BottomSheetViewController {
         containerStackView.snp.makeConstraints { make in
             make.height.equalTo(configuration.maxHeight)
             make.left.right.equalToSuperview()
+        }
+        bottomAdjustmentView.snp.makeConstraints { make in
+            make.top.equalTo(containerStackView.snp.bottom)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(UIScreen.main.bounds.height)
         }
         
         contentVC.didMove(toParent: self)
