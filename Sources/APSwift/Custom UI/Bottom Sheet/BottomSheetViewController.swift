@@ -28,7 +28,6 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     public var currentTopOffset: CGFloat { topConstraint.constant }
     public var foldsOnInitialStage = false
     
-    public let contentVC: Content
     public let configuration: BottomSheetConfiguration
     
     public var willChangeState: DataClosure<BottomSheetState>?
@@ -129,13 +128,17 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
         }
     }
     
-    // MARK: - Content stack view
+    // MARK: - Content
+    public let contentVC: Content
+    
     public let containerStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 0
         return stackView
     }()
+    
+    private let bottomAdjustmentView = BaseView()
     
     // MARK: - UIGestureRecognizer Delegate
     open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -229,8 +232,6 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     private func handleTap() {
         removeBottomSheet()
     }
-    
-    private let bottomAdjustmentView = BaseView()
 }
 
 // MARK: - Supporting methods

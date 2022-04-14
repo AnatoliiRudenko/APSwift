@@ -1,18 +1,28 @@
 //
-//  PopUpViewController.swift
-//  Trade Union
+//  PopUpView.swift
 //
 //  Created by Анатолий Руденко on 28.12.2021.
 //
 
 import UIKit
 
-open class PopUpView: BaseView {
+open class PopUpView<Content: UIView>: BaseView {
+    
+    public var content: Content
+    
+    public init(content: Content) {
+        self.content = content
+        super.init(frame: .zero)
+    }
+    
+    required public init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     open override func setupComponents() {
         super.setupComponents()
         
-        addSubviews([bgTapView, contentView])
+        addSubviews([bgTapView, content])
         bgTapView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -26,8 +36,6 @@ open class PopUpView: BaseView {
     }
     
     // MARK: - UI Properties
-    open lazy var contentView = BaseView() // to override
-    
     private lazy var bgTapView: BaseView = {
         let view = BaseView()
         view.didTap = { [weak self] in
