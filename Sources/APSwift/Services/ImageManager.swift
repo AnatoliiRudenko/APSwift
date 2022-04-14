@@ -8,13 +8,13 @@
 import UIKit
 import Kingfisher
 
-enum ImageManager {
+public enum ImageManager {
     
     static var urlStringPrefix: String?
 }
 
 // MARK: - Full URL String methods
-extension ImageManager {
+public extension ImageManager {
     
     static func load(urlSting: String?, completion: @escaping (UIImage?) -> Void) {
         guard let urlSting = urlSting,
@@ -52,7 +52,7 @@ extension ImageManager {
 }
 
 // MARK: - Suffix URL String methods
-extension ImageManager {
+public extension ImageManager {
     
     static func load(urlStringSuffix: String?, completion: @escaping (UIImage?) -> Void) {
         guard let urlStringPrefix = urlStringPrefix,
@@ -92,7 +92,7 @@ extension ImageManager {
 }
 
 // MARK: - YouTube Thumbnail
-extension ImageManager {
+public extension ImageManager {
     
     static func load(youtubeID: String?, completion: @escaping (UIImage?) -> Void) {
         guard let youtubeID = youtubeID,

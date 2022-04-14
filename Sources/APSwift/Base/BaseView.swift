@@ -9,26 +9,39 @@ import UIKit
 
 open class BaseView: UIView {
     
-    var didTap: (Closure)? {
+    // MARK: - Props
+    public var didTap: (Closure)? {
         didSet {
             self.enableTap()
         }
     }
     
-    var animatesTap = true
+    public var animatesTap = true
+    public var tapsThrough = false
+    public lazy var swipe: Swipe = {
+        var swipe = Swipe()
+        swipe.didSetDirection = { [weak self] direction in
+            self?.addSwipe(direction)
+        }
+        return swipe
+    }()
+    
+    // MARK: - Init
+    public convenience init() {
+        self.init(frame: .zero)
+    }
 
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         setupComponents()
-        updateComponents()
     }
     
     required public init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        setupComponents()
     }
     
     open func setupComponents() {}
-    open func updateComponents() {}
     
     // MARK: - Tap
     private func enableTap() {
@@ -46,7 +59,7 @@ open class BaseView: UIView {
     }
     
     // MARK: - Height Constraint
-    var height: CGFloat? {
+    public var height: CGFloat? {
         didSet {
             guard let value = self.height else {
                 self.heightConstraint.isActive = false
@@ -60,4 +73,41 @@ open class BaseView: UIView {
     private lazy var heightConstraint: NSLayoutConstraint = {
         self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
     }()
+    
+    // MARK: - Tap Through
+    open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        guard tapsThrough else { return super.point(inside: point, with: event) }
+        for subview in subviews {
+            if !subview.isHidden && subview.isUserInteractionEnabled && subview.point(inside: convert(point, to: subview), with: event) {
+                return true
+            }
+        }
+        return false
+    }
+}
+
+// MARK: - Supporting methods
+private extension BaseView {
+    
+    func addSwipe(_ direction: UISwipeGestureRecognizer.Direction) {
+        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(self.handleSwipe(gesture:)))
+        swipe.direction = direction
+        addGestureRecognizer(swipe)
+    }
+    
+    @objc
+    func handleSwipe(gesture: UISwipeGestureRecognizer) {
+        switch gesture.direction {
+        case .left:
+            swipe.onLeft?(gesture)
+        case .right:
+            swipe.onRight?(gesture)
+        case .down:
+            swipe.onDown?(gesture)
+        case .up:
+            swipe.onUp?(gesture)
+        default:
+            break
+        }
+    }
 }

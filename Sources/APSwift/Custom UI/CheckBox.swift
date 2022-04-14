@@ -10,15 +10,15 @@ import UIKit
 open class CheckBox: BaseView {
     
     // MARK: - Props
-    var isChecked: Bool = false {
+    public var isChecked: Bool = false {
         didSet {
             imageView.image = isChecked ? checkedImage : uncheckedImage
         }
     }
     
-    var didTapToState: DataClosure<Bool>?
+    public var didTapToState: DataClosure<Bool>?
     
-    func setImages(checkedImage: UIImage?, uncheckedImage: UIImage?) {
+    open func setImages(checkedImage: UIImage?, uncheckedImage: UIImage?) {
         self.checkedImage = checkedImage
         self.uncheckedImage = uncheckedImage
         imageView.image = isChecked ? checkedImage : uncheckedImage
@@ -28,7 +28,7 @@ open class CheckBox: BaseView {
     private var checkedImage: UIImage?
     private var uncheckedImage: UIImage?
     
-    convenience init(checkedImage: UIImage?, uncheckedImage: UIImage?) {
+    convenience public init(checkedImage: UIImage?, uncheckedImage: UIImage?) {
         self.init(frame: .zero)
         setImages(checkedImage: checkedImage, uncheckedImage: uncheckedImage)
         imageView.image = uncheckedImage

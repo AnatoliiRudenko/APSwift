@@ -11,6 +11,11 @@ public typealias TableViewDelegates = UITableViewDelegate & UITableViewDataSourc
 
 public extension UITableView {
     
+    func isCellVisible(section: Int, row: Int) -> Bool {
+        guard let indexes = self.indexPathsForVisibleRows else { return false }
+        return indexes.contains { $0.section == section && $0.row == row }
+    }
+    
     func subscribe(_ object: TableViewDelegates) {
         delegate = object
         dataSource = object

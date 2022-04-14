@@ -7,22 +7,26 @@
 
 import UIKit
 
-public class ImagedTextField: BaseTextField {
+open class ImagedTextField: BaseTextField {
     
-    enum ImageSide {
+    public enum ImageSide {
         case left
         case right
     }
 
     // MARK: - Props
-    var imageSide: ImageSide = .right
-    var image: UIImage? {
+    public var imageSide: ImageSide = .right {
+        didSet {
+            setImageView()
+        }
+    }
+    public var image: UIImage? {
         didSet {
             imageView.image = image
         }
     }
-    var imageWidth: CGFloat = 24
-    var textToImageSpacing: CGFloat = 8
+    public var imageWidth: CGFloat = 24
+    public var textToImageSpacing: CGFloat = 8
     
     // MARK: - Init
     convenience init(imageSide: ImageSide, image: UIImage?) {
@@ -31,8 +35,44 @@ public class ImagedTextField: BaseTextField {
         self.setImageView()
     }
     
-    // MARK: - Methods
-    private func setImageView() {
+    // MARK: - UI Properties
+    private let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
+    // MARK: - Insets
+    open override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
+        .init(x: insets.left, y: 0, width: imageWidth, height: bounds.height)
+    }
+    
+    open override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
+        .init(x: bounds.width - insets.right - imageWidth, y: 0, width: imageWidth, height: bounds.height)
+    }
+    
+    open override func textRect(forBounds bounds: CGRect) -> CGRect {
+        switch imageSide {
+        case .left:
+            return bounds.inset(by: .init(top: insets.top, left: insets.left + imageWidth + textToImageSpacing, bottom: insets.bottom, right: insets.right))
+        case .right:
+            return bounds.inset(by: .init(top: insets.top, left: insets.left, bottom: insets.bottom, right: insets.right + imageWidth + textToImageSpacing))
+        }
+    }
+    
+    open override func editingRect(forBounds bounds: CGRect) -> CGRect {
+        textRect(forBounds: bounds)
+    }
+    
+    open override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+        textRect(forBounds: bounds)
+    }
+}
+
+// MARK: - Supporting methods
+private extension ImagedTextField {
+    
+    func setImageView() {
         switch imageSide {
         case .left:
             leftViewMode = .always
@@ -45,38 +85,5 @@ public class ImagedTextField: BaseTextField {
             leftViewMode = .never
             leftView = nil
         }
-    }
-    
-    // MARK: - UI Properties
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-    
-    // MARK: - Insets
-    public override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
-        .init(x: insets.left, y: 0, width: imageWidth, height: bounds.height)
-    }
-    
-    public override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
-        .init(x: bounds.width - insets.right - imageWidth, y: 0, width: imageWidth, height: bounds.height)
-    }
-    
-    public override func textRect(forBounds bounds: CGRect) -> CGRect {
-        switch imageSide {
-        case .left:
-            return bounds.inset(by: .init(top: insets.top, left: insets.left + imageWidth + textToImageSpacing, bottom: insets.bottom, right: insets.right))
-        case .right:
-            return bounds.inset(by: .init(top: insets.top, left: insets.left, bottom: insets.bottom, right: insets.right + imageWidth + textToImageSpacing))
-        }
-    }
-    
-    public override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        textRect(forBounds: bounds)
-    }
-    
-    public override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-        textRect(forBounds: bounds)
     }
 }

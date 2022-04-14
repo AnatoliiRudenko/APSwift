@@ -13,13 +13,31 @@ public extension UIStackView {
         directionalLayoutMargins = insets
         isLayoutMarginsRelativeArrangement = true
     }
+}
+
+// MARK: - Add/remove
+public extension UIStackView {
     
     func addArrangedSubviews(_ views: [UIView]) {
         views.forEach({ self.addArrangedSubview($0) })
     }
     
+    func removeArrangedSubviews(_ views: [UIView]) {
+        views.forEach { $0.removeFromSuperview() }
+    }
+    
     func removeAllArrangedSubviews() {
-        self.arrangedSubviews.forEach({ $0.removeFromSuperview() })
+        arrangedSubviews.forEach({ $0.removeFromSuperview() })
+    }
+}
+
+// MARK: - Separator
+public extension UIStackView {
+    
+    enum VerticalLocation {
+        case top
+        case bottom
+        case both
     }
     
     func addArrangedSubviewsWithSeparator(_ views: [UIView], separator: UIView = .separator()) {
@@ -50,12 +68,6 @@ public extension UIStackView {
         if separatorLineLocation == .bottom || separatorLineLocation == .both {
             addArrangedSubview(separator)
         }
-    }
-    
-    enum VerticalLocation {
-        case top
-        case bottom
-        case both
     }
 }
 

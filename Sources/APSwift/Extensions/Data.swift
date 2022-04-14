@@ -14,4 +14,10 @@ public extension Data {
         decoder.keyDecodingStrategy = stategy
         return try decoder.decode(T.self, from: self)
     }
+    
+    func decodedArray<T: Decodable>(stategy: JSONDecoder.KeyDecodingStrategy = .convertFromSnakeCase) throws -> [T] {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = stategy
+        return try decoder.decode([T].self, from: self)
+    }
 }

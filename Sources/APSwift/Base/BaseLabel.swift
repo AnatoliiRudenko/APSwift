@@ -9,40 +9,34 @@ import UIKit
 
 open class BaseLabel: UILabel {
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.setupComponents()
+    public var hidesIfEmpty = false
+    
+    open override var text: String? {
+        get { super.text }
+        set {
+            super.text = newValue
+            if hidesIfEmpty {
+                self.isHidden = newValue?.isEmpty == true || newValue == nil
+            }
+        }
     }
     
-    required public init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setupComponents() {
-        text = ""
-    }
-    
-    var multiline: Bool = false {
+    public var multiline: Bool = false {
         didSet {
             numberOfLines = multiline ? 0 : 1
             lineBreakMode = .byWordWrapping
         }
     }
     
-    func multiline(_ lines: Int) {
+    open func multiline(_ lines: Int) {
         numberOfLines = lines
         lineBreakMode = .byWordWrapping
     }
     
-    var insets: UIEdgeInsets = .zero
-    var directionalInsets: DirectionalInsets = .zero {
-        didSet {
-            insets = directionalInsets.asUIEdgeInsets
-        }
-    }
+    public var insets: UIEdgeInsets = .zero
     
     // MARK: - Height Constraint
-    var height: CGFloat? {
+    public var height: CGFloat? {
         didSet {
             guard let value = self.height else {
                 self.heightConstraint.isActive = false
@@ -56,6 +50,25 @@ open class BaseLabel: UILabel {
     private lazy var heightConstraint: NSLayoutConstraint = {
         self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
     }()
+    
+    // MARK: - Init
+    public convenience init() {
+        self.init(frame: .zero)
+    }
+    
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.setupComponents()
+    }
+    
+    required public init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupComponents()
+    }
+    
+    open func setupComponents() {
+        text = ""
+    }
 }
 
 // MARK: - Insets
