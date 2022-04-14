@@ -23,7 +23,7 @@ open class ContainerView<Content: UIView>: BaseView {
         }
     }
 
-    init(content: Content, insets: UIEdgeInsets = .zero) {
+    public init(content: Content, insets: UIEdgeInsets = .zero) {
         self.content = content
         self.insets = insets
         super.init(frame: .zero)

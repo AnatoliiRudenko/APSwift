@@ -10,17 +10,29 @@ import UIKit
 open class BaseTableViewCell<Data>: UITableViewCell {
     
     open func setData(_ data: Data) {}
+    
+    public var letsShadowThrough = false {
+        didSet {
+            clipsToBounds = !letsShadowThrough
+            contentView.clipsToBounds = !letsShadowThrough
+            if letsShadowThrough {
+                backgroundColor = .clear
+                contentView.backgroundColor = .clear
+            }
+        }
+    }
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupComponents()
     }
     
     required public init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        setupComponents()
     }
 
-    func setupComponents() {
+    open func setupComponents() {
         selectionStyle = .none
     }
 }

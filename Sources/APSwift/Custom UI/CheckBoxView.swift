@@ -11,7 +11,7 @@ import SnapKit
 open class CheckBoxView: BaseView {
 
     // MARK: - Props
-    var isChecked: Bool {
+    open var isChecked: Bool {
         get {
             self.checkbox.isChecked
         }
@@ -20,7 +20,7 @@ open class CheckBoxView: BaseView {
         }
     }
     
-    var didTapToState: DataClosure<Bool>? {
+    open var didTapToState: DataClosure<Bool>? {
         get {
             self.checkbox.didTapToState
         }
@@ -29,7 +29,7 @@ open class CheckBoxView: BaseView {
         }
     }
     
-    var title: String? {
+    open var title: String? {
         get {
             self.titleLabel.text
         }
@@ -37,6 +37,8 @@ open class CheckBoxView: BaseView {
             self.titleLabel.text = newValue
         }
     }
+    
+    public var checkBoxLocatedToTheRightSide = true
     
     // MARK: - Init
     open override func setupComponents() {
@@ -47,7 +49,8 @@ open class CheckBoxView: BaseView {
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        stackView.addArrangedSubviews([titleLabelContainerView, checkboxContainerView])
+        let arrangedSubviews = checkBoxLocatedToTheRightSide ? [titleLabelContainerView, checkboxContainerView] : [checkboxContainerView, titleLabelContainerView]
+        stackView.addArrangedSubviews(arrangedSubviews)
         titleLabelContainerView.addSubview(titleLabel)
         checkboxContainerView.addSubview(checkbox)
         
@@ -67,11 +70,11 @@ open class CheckBoxView: BaseView {
     }
     
     // MARK: - UI Properties
-    lazy var titleLabel = BaseLabel()
+    public lazy var titleLabel = BaseLabel()
     
-    lazy var checkbox = CheckBox()
+    public lazy var checkbox = CheckBox()
     
-    let stackView: UIStackView = {
+    public let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 16

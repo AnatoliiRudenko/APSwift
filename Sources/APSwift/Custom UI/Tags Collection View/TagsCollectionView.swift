@@ -11,7 +11,7 @@ open class TagsCollectionView<Cell: UICollectionViewCell, Data>: BaseCollectionV
     
     var didCalculateTagsHeight: DataClosure<CGFloat>?
     
-    override func setData(_ data: [Data], completion: Closure? = nil) {
+    open override func setData(_ data: [Data], completion: Closure? = nil) {
         isHidden = data.isEmpty
         self.data = data
         UIView.animate(withDuration: 0.0, animations: { [weak self] in
@@ -40,7 +40,7 @@ open class TagsCollectionView<Cell: UICollectionViewCell, Data>: BaseCollectionV
     var lineSpacing: CGFloat = 8
     var itemSpacing: CGFloat = 4
     
-    override func setupComponents() {
+    open override func setupComponents() {
         super.setupComponents()
         
         isScrollEnabled = false

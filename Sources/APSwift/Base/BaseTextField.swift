@@ -10,20 +10,19 @@ import UIKit
 open class BaseTextField: UITextField {
     
     // MARK: - Props
-    // MARK: - Insets Props
-    var insets: UIEdgeInsets = .zero
+    public var insets: UIEdgeInsets = .zero
     
     // MARK: - Max Length props
-    var maxLength: Int? {
+    public var maxLength: Int? {
         didSet {
             addTarget(self, action: #selector(editingChanged(_:)), for: .editingChanged)
         }
     }
-    var isFilled: Bool {
+    public var isFilled: Bool {
         guard let maxLength = maxLength else { return true }
         return (text ?? "").count == maxLength
     }
-    var onReachingMaxLength: Closure?
+    public var onReachingMaxLength: Closure?
     
     // MARK: - Methods
     @objc
@@ -38,19 +37,24 @@ open class BaseTextField: UITextField {
     }
 
     // MARK: - Init
-    override init(frame: CGRect) {
+    public convenience init() {
+        self.init(frame: .zero)
+    }
+    
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         setupComponents()
     }
     
     required public init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        setupComponents()
     }
     
     open func setupComponents() {}
     
     // MARK: - Height Constraint
-    var height: CGFloat? {
+    public var height: CGFloat? {
         didSet {
             guard let value = self.height else {
                 self.heightConstraint.isActive = false

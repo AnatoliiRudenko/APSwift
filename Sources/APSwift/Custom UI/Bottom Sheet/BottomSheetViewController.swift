@@ -15,13 +15,39 @@ public protocol BottomSheet {
 
 open class BottomSheetViewController<Content: BaseViewController>: BaseViewController, BottomSheet {
     
-    // MARK: - Props
-    var animationDuration: TimeInterval = .animation
-    var animationType: UIView.AnimationOptions = .curveEaseOut
-    var currentTopOffset: CGFloat { topConstraint.constant }
-    var foldsOnInitialStage = false
+    // MARK: - State
+    public enum BottomSheetState {
+        case initial
+        case full
+        case removed
+    }
     
-    // MARK: - Initialization
+    // MARK: - Props
+    public var animationDuration: TimeInterval = .animation
+    public var animationType: UIView.AnimationOptions = .curveEaseOut
+    public var currentTopOffset: CGFloat { topConstraint.constant }
+    public var foldsOnInitialStage = false
+    
+    public let configuration: BottomSheetConfiguration
+    
+    public var willChangeState: DataClosure<BottomSheetState>?
+    public var didChangeState: DataClosure<BottomSheetState>?
+    public var adjustsContentHeightToState = false
+    public var backgroundColor: UIColor = .white {
+        didSet {
+            containerStackView.backgroundColor = backgroundColor
+            bottomAdjustmentView.backgroundColor = backgroundColor
+        }
+    }
+    
+    private(set) var state: BottomSheetState = .initial {
+        didSet {
+            didChangeState?(state)
+        }
+    }
+    private var topConstraint = NSLayoutConstraint()
+    
+    // MARK: - Init
     public init(contentVC: Content,
                 bottomSheetConfiguration: BottomSheetConfiguration) {
         
@@ -49,7 +75,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     
     // MARK: - Display Actions
     public func unfoldBottomSheet(animated: Bool = true, completion: Closure? = nil) {
-        willChangeState?(.full)
+        callWillChangeState(to: .full)
         self.topConstraint.constant = -configuration.maxHeight
         if animated {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationType) {
@@ -67,11 +93,11 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     
     public func foldBottomSheet(animated: Bool = true, completion: Closure? = nil) {
         guard configuration.hasInitialStage else { return removeBottomSheet(animated: animated, completion: completion) }
-        willChangeState?(.initial)
+        callWillChangeState(to: .initial)
         self.topConstraint.constant = -configuration.initialHeight
         if animated {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationType) {
-                            self.view.layoutIfNeeded()
+                self.view.layoutIfNeeded()
             } completion: { _ in
                 self.state = .initial
                 completion?()
@@ -84,7 +110,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     }
     
     public func removeBottomSheet(animated: Bool = true, completion: Closure? = nil) {
-        willChangeState?(.removed)
+        callWillChangeState(to: .removed)
         self.topConstraint.constant = UIScreen.main.bounds.height
         if animated {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationType) {
@@ -102,9 +128,44 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
         }
     }
     
-    // MARK: - Pan Action
+    // MARK: - Content
+    public let contentVC: Content
+    
+    public let containerStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 0
+        return stackView
+    }()
+    
+    private let bottomAdjustmentView = BaseView()
+    
+    // MARK: - UIGestureRecognizer Delegate
+    open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        false
+    }
+    
+    open override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        switch state {
+        case .initial:
+            return true
+        case .full:
+            return false
+        case .removed:
+            return false
+        }
+    }
+    
+    // MARK: - Pan Gesture
+    private lazy var panGesture: UIPanGestureRecognizer = {
+        let pan = UIPanGestureRecognizer()
+        pan.delegate = self
+        pan.addTarget(self, action: #selector(handlePan))
+        return pan
+    }()
+    
     @objc
-    func handlePan(_ sender: UIPanGestureRecognizer) {
+    private func handlePan(_ sender: UIPanGestureRecognizer) {
         let translation = sender.translation(in: contentVC.view)
         let velocity = sender.velocity(in: contentVC.view)
         
@@ -138,7 +199,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
                 } else if yTranslationMagnitude >= configuration.maxHeight / 3 || velocity.y > 300 {
                     self.foldBottomSheet()
                 } else {
-
+                    
                     self.unfoldBottomSheet()
                 }
             } else {
@@ -158,65 +219,7 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
         }
     }
     
-    // MARK: - Configuration
-    
-    private let configuration: BottomSheetConfiguration
-    
-    // MARK: - State
-    public enum BottomSheetState {
-        case initial
-        case full
-        case removed
-    }
-    
-    var willChangeState: DataClosure<BottomSheetState>?
-    var didChangeState: DataClosure<BottomSheetState>?
-    
-    private(set) var state: BottomSheetState = .initial {
-        didSet {
-            didChangeState?(state)
-        }
-    }
-    
-    // MARK: - Children
-    let contentVC: Content
-    
-    // MARK: - Contents stack view
-    let containerStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 0
-        return stackView
-    }()
-    
-    // MARK: - Top Constraint
-    private var topConstraint = NSLayoutConstraint()
-    
-    // MARK: - Pan Gesture
-    lazy var panGesture: UIPanGestureRecognizer = {
-        let pan = UIPanGestureRecognizer()
-        pan.delegate = self
-        pan.addTarget(self, action: #selector(handlePan))
-        return pan
-    }()
-    
-    // MARK: - UIGestureRecognizer Delegate
-    open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        false
-    }
-    
-    open override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        switch state {
-        case .initial:
-            return true
-        case .full:
-            return false
-        case .removed:
-            return false
-        }
-    }
-    
-    // MARK: - Supporting Methods
+    // MARK: - Dismiss Tap
     private func addDismissTap() {
         let tapView = UIView()
         self.view.fitSubviewIn(tapView)
@@ -231,15 +234,16 @@ open class BottomSheetViewController<Content: BaseViewController>: BaseViewContr
     }
 }
 
-extension BottomSheetViewController {
+// MARK: - Supporting methods
+private extension BottomSheetViewController {
     
     // MARK: - UI Setup
-    private func setupUI() {
+    func setupUI() {
         self.addChild(contentVC)
         
         containerStackView.addArrangedSubviews([contentVC.view])
         
-        self.view.addSubview(containerStackView)
+        self.view.addSubviews([containerStackView, bottomAdjustmentView])
         containerStackView.addGestureRecognizer(panGesture)
         
         topConstraint = containerStackView.topAnchor
@@ -251,7 +255,36 @@ extension BottomSheetViewController {
             make.height.equalTo(configuration.maxHeight)
             make.left.right.equalToSuperview()
         }
+        bottomAdjustmentView.snp.makeConstraints { make in
+            make.top.equalTo(containerStackView.snp.bottom)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(UIScreen.main.bounds.height)
+        }
         
         contentVC.didMove(toParent: self)
+    }
+    
+    func callWillChangeState(to state: BottomSheetState) {
+        willChangeState?(state)
+        guard adjustsContentHeightToState else { return }
+        adjustContentHeightToState(state)
+    }
+    
+    func adjustContentHeightToState(_ state: BottomSheetState) {
+        guard state != .removed else { return }
+        let height: CGFloat = {
+            switch state {
+            case .initial:
+                return configuration.initialHeight
+            case .full:
+                return configuration.maxHeight
+            case .removed:
+                return 0
+            }
+        }()
+        containerStackView.snp.remakeConstraints { make in
+            make.height.equalTo(height)
+            make.left.right.equalToSuperview()
+        }
     }
 }

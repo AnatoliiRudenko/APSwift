@@ -52,7 +52,7 @@ class BaseSwitch: UISwitch {
         setupComponents()
     }
     
-    func setupComponents() {
+    open func setupComponents() {
         addTarget(self, action: #selector(didSwitch), for: .valueChanged)
     }
 }

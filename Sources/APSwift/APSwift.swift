@@ -1,6 +1,6 @@
 import UIKit
 import SnapKit
-import Alamofire
+//import Alamofire
 import KeychainSwift
 
 public struct APSwift {

@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol Coordinatable: UIViewController {
+public protocol Coordinatable: UIViewController {
     var coordinator: Coordinator? { get set }
 }
 
@@ -25,30 +25,30 @@ open class Coordinator: NSObject {
     }
     
     // MARK: - Methods
-    func goTo(vc: Coordinatable, animated: Bool = true) {
+    open func goTo(vc: Coordinatable, animated: Bool = true) {
         vc.coordinator = self
         navigationController.pushViewController(vc, animated: animated)
     }
     
-    func pop(animated: Bool = true) {
+    open func pop(animated: Bool = true) {
         navigationController.popViewController(animated: animated)
     }
     
-    func popSeveralScreens(_ amount: Int, animated: Bool = true) {
+    open func popSeveralScreens(_ amount: Int, animated: Bool = true) {
         let viewControllers: [UIViewController] = self.navigationController.viewControllers as [UIViewController]
         navigationController.popToViewController(viewControllers[viewControllers.count - (1 + amount)], animated: animated)
     }
     
-    func dismiss(animated: Bool = true, completion: Closure? = nil) {
+    open func dismiss(animated: Bool = true, completion: Closure? = nil) {
         navigationController.dismiss(animated: animated, completion: completion)
     }
     
-    func openBaseWebView(urlString: String, title: String? = nil, animated: Bool = true) {
+    open func openBaseWebView(urlString: String, title: String? = nil, animated: Bool = true) {
         let vc = BaseWebViewController(urlString: urlString, title: title)
         navigationController.pushViewController(vc, animated: animated)
     }
     
-    func developmentScreen(title: String) {
+    open func developmentScreen(title: String) {
         goTo(vc: DevelopViewController(title: title))
     }
 }
@@ -56,7 +56,7 @@ open class Coordinator: NSObject {
 // MARK: - Pop up
 extension Coordinator {
     
-    func showPopUp(_ popUpView: BaseView, animated: Bool = true) {
+    open func showPopUp(_ popUpView: BaseView, animated: Bool = true) {
         popUpView.isHidden = true
         UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.addSubview(popUpView)
         popUpView.snp.makeConstraints { make in
@@ -66,7 +66,7 @@ extension Coordinator {
         self.popUpView = popUpView
     }
     
-    func removePopUp(animated: Bool = true) {
+    open func removePopUp(animated: Bool = true) {
         self.popUpView?.setHidden(true, animated: animated) {
             self.popUpView?.removeFromSuperview()
             self.popUpView = nil

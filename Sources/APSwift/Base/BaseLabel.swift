@@ -9,7 +9,7 @@ import UIKit
 
 open class BaseLabel: UILabel {
     
-    var hidesIfEmpty = false
+    public var hidesIfEmpty = false
     
     open override var text: String? {
         get { super.text }
@@ -21,22 +21,22 @@ open class BaseLabel: UILabel {
         }
     }
     
-    var multiline: Bool = false {
+    public var multiline: Bool = false {
         didSet {
             numberOfLines = multiline ? 0 : 1
             lineBreakMode = .byWordWrapping
         }
     }
     
-    func multiline(_ lines: Int) {
+    open func multiline(_ lines: Int) {
         numberOfLines = lines
         lineBreakMode = .byWordWrapping
     }
     
-    var insets: UIEdgeInsets = .zero
+    public var insets: UIEdgeInsets = .zero
     
     // MARK: - Height Constraint
-    var height: CGFloat? {
+    public var height: CGFloat? {
         didSet {
             guard let value = self.height else {
                 self.heightConstraint.isActive = false
@@ -52,16 +52,21 @@ open class BaseLabel: UILabel {
     }()
     
     // MARK: - Init
-    override init(frame: CGRect) {
+    public convenience init() {
+        self.init(frame: .zero)
+    }
+    
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupComponents()
     }
     
     required public init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        setupComponents()
     }
     
-    func setupComponents() {
+    open func setupComponents() {
         text = ""
     }
 }

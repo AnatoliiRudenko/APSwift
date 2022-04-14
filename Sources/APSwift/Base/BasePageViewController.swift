@@ -71,7 +71,7 @@ class BasePageViewController: UIPageViewController {
     }
     
     // MARK: - Methods
-    func setupComponents() {
+    open func setupComponents() {
         dataSource = self
         delegate = self
         scrollView.showsVerticalScrollIndicator = false
@@ -79,12 +79,12 @@ class BasePageViewController: UIPageViewController {
         setContent()
     }
     
-    func scrollTo(index: Int, animated: Bool = true) {
+    open func scrollTo(index: Int, animated: Bool = true) {
         guard (0...pages.count - 1).contains(index) else { return }
         scrollTo(vc: pages[index], animated: animated)
     }
     
-    func scrollTo(vc: UIViewController, animated: Bool = true) {
+    open func scrollTo(vc: UIViewController, animated: Bool = true) {
         guard let destinationIndex = pages.firstIndex(of: vc) else { return }
         let direction: UIPageViewController.NavigationDirection = destinationIndex > currentIndex ? .forward : .reverse
         setViewControllers([vc], direction: direction, animated: animated, completion: nil)

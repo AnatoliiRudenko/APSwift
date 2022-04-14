@@ -7,43 +7,45 @@
 
 import UIKit
 
-class GradientView: BaseView {
+open class GradientView: BaseView {
     
-    var color = UIColor.white {
+    public var colors = [UIColor]() {
         didSet {
-            gradient.colors = [color.withAlphaComponent(0).cgColor, color.cgColor]
+            gradient.colors = colors.map { $0.cgColor }
         }
     }
-    var endPoint = CGPoint(x: 0, y: 0) {
+    public var color: UIColor = .white {
         didSet {
-            gradient.endPoint = endPoint
+            gradient.colors = [color.cgColor, color.withAlphaComponent(0).cgColor]
         }
     }
-    var startPoint = CGPoint(x: 0, y: 1) {
+    public var startPoint = CGPoint(x: 0, y: 1) {
         didSet {
             gradient.startPoint = startPoint
         }
     }
+    public var endPoint = CGPoint(x: 0, y: 0) {
+        didSet {
+            gradient.endPoint = endPoint
+        }
+    }
     
     // MARK: - Life cycle
-    override func setupComponents() {
+    open override func setupComponents() {
         super.setupComponents()
         
         clipsToBounds = true
-        
-        gradient.colors = [color.withAlphaComponent(0).cgColor, color.cgColor]
         layer.addSublayer(gradient)
-        
         gradient.endPoint = endPoint
         gradient.startPoint = startPoint
     }
     
-    override func layoutSublayers(of layer: CALayer) {
+    open override func layoutSublayers(of layer: CALayer) {
         super.layoutSublayers(of: layer)
         
         gradient.frame = bounds
     }
     
     // MARK: - UI Properties
-    private let gradient = CAGradientLayer()
+    public let gradient = CAGradientLayer()
 }
