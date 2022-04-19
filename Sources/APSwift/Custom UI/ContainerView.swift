@@ -49,10 +49,10 @@ private extension ContainerView {
     
     func addGreaterThanOrEqualToConstraints() {
         content.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualToSuperview().inset(insets.top)
-            make.bottom.greaterThanOrEqualToSuperview().inset(insets.bottom)
-            make.left.greaterThanOrEqualToSuperview().inset(insets.left)
-            make.right.greaterThanOrEqualToSuperview().inset(insets.right)
+            make.top.greaterThanOrEqualToSuperview().inset(minInsets.top)
+            make.bottom.greaterThanOrEqualToSuperview().inset(minInsets.bottom)
+            make.left.greaterThanOrEqualToSuperview().inset(minInsets.left)
+            make.right.greaterThanOrEqualToSuperview().inset(minInsets.right)
             make.center.equalToSuperview()
         }
     }
