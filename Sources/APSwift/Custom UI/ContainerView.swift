@@ -16,7 +16,7 @@ open class ContainerView<Content: UIView>: BaseView {
     open override func setupComponents() {
         super.setupComponents()
         addSubview(content)
-        minInsets == nil ? addEqualToConstraints() : addLessThanOrEqualToConstraints()
+        minInsets == nil ? addEqualToConstraints() : addGreaterThanOrEqualToConstraints()
     }
 
     public init(content: Content, insets: UIEdgeInsets) {
@@ -47,12 +47,12 @@ private extension ContainerView {
         }
     }
     
-    func addLessThanOrEqualToConstraints() {
+    func addGreaterThanOrEqualToConstraints() {
         content.snp.makeConstraints { make in
-            make.top.lessThanOrEqualToSuperview().inset(insets.top)
-            make.bottom.lessThanOrEqualToSuperview().inset(insets.bottom)
-            make.left.lessThanOrEqualToSuperview().inset(insets.left)
-            make.right.lessThanOrEqualToSuperview().inset(insets.right)
+            make.top.greaterThanOrEqualToSuperview().inset(insets.top)
+            make.bottom.greaterThanOrEqualToSuperview().inset(insets.bottom)
+            make.left.greaterThanOrEqualToSuperview().inset(insets.left)
+            make.right.greaterThanOrEqualToSuperview().inset(insets.right)
             make.center.equalToSuperview()
         }
     }
