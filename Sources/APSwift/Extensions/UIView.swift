@@ -172,6 +172,16 @@ public extension UIView {
         ContainerView(content: content, insets: insets)
     }
     
+    static func circle(radius: CGFloat, color: UIColor) -> UIView {
+        let view = UIView()
+        view.backgroundColor = color
+        view.snp.makeConstraints { make in
+            make.size.equalTo(radius * 2)
+        }
+        view.roundCorners(radius)
+        return view
+    }
+    
     static func animate(animations: Closure?, completion: DataClosure<Bool>? = nil) {
         guard let animations = animations else { return }
         animate(withDuration: animationDuration, animations: animations, completion: completion)
