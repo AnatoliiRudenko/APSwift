@@ -19,13 +19,13 @@ open class ContainerView<Content: UIView>: BaseView {
         minInsets == nil ? addEqualToConstraints() : addGreaterThatOrEqualToConstraints()
     }
 
-    public init(content: Content, insets: UIEdgeInsets = .zero) {
+    public init(content: Content, insets: UIEdgeInsets) {
         self.content = content
         self.insets = insets
         super.init(frame: .zero)
     }
     
-    public init(content: Content, minInsets: UIEdgeInsets = .zero) {
+    public init(content: Content, minInsets: UIEdgeInsets) {
         self.content = content
         self.minInsets = minInsets
         super.init(frame: .zero)
