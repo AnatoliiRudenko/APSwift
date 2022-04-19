@@ -7,7 +7,7 @@
 
 import UIKit
 
-public extension UINavigationViewController {
+public extension UINavigationController {
     
     func hideHairline() {
         if let hairline = findHairlineImageViewUnder(navigationBar) {
