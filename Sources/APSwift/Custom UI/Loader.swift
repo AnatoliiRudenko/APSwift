@@ -11,17 +11,17 @@ import UIKit
 open class Loader: UIView {
     
     // MARK: - Props
-    var size: CGFloat = 80
-    var bgColor: UIColor = .white.withAlphaComponent(0.7)
-    var spinnerStyle: UIActivityIndicatorView.Style = .large
-    var spinnerColor: UIColor?
+    public var size: CGFloat = 80
+    public var bgColor: UIColor = .white.withAlphaComponent(0.7)
+    public var spinnerStyle: UIActivityIndicatorView.Style = .large
+    public var spinnerColor: UIColor?
     
     // MARK: - Init
-    convenience init(parentView: UIView) {
+    convenience public init(parentView: UIView) {
         self.init(frame: parentView.bounds, parentView: parentView)
     }
     
-    init(frame: CGRect, parentView: UIView) {
+    public init(frame: CGRect, parentView: UIView) {
         self.parentView = parentView
         super.init(frame: frame)
     }
@@ -31,7 +31,7 @@ open class Loader: UIView {
     }
     
     // MARK: - Methods
-    func show() {
+    open func show() {
         guard loadingView.superview == nil else { return }
         guard Thread.isMainThread else {
             return DispatchQueue.main.async {
@@ -53,7 +53,7 @@ open class Loader: UIView {
         
         self.spinner.snp.makeConstraints { make in
             make.center.equalTo(self.loadingView.snp.center)
-            make.size.equalTo(80)
+            make.size.equalTo(size)
         }
         self.loadingView.snp.makeConstraints { make in
             make.edges.equalTo(parentView.snp.edges)
@@ -62,7 +62,7 @@ open class Loader: UIView {
         self.spinner.startAnimating()
     }
 
-    func hide() {
+    open func hide() {
         guard Thread.isMainThread else {
             return DispatchQueue.main.async {
                 self.hide()
