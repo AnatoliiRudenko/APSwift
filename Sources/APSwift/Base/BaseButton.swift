@@ -10,6 +10,7 @@ import UIKit
 open class BaseButton: UIButton {
     
     public var didTap: (Closure)?
+    public var animatesTap = true
     public var leftImage: UIImage? {
         didSet {
             setImage(leftImage, left: true)
@@ -83,7 +84,9 @@ private extension BaseButton {
     @objc
     func handleTap() {
         didTap?()
-        animateTap()
+        if animatesTap {
+            animateTap()
+        }
     }
     
     func setImage(_ image: UIImage?, left: Bool) {
