@@ -88,7 +88,7 @@ public extension UIView {
         animator.startAnimation()
     }
     
-    func animatesTap() {
+    func animateTap() {
         UIView.animate(withDuration: animationDuration * 0.5, delay: .zero, options: .curveLinear) { [weak self] in
             self?.alpha = 0.4
         } completion: { [weak self] _ in

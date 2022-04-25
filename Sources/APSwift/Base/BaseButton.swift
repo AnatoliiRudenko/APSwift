@@ -83,7 +83,7 @@ private extension BaseButton {
     @objc
     func handleTap() {
         didTap?()
-        animatesTap()
+        animateTap()
     }
     
     func setImage(_ image: UIImage?, left: Bool) {

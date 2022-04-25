@@ -54,7 +54,7 @@ open class BaseView: UIView {
     private func handleTap() {
         didTap?()
         if animatesTap {
-            animatesTap()
+            animateTap()
         }
     }
     
