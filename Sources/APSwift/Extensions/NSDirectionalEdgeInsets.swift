@@ -33,11 +33,11 @@ public extension NSDirectionalEdgeInsets {
         .init(top: 0, leading: 0, bottom: value, trailing: 0)
     }
     
-    static func left(_ value: CGFloat) -> NSDirectionalEdgeInsets {
+    static func leading(_ value: CGFloat) -> NSDirectionalEdgeInsets {
         .init(top: 0, leading: value, bottom: 0, trailing: 0)
     }
     
-    static func right(_ value: CGFloat) -> NSDirectionalEdgeInsets {
+    static func trailing(_ value: CGFloat) -> NSDirectionalEdgeInsets {
         .init(top: 0, leading: 0, bottom: 0, trailing: value)
     }
 }

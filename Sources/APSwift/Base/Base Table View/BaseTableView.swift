@@ -87,6 +87,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
         subscribe(self)
         separatorStyle = .none
         contentInsetAdjustmentBehavior = .never
+        separatorInset = .zero
         rowHeight = UITableView.automaticDimension
         estimatedRowHeight = 2
         tableHeaderView = UIView(frame: .init(x: 0, y: 0, width: 0, height: 0.01))
