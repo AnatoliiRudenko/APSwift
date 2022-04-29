@@ -102,8 +102,10 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeue(cell: Cell.self, indexPath: indexPath) else { return UITableViewCell() }
         contentDelegate?.tableView(self, cell: cell, indexPath: indexPath)
-        let shouldHideSeparator = hidesLastSeparator && indexPath.row == data.count - 1
-        cell.separatorInset = shouldHideSeparator ? .init(top: 0, left: UIScreen.main.bounds.width, bottom: 0, right: 0) : separatorInset
+        if hidesLastSeparator && indexPath.row == data.count - 1 {
+            cell.hideSeparator()
+        }
+        
         return cell
     }
     
