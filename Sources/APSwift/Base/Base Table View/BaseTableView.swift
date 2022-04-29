@@ -28,6 +28,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     
     public var plugView: BaseView?
     public var hidesLastSeparator = true
+    public var isHeightEqualToContentHeight = false
     public var mainHeader: (view: UIView, height: CGFloat?)?
     
     public var contentHeight: CGFloat {
@@ -46,6 +47,8 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
         DispatchQueue.main.async { [weak self] in
             self?.reloadData {
                 completion?()
+                guard let self = self, !self.isHeightEqualToContentHeight else { return }
+                self.height = self.contentHeight
             }
             self?.showPlugView(data.isEmpty)
         }
