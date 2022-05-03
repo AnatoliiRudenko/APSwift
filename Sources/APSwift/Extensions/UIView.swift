@@ -161,9 +161,7 @@ public extension UIView {
     
     @available(iOS 13.0, *)
     func hideLoader() {
-        for subview in subviews where subview is Loader {
-            subview.removeFromSuperview()
-        }
+        subviews.compactMap({ $0 as? Loader }).forEach { $0.hide() }
     }
 }
 
