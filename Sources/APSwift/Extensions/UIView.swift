@@ -151,6 +151,22 @@ public extension UIView {
     }
 }
 
+// MARK: - Loader
+public extension UIView {
+
+    @available(iOS 13.0, *)
+    func showLoader() {
+        Loader(parentView: self).show()
+    }
+    
+    @available(iOS 13.0, *)
+    func hideLoader() {
+        for subview in subviews where subview is Loader {
+            subview.removeFromSuperview()
+        }
+    }
+}
+
 // MARK: - Static
 public extension UIView {
     
