@@ -22,8 +22,4 @@ public extension UIApplication {
     var safeAreaInsets: UIEdgeInsets {
         self.windows.first?.safeAreaInsets ?? .zero
     }
-    
-    var keyWindow: UIWindow? {
-        windows.first(where: { $0.isKeyWindow })
-    }
 }
