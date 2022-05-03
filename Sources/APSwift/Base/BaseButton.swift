@@ -9,7 +9,7 @@ import UIKit
 
 open class BaseButton: UIButton {
     
-    public var didTap: (Closure)?
+    open var didTap: (Closure)?
     public var animatesTap = true
     public var leftImage: UIImage? {
         didSet {

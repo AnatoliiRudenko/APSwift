@@ -10,7 +10,7 @@ import UIKit
 open class BaseView: UIView {
     
     // MARK: - Props
-    public var didTap: (Closure)? {
+    open var didTap: (Closure)? {
         didSet {
             self.enableTap()
         }
