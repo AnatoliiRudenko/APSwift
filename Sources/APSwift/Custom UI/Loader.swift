@@ -60,6 +60,7 @@ open class Loader: UIView {
         }
         
         self.spinner.startAnimating()
+        parentView.bringSubviewToFront(self)
     }
 
     open func hide() {
