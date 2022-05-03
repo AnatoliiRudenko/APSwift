@@ -10,8 +10,7 @@ import UIKit
 public extension UIApplication {
     
     class var topViewController: UIViewController? {
-        let keyWindow = UIApplication.shared.windows.first(where: { $0.isKeyWindow })
-        if var topController = keyWindow?.rootViewController {
+        if var topController = UIApplication.shared.keyWindow?.rootViewController {
             while let presentedViewController = topController.presentedViewController {
                 topController = presentedViewController
             }
@@ -22,5 +21,9 @@ public extension UIApplication {
     
     var safeAreaInsets: UIEdgeInsets {
         self.windows.first?.safeAreaInsets ?? .zero
+    }
+    
+    var keyWindow: UIWindow? {
+        windows.first(where: { $0.isKeyWindow })
     }
 }

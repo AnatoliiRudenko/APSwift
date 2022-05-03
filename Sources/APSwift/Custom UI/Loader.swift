@@ -79,3 +79,16 @@ open class Loader: UIView {
     private var loadingView: UIView = UIView()
     private weak var parentView: UIView?
 }
+
+// MARK: - Static
+@available(iOS 13.0, *)
+public extension Loader {
+    
+    static func showRootLoader() {
+        UIApplication.shared.keyWindow?.showLoader()
+    }
+    
+    static func hideRootLoader() {
+        UIApplication.shared.keyWindow?.hideLoader()
+    }
+}
