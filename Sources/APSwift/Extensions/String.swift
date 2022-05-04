@@ -14,8 +14,8 @@ public extension String {
     }
     
     func sliced(from: String, to: String) -> String? {
-        range(of: from)?.upperBound.flatMap { substringFrom in
-            range(of: to, range: substringFrom..<endIndex)?.lowerBound.map { substringTo in
+        (range(of: from)?.upperBound).flatMap { substringFrom in
+            (range(of: to, range: substringFrom..<endIndex)?.lowerBound).map { substringTo in
                 String(self[substringFrom..<substringTo])
             }
         }
