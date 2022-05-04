@@ -13,6 +13,14 @@ public extension String {
         String(suffix(from: self.index(startIndex, offsetBy: count)))
     }
     
+    func sliced(from: String, to: String) -> String? {
+        range(of: from)?.upperBound.flatMap { substringFrom in
+            range(of: to, range: substringFrom..<endIndex)?.lowerBound.map { substringTo in
+                String(self[substringFrom..<substringTo])
+            }
+        }
+    }
+    
     func applyPatternOnNumbers(pattern: String, replacementCharacter: Character) -> String {
         var pureNumber = self.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
         for index in 0 ..< pattern.count {
