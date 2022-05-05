@@ -16,8 +16,8 @@ public enum ImageManager {
 // MARK: - Full URL String methods
 public extension ImageManager {
     
-    static func load(urlSting: String?, completion: @escaping (UIImage?) -> Void) {
-        guard let urlSting = urlSting,
+    static func load(urlString: String?, completion: @escaping (UIImage?) -> Void) {
+        guard let urlSting = urlString,
               let url = URL(string: urlSting)
         else {
             completion(nil)
@@ -40,7 +40,7 @@ public extension ImageManager {
         var dict = [Int: UIImage?]()
         for (index, urlString) in urlStrings.enumerated() {
             dispatchGroup.enter()
-            load(urlSting: urlString, completion: { image in
+            load(urlString: urlString, completion: { image in
                 dict[index] = image
                 dispatchGroup.leave()
             })
