@@ -9,6 +9,8 @@ import Foundation
 
 open class Listeners<listener: Listener> {
     
+    public init() {}
+    
     public private(set) var listeners: [Listener] = []
     
     public var current: Listener? {
