@@ -7,7 +7,7 @@
 
 import Foundation
 
-open class Listeners<listener: Listener> {
+open class Listeners<Listener: Equatable> {
     
     public init() {}
     
