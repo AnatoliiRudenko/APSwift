@@ -17,12 +17,16 @@ open class Listeners<Listener: Equatable> {
         self.listeners.last
     }
     
-    open func appendListener(_ listener: Listener) {
-        self.removeListener(listener)
+    open func append(_ listener: Listener) {
+        self.remove(listener)
         self.listeners += [listener]
     }
 
-    open func removeListener(_ listener: Listener) {
+    open func remove(_ listener: Listener) {
         self.listeners.removeAll(where: { $0 == listener })
+    }
+    
+    open func clear() {
+        self.listeners = []
     }
 }
