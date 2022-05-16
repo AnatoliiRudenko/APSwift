@@ -123,6 +123,15 @@ public extension UIView {
     }
 }
 
+// MARK: - Border
+public extension UIView {
+    
+    func addBorder(color: UIColor, width: CGFloat = 1) {
+        layer.borderColor = color.cgColor
+        layer.borderWidth = width
+    }
+}
+
 // MARK: - Shadows
 public extension UIView {
     
