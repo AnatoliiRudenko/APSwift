@@ -74,9 +74,6 @@ open class BaseButton: UIButton {
     private lazy var heightConstraint: NSLayoutConstraint = {
         self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
     }()
-    
-    private lazy var imagesRelatedInsets: UIEdgeInsets = .zero
-    private lazy var titleImagesRelatedInsets: UIEdgeInsets = .zero
 }
 
 // MARK: - Supporting Methods
