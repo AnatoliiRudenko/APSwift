@@ -11,6 +11,17 @@ open class BaseTextField: UITextField {
     
     // MARK: - Props
     public var insets: UIEdgeInsets = .zero
+    public var didChangeText: DataClosure<String?>?
+    public var placeholderColor: UIColor?
+    
+    open override var placeholder: String? {
+        willSet {
+            guard let newValue = newValue,
+                  let placeholderColor = placeholderColor
+            else { return }
+            attributedPlaceholder = NSAttributedString(string: newValue, attributes: [.foregroundColor : placeholderColor])
+        }
+    }
     
     // MARK: - Max Length props
     public var maxLength: Int? {
@@ -27,6 +38,7 @@ open class BaseTextField: UITextField {
     // MARK: - Methods
     @objc
     func editingChanged(_ textField: UITextField) {
+        didChangeText?(textField.text)
         guard let text = textField.text else { return }
         
         if let maxLength = maxLength,
@@ -51,7 +63,9 @@ open class BaseTextField: UITextField {
         setupComponents()
     }
     
-    open func setupComponents() {}
+    open func setupComponents() {
+        addTarget(self, action: #selector(editingChanged), for: .editingChanged)
+    }
     
     // MARK: - Height Constraint
     public var height: CGFloat? {
