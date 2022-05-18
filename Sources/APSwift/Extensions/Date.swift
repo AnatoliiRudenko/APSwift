@@ -11,6 +11,7 @@ public extension Date {
     
     func outputString(date: Date?, format: String, timeZone: TimeZone? = nil, locale: Locale = .current) -> String? {
         guard let date = date else { return nil }
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         dateFormatter.timeZone = timeZone
         dateFormatter.locale = locale
