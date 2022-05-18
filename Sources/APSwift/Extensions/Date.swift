@@ -9,23 +9,21 @@ import Foundation
 
 public extension Date {
     
-    func outputString(date: Date?,
-                      format: String,
+    func outputString(format: String,
                       timeZone: TimeZone? = nil,
                       locale: Locale = .current,
                       hasDaySuffix: Bool = false) -> String? {
-        guard let date = date else { return nil }
         var outputFormat = format
         if hasDaySuffix,
            let dayLastIndex = format.lastIndex(of: "d") {
             let nextIndex = format.index(after: dayLastIndex)
-            outputFormat.insert(contentsOf: "'\(daySuffix(day: date.get(.day)))'", at: nextIndex)
+            outputFormat.insert(contentsOf: "'\(daySuffix(day: self.get(.day)))'", at: nextIndex)
         }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = outputFormat
         dateFormatter.timeZone = timeZone
         dateFormatter.locale = locale
-        return dateFormatter.string(from: date)
+        return dateFormatter.string(from: self)
     }
     
     func daySuffix(day: Int) -> String {
