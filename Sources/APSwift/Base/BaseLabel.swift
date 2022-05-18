@@ -28,11 +28,6 @@ open class BaseLabel: UILabel {
         }
     }
     
-    open func multiline(_ lines: Int) {
-        numberOfLines = lines
-        lineBreakMode = .byWordWrapping
-    }
-    
     public var insets: UIEdgeInsets = .zero
     
     // MARK: - Height Constraint
