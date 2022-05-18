@@ -43,7 +43,7 @@ open class BaseButton: UIButton {
     }
     
     // MARK: - UI Properties
-    private lazy var leftImageView: UIImageView = {
+    lazy var leftImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         addSubview(imageView)

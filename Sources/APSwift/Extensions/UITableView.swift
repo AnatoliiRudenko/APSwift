@@ -29,7 +29,7 @@ public extension UITableView {
         dequeueReusableCell(withIdentifier: String.className(cell), for: indexPath) as? T
     }
     
-    func reloadData(completion:@escaping Closure) {
+    func reloadData(completion: @escaping Closure) {
         UIView.animate(withDuration: 0, animations: reloadData) { _ in completion() }
     }
 }
