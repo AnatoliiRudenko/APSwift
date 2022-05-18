@@ -9,22 +9,24 @@ import Foundation
 
 public extension Date {
     
-    enum Format {
-        case ddmmyy(separator: String)
-        
-        var format: String {
-            switch self {
-            case .ddmmyy(let separator):
-                return "dd\(separator)MM\(separator)yy"
-            }
-        }
-    }
-    
-    func outputString(outputFormat: Date.Format) -> String {
+    func outputString(format: String) -> String {
         let outputDateFormatter = DateFormatter()
-        outputDateFormatter.dateFormat = outputFormat.format
-        outputDateFormatter.locale = Locale(identifier: "ru_RU")
+        outputDateFormatter.dateFormat = format.format
+        outputDateFormatter.locale = Locale(identifier: "en_US")
         let dateString = outputDateFormatter.string(from: self)
         return dateString
+    }
+    
+    func daySuffix(day: Int) -> String {
+        switch day {
+        case 1, 21, 31:
+            return "st"
+        case 2, 22:
+            return "nd"
+        case 3, 23:
+            return "rd"
+        default:
+            return "th"
+        }
     }
 }
