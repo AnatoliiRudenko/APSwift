@@ -9,12 +9,12 @@ import Foundation
 
 public extension Date {
     
-    func outputString(format: String) -> String {
-        let outputDateFormatter = DateFormatter()
-        outputDateFormatter.dateFormat = format.format
-        outputDateFormatter.locale = Locale(identifier: "en_US")
-        let dateString = outputDateFormatter.string(from: self)
-        return dateString
+    func outputString(date: Date?, format: String, timeZone: TimeZone? = nil, locale: Locale = .current) -> String? {
+        guard let date = date else { return nil }
+        dateFormatter.dateFormat = format
+        dateFormatter.timeZone = timeZone
+        dateFormatter.locale = locale
+        return dateFormatter.string(from: date)
     }
     
     func daySuffix(day: Int) -> String {
