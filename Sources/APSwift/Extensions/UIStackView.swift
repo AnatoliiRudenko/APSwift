@@ -59,8 +59,8 @@ public extension UIStackView {
         case both
     }
     
-    func addArrangedSubviews(_ views: [UIView], separatorLocation: SubviewsOutterSeparatorLocation, getSeparator: () -> UIView) {
-        
+    func addArrangedSubviews(_ views: [UIView], separatorLocation: SubviewsOutterSeparatorLocation, getSeparator: (() -> UIView)? = nil) {
+        let getSeparator: () -> UIView = getSeparator ?? getDefaultSeparator
         if separatorLocation == .top || separatorLocation == .both {
             addArrangedSubview(getSeparator())
         }
@@ -70,7 +70,8 @@ public extension UIStackView {
         }
     }
     
-    private func addArrangedSubviewsWithSeparatorBetween(_ views: [UIView], getSeparator: () -> UIView) {
+    private func addArrangedSubviewsWithSeparatorBetween(_ views: [UIView], getSeparator: (() -> UIView)? = nil) {
+        let getSeparator: () -> UIView = getSeparator ?? getDefaultSeparator
         guard views.count != 1 else {
             addArrangedSubview(views.first ?? UIView())
             return
@@ -89,5 +90,7 @@ public extension UIStackView {
             addArrangedSubview(subView, separatorLocation: .bottom, separator: getSeparator())
         }
     }
+    
+    private func getDefaultSeparator() -> UIView { .separator(color: .black, height: 1) }
 }
 
