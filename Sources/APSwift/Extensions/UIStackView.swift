@@ -60,7 +60,7 @@ public extension UIStackView {
     }
     
     func addArrangedSubviews(_ views: [UIView], separatorLocation: SubviewsOutterSeparatorLocation, separator: UIView = .separator()) {
-        var getSeparator: UIView { separator }
+        var getSeparator: UIView { (try? separator.copyObject()) ?? .separator() }
         if separatorLocation == .top || separatorLocation == .both {
             addArrangedSubview(getSeparator)
         }
