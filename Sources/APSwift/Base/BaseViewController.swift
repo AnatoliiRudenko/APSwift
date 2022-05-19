@@ -112,8 +112,8 @@ open class BaseViewController: UIViewController, Coordinatable {
     }
     
     // MARK: - UI Properties
-    let contentView = UIView()
-    lazy var scrollView = UIScrollView()
+    public let contentView = UIView()
+    public lazy var scrollView = UIScrollView()
 }
 
 // MARK: - UIGestureRecognizerDelegate
