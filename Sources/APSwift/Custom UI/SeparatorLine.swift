@@ -40,6 +40,6 @@ private extension SeparatorLine {
 
 public extension UIView {
     static func separator(color: UIColor? = nil, height: CGFloat = 1) -> SeparatorLine {
-        .init(color: color)
+        .init(color: color, height: height)
     }
 }
