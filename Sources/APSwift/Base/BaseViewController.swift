@@ -18,7 +18,7 @@ open class BaseViewController: UIViewController, Coordinatable {
     public var coordinator: Coordinator?
     public var isOnFirstLayout = true
     
-    
+    // MARK: - Content View
     public enum ContentContainerType {
         case regular(insets: UIEdgeInsets = .zero, safeAreaRelatedSides: [Side])
         case scrollView(insets: UIEdgeInsets = .zero, safeAreaRelatedSides: [Side])
@@ -112,7 +112,7 @@ open class BaseViewController: UIViewController, Coordinatable {
     }
     
     // MARK: - UI Properties
-    public let contentView = UIView()
+    public lazy var contentView = UIView()
     public lazy var scrollView = UIScrollView()
 }
 

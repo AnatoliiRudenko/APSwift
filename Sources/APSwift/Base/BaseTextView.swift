@@ -41,7 +41,6 @@ open class BaseTextView: UITextView {
 
     open func setupComponents() {
         delegate = self
-        backgroundColor = .clear
     }
     
     // MARK: - Height Constraint
