@@ -18,6 +18,18 @@ open class BaseViewController: UIViewController, Coordinatable {
     public var coordinator: Coordinator?
     public var isOnFirstLayout = true
     
+    
+    public enum ContentContainerType {
+        case regular(insets: UIEdgeInsets = .zero, safeAreaRelatedSides: [Side])
+        case scrollView(insets: UIEdgeInsets = .zero, safeAreaRelatedSides: [Side])
+    }
+    
+    public var contentContainerType: ContentContainerType = .regular(insets: .zero, safeAreaRelatedSides: []) {
+        didSet {
+            setupContentContainer()
+        }
+    }
+    
     // MARK: - Lifecycle
     public convenience init(
         _model: BaseViewModel?
@@ -98,6 +110,10 @@ open class BaseViewController: UIViewController, Coordinatable {
     func presentNativeErrorAlert(_ message: String?) {
         presentNativeOKAlert(title: "Ошибка!", message: message ?? "Что-то пошло не так")
     }
+    
+    // MARK: - UI Properties
+    let contentView = UIView()
+    lazy var scrollView = UIScrollView()
 }
 
 // MARK: - UIGestureRecognizerDelegate
@@ -107,3 +123,48 @@ extension BaseViewController: UIGestureRecognizerDelegate {
         true
     }
 }
+
+// MARK: - Content View set up
+private extension BaseViewController {
+    
+    // MARK: - Content
+    func setupContentContainer() {
+        switch contentContainerType {
+        case let .regular(insets, safeAreaRelatedSides):
+            addContentView(insets: insets, safeAreaRelatedSides: safeAreaRelatedSides)
+        case let .scrollView(insets, safeAreaRelatedSides):
+            addScrollView(insets: insets, safeAreaRelatedSides: safeAreaRelatedSides)
+        }
+    }
+    
+    func addContentView(insets: UIEdgeInsets, safeAreaRelatedSides: [Side]) {
+        view.addSubview(contentView)
+        contentView.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaRelatedSides.contains(where: { $0 == .top }) ? view.safeAreaLayoutGuide.snp.top : view.snp.top)
+            make.left.equalTo(safeAreaRelatedSides.contains(where: { $0 == .left }) ? view.safeAreaLayoutGuide.snp.left : view.snp.left)
+            make.right.equalTo(safeAreaRelatedSides.contains(where: { $0 == .right }) ? view.safeAreaLayoutGuide.snp.right : view.snp.right)
+            make.bottom.equalTo(safeAreaRelatedSides.contains(where: { $0 == .bottom }) ? view.safeAreaLayoutGuide.snp.bottom : view.snp.bottom)
+        }
+    }
+    
+    func addScrollView(insets: UIEdgeInsets, safeAreaRelatedSides: [Side]) {
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaRelatedSides.contains(where: { $0 == .top }) ? view.safeAreaLayoutGuide.snp.top : view.snp.top)
+            make.left.equalTo(safeAreaRelatedSides.contains(where: { $0 == .left }) ? view.safeAreaLayoutGuide.snp.left : view.snp.left)
+            make.right.equalTo(safeAreaRelatedSides.contains(where: { $0 == .right }) ? view.safeAreaLayoutGuide.snp.right : view.snp.right)
+            make.bottom.equalTo(safeAreaRelatedSides.contains(where: { $0 == .bottom }) ? view.safeAreaLayoutGuide.snp.bottom : view.snp.bottom)
+        }
+        contentView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(insets.top)
+            make.left.equalToSuperview().inset(insets.left)
+            make.right.equalToSuperview().inset(insets.right)
+            make.bottom.equalToSuperview().inset(insets.bottom).priority(250)
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().priority(250)
+        }
+        scrollView.contentInsetAdjustmentBehavior = .never
+    }
+}
+
