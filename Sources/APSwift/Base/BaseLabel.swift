@@ -51,6 +51,11 @@ open class BaseLabel: UILabel {
         self.init(frame: .zero)
     }
     
+    public convenience init(text: String?) {
+        self.init(frame: .zero)
+        self.text = text
+    }
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupComponents()
