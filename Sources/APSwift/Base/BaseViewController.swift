@@ -57,7 +57,7 @@ open class BaseViewController: UIViewController, Coordinatable {
     open func setupComponents() {}
     
     // MARK: - Methods
-    func presentNativeOKCancelAlert(title: String?, message: String?, okAction: Closure?) {
+    open func presentNativeOKCancelAlert(title: String?, message: String?, okAction: Closure?) {
         let alertController = UIAlertController(title: title,
                                                 message: message,
                                                 preferredStyle: .alert)
@@ -74,7 +74,7 @@ open class BaseViewController: UIViewController, Coordinatable {
         }
     }
     
-    func presentNativeOKAlert(title: String?, message: String?) {
+    open func presentNativeOKAlert(title: String?, message: String?) {
         let alertController = UIAlertController(title: title,
                                                 message: message,
                                                 preferredStyle: .alert)
@@ -87,7 +87,7 @@ open class BaseViewController: UIViewController, Coordinatable {
         }
     }
     
-    func presentPermissonNotGrantedNativeAlert(title: String?, message: String?) {
+    open func presentPermissonNotGrantedNativeAlert(title: String?, message: String?) {
         let alertController = UIAlertController(title: title,
                                                 message: message,
                                                 preferredStyle: .alert)
@@ -107,7 +107,7 @@ open class BaseViewController: UIViewController, Coordinatable {
         }
     }
     
-    func presentNativeErrorAlert(_ message: String?) {
+    open func presentNativeErrorAlert(_ message: String?) {
         presentNativeOKAlert(title: "Error!", message: message ?? "Something went wrong")
     }
     
@@ -127,7 +127,6 @@ extension BaseViewController: UIGestureRecognizerDelegate {
 // MARK: - Content View set up
 private extension BaseViewController {
     
-    // MARK: - Content
     func setupContentContainer() {
         switch contentContainerType {
         case let .regular(insets, safeAreaRelatedSides):
