@@ -62,10 +62,10 @@ open class BaseViewController: UIViewController, Coordinatable {
                                                 message: message,
                                                 preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "ОК", style: .default) { _ in
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
             okAction?()
         }
-        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alertController.addAction(okAction)
         alertController.addAction(cancelAction)
         
@@ -79,7 +79,7 @@ open class BaseViewController: UIViewController, Coordinatable {
                                                 message: message,
                                                 preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "ОК", style: .default, handler: nil)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(okAction)
         
         DispatchQueue.main.async { [weak self] in
@@ -92,13 +92,13 @@ open class BaseViewController: UIViewController, Coordinatable {
                                                 message: message,
                                                 preferredStyle: .alert)
         
-        let settingsAction = UIAlertAction(title: "Настройки", style: .default) { _ in
+        let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString),
                   UIApplication.shared.canOpenURL(settingsUrl)
             else { return }
             UIApplication.shared.open(settingsUrl, completionHandler: nil)
         }
-        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alertController.addAction(settingsAction)
         alertController.addAction(cancelAction)
         
@@ -108,7 +108,7 @@ open class BaseViewController: UIViewController, Coordinatable {
     }
     
     func presentNativeErrorAlert(_ message: String?) {
-        presentNativeOKAlert(title: "Ошибка!", message: message ?? "Что-то пошло не так")
+        presentNativeOKAlert(title: "Error!", message: message ?? "Something went wrong")
     }
     
     // MARK: - UI Properties
