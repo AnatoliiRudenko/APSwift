@@ -32,3 +32,10 @@ public extension Array where Element: CustomStringConvertible {
         queryString(values: compactMap({ String(describing: $0) }), key: key)
     }
 }
+
+public extension Sequence where Element: Hashable {
+    var uniqued: [Element] {
+        var set = Set<Element>()
+        return filter { set.insert($0).inserted }
+    }
+}
