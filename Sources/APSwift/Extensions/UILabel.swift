@@ -17,7 +17,7 @@ public extension UILabel {
         }
     }
     
-    func multiline(_ lines: Int) {
+    func multiline(_ lines: Int = 0) {
         numberOfLines = lines
         lineBreakMode = .byWordWrapping
     }
