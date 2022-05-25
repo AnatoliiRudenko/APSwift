@@ -9,16 +9,10 @@ import Foundation
 
 public extension Encodable {
     
-    var dictionary: [String: Any?] {
+    var dictionary: [String: Any] {
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(self) else { return [:] }
         return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] } ?? [:]
-    }
-    
-    var dictionaryWithoutEmptyFields: [String: Any?] {
-        var dict = dictionary
-        filterFromEmptyFields(dictionary: &dict)
-        return dictionary
     }
     
     func filterFromEmptyFields(dictionary: inout [String: Any?]) {
