@@ -37,7 +37,7 @@ open class BaseTextField: UITextField {
     
     // MARK: - Methods
     @objc
-    func editingChanged(_ textField: UITextField) {
+    open func editingChanged(_ textField: UITextField) {
         didChangeText?(textField.text)
         guard let text = textField.text else { return }
         
