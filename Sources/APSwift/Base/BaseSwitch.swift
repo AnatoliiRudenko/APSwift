@@ -7,24 +7,24 @@
 
 import UIKit
 
-class BaseSwitch: UISwitch {
+open class BaseSwitch: UISwitch {
     
     // MARK: - Props
-    var didSwitchTo: DataClosure<Bool>?
+    public var didSwitchTo: DataClosure<Bool>?
     
-    var onThumbTintColor: UIColor? {
+    public var onThumbTintColor: UIColor? {
         didSet {
             setThumbColor()
         }
     }
-    var offThumbTintColor: UIColor? {
+    public var offThumbTintColor: UIColor? {
         didSet {
             setThumbColor()
         }
     }
     
     // MARK: - Methods
-    func imitateTap() {
+    public func imitateTap() {
         setOn(!isOn, animated: true)
         didSwitch(self)
     }
@@ -42,7 +42,7 @@ class BaseSwitch: UISwitch {
     }
 
     // MARK: - Init
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         setupComponents()
     }
