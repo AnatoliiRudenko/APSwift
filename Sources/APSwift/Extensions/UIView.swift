@@ -177,10 +177,15 @@ public extension UIView {
 // MARK: - Static
 public extension UIView {
     
-    static func stackView(_ axis: NSLayoutConstraint.Axis, _ spacing: CGFloat, _ subviews: [UIView], insets: UIEdgeInsets? = nil) -> UIStackView {
+    static func stackView(_ axis: NSLayoutConstraint.Axis,
+                          _ spacing: CGFloat,
+                          _ subviews: [UIView],
+                          distribution: UIStackView.Distribution = .fill,
+                          insets: UIEdgeInsets? = nil) -> UIStackView {
         let stackView = UIStackView()
         stackView.axis = axis
         stackView.spacing = spacing
+        stackView.distribution = distribution
         stackView.addArrangedSubviews(subviews)
         if let insets = insets {
             stackView.setInsets(NSDirectionalEdgeInsets(top: insets.top,
