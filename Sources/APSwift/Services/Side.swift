@@ -17,4 +17,5 @@ public enum Side {
 public extension Array where Element == Side {
     
     static var exceptForBottom: [Side] { [.top, .left, .right] }
+    static var all: [Side] { [.top, .bottom, .left, .right] }
 }
