@@ -24,7 +24,7 @@ open class BaseTextView: UITextView {
             super.text == placeholder ? "" : super.text
         }
         set {
-            super.text = newValue
+            super.text = newValue.isEmpty == false ? newValue : placeholder
         }
     }
     
