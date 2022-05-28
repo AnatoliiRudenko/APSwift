@@ -19,11 +19,13 @@ open class BaseTextView: UITextView {
             self.textColor = placeholderColor
         }
     }
+    
     open override var text: String! {
         get {
             super.text == placeholder ? "" : super.text
         }
         set {
+            let newValue = newValue ?? ""
             super.text = shouldCallTextSetter ?
             (newValue.isEmpty == false ? newValue : placeholder) :
             newValue
