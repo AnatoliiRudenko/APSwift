@@ -24,9 +24,13 @@ open class BaseTextView: UITextView {
             super.text == placeholder ? "" : super.text
         }
         set {
-            super.text = newValue.isEmpty == false ? newValue : placeholder
+            super.text = shouldCallTextSetter ?
+            (newValue.isEmpty == false ? newValue : placeholder) :
+            newValue
+            shouldCallTextSetter = true
         }
     }
+    private var shouldCallTextSetter = true
     
     // MARK: - Init
     public override init(frame: CGRect, textContainer: NSTextContainer?) {
@@ -65,6 +69,7 @@ extension BaseTextView: UITextViewDelegate {
     
     open func textViewDidBeginEditing(_ textView: UITextView) {
         guard textView.textColor == placeholderColor else { return }
+        shouldCallTextSetter = false
         textView.text = ""
         textView.textColor = mainTextColor
     }
