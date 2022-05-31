@@ -23,6 +23,14 @@ open class BaseButton: UIButton {
     }
     public var textToImageOffset: CGFloat = 16
     
+    open override var isEnabled: Bool {
+        get { super.isEnabled }
+        set {
+            super.isEnabled = newValue
+            self.alpha = newValue ? 1 : 0.5
+        }
+    }
+    
     // MARK: - Init
     public convenience init() {
         self.init(frame: .zero)

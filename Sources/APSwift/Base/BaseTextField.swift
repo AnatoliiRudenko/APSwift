@@ -23,6 +23,14 @@ open class BaseTextField: UITextField {
         }
     }
     
+    open override var isEnabled: Bool {
+        get { super.isEnabled }
+        set {
+            super.isEnabled = newValue
+            self.alpha = newValue ? 1 : 0.5
+        }
+    }
+    
     // MARK: - Max Length props
     public var maxLength: Int? {
         didSet {
