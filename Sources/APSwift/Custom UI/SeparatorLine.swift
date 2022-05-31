@@ -9,7 +9,7 @@ import UIKit
 
 open class SeparatorLine: BaseView {
     
-    private var lineHeight: CGFloat = 1 {
+    public var lineHeight: CGFloat = 1 {
         didSet {
             setHeight()
         }
