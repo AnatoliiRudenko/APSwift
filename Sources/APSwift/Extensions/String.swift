@@ -74,6 +74,28 @@ public extension String {
     }
 }
 
+// MARK: - Attributes
+public extension String {
+    
+    func addAttributes(_ attributes: [NSAttributedString.Key: Any], to string: String?) -> NSMutableAttributedString? {
+        guard let string = string, !string.isEmpty,
+              let rangeOfString = self.range(of: string),
+              let nsRange = self.nsRange(from: rangeOfString)
+        else { return nil }
+        let attrString = NSMutableAttributedString(string: self)
+        attrString.addAttributes(attributes, range: nsRange)
+        return attrString
+    }
+    
+    func nsRange(from range: Range<String.Index>) -> NSRange? {
+        guard let from = range.lowerBound.samePosition(in: utf16),
+              let to = range.upperBound.samePosition(in: utf16)
+        else { return nil }
+        return NSRange(location: utf16.distance(from: utf16.startIndex, to: from),
+                       length: utf16.distance(from: from, to: to))
+    }
+}
+
 // MARK: - HTML String
 public extension String {
     
