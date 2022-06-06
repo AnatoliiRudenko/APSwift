@@ -137,7 +137,26 @@ public extension UIView {
     
     static var shadowLayerName: String { "shadow" }
     
-    func addShadowLayer(index: Int, color: UIColor, offset: CGSize, radius: CGFloat, opacity: Float) {
+    func setShadow(color: UIColor,
+                   radius: CGFloat,
+                   opacity: CGFloat,
+                   offset: CGSize,
+                   scale: Bool = true) {
+        layer.masksToBounds = false
+        layer.shadowColor = color.cgColor
+        layer.shadowOpacity = Float(opacity)
+        layer.shadowOffset = offset
+        layer.shadowRadius = radius
+        layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+        layer.shouldRasterize = true
+        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+    }
+    
+    func addShadowLayer(index: Int,
+                        color: UIColor,
+                        offset: CGSize,
+                        radius: CGFloat,
+                        opacity: Float) {
         let shadowLayer = CAShapeLayer()
         shadowLayer.name = UIView.shadowLayerName
         shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
@@ -153,6 +172,7 @@ public extension UIView {
     
     func removeShadows() {
         shadowLayers.forEach({ $0.removeFromSuperlayer() })
+        layer.shadowOffset = .zero
     }
     
     var shadowLayers: [CALayer] {
