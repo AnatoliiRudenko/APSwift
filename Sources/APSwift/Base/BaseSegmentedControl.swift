@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BaseSegmentedControl: UISegmentedControl {
+open class BaseSegmentedControl: UISegmentedControl {
     
     // MARK: - Init
     public convenience init() {
