@@ -10,8 +10,9 @@ import UIKit
 open class BaseSegmentedControl: UISegmentedControl {
     
     // MARK: - Init
-    public convenience init() {
-        self.init(frame: .zero)
+    public override init(items: [Any]?) {
+        super.init(items: items)
+        self.setupComponents()
     }
     
     public override init(frame: CGRect) {
