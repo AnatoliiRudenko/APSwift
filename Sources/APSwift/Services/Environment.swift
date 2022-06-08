@@ -9,13 +9,30 @@ import Foundation
 
 public enum Environment {
     
+    case debug
+    case testFlight
+    case prod
+    
+    init() {
+        if Environment.isTestFlight {
+            self = .testFlight
+        }
+        if Environment.isDebug {
+            self = .debug
+        }
+        self = .prod
+    }
+}
+
+private extension Environment {
+    
     static var isTest: Bool {
         isTestFlight || isDebug
     }
     
     static let isTestFlight = Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
     
-    private static var isDebug: Bool {
+    static var isDebug: Bool {
         #if DEBUG
         return true
         #else
