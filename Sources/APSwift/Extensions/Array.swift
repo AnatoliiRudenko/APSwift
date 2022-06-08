@@ -15,6 +15,11 @@ public extension Array {
         return Array(self[...maxIndex])
     }
     
+    func cutToLast(_ newCount: Int = 1) -> [Element] {
+        guard self.count > newCount else { return self }
+        return Array(self[newCount...count - 1])
+    }
+    
     func queryString(values: [String], key: String) -> String {
         values.map { key + "=" + $0 }.joined(separator: "&")
     }
