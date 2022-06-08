@@ -29,17 +29,17 @@ open class BaseSegmentedControl: UISegmentedControl {
     }
     public var normalBGColor: UIColor? {
         didSet {
-            setBackgroundImage(normalBGColor?.asImage(size: .init(width: 1, height: height ?? 1)), for: .normal, barMetrics: .default)
+//            setBackgroundImage(normalBGColor?.asImage(size: .init(width: 1, height: height ?? 1)), for: .normal, barMetrics: .default)
         }
     }
     public var selectedBGColor: UIColor? {
         didSet {
-            setBackgroundImage(selectedBGColor?.asImage(size: .init(width: 1, height: height ?? 1)), for: .selected, barMetrics: .default)
+//            setBackgroundImage(selectedBGColor?.asImage(size: .init(width: 1, height: height ?? 1)), for: .selected, barMetrics: .default)
         }
     }
     public var dividerColor: UIColor? {
         didSet {
-            setDividerImage(dividerColor?.asImage(size: .init(width: 1, height: height ?? 1)), forLeftSegmentState: .normal, rightSegmentState: .normal, barMetrics: .default)
+//            setDividerImage(dividerColor?.asImage(size: .init(width: 1, height: height ?? 1)), forLeftSegmentState: .normal, rightSegmentState: .normal, barMetrics: .default)
         }
     }
     
@@ -76,6 +76,17 @@ open class BaseSegmentedControl: UISegmentedControl {
         super.layoutSubviews()
         
         changeUIOnSwitch(selectedSegmentIndex, animated: false)
+        if let normalBGColor = normalBGColor {
+            setBackgroundImage(normalBGColor.asImage(size: .init(width: 1, height: height ?? bounds.height)), for: .normal, barMetrics: .default)
+        }
+        
+        if let selectedBGColor = selectedBGColor {
+            setBackgroundImage(selectedBGColor.asImage(size: .init(width: 1, height: height ?? bounds.height)), for: .selected, barMetrics: .default)
+        }
+        
+        if let dividerColor = dividerColor {
+            setDividerImage(dividerColor.asImage(size: .init(width: 1, height: height ?? bounds.height)), forLeftSegmentState: .normal, rightSegmentState: .normal, barMetrics: .default)
+        }
     }
     
     open func changeUIOnSwitch(_ index: Int, animated: Bool = true) {
