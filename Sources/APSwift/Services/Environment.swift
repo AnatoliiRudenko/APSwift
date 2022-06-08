@@ -13,7 +13,7 @@ public enum Environment {
     case testFlight
     case prod
     
-    init() {
+    public init() {
         if Environment.isTestFlight {
             self = .testFlight
         }
