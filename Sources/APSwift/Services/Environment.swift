@@ -16,9 +16,11 @@ public enum Environment {
     public init() {
         if Environment.isTestFlight {
             self = .testFlight
+            return
         }
         if Environment.isDebug {
             self = .debug
+            return
         }
         self = .prod
     }
