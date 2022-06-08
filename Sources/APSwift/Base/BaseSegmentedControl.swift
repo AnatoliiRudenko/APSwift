@@ -76,17 +76,6 @@ open class BaseSegmentedControl: UISegmentedControl {
         super.layoutSubviews()
         
         changeUIOnSwitch(selectedSegmentIndex, animated: false)
-//        if let normalBGColor = normalBGColor {
-//            setBackgroundImage(normalBGColor.asImage(size: .init(width: 1, height: height ?? bounds.height)), for: .normal, barMetrics: .default)
-//        }
-//
-//        if let selectedBGColor = selectedBGColor {
-//            setBackgroundImage(selectedBGColor.asImage(size: .init(width: 1, height: height ?? bounds.height)), for: .selected, barMetrics: .default)
-//        }
-//
-//        if let dividerColor = dividerColor {
-//            setDividerImage(dividerColor.asImage(size: .init(width: 1, height: height ?? bounds.height)), forLeftSegmentState: .normal, rightSegmentState: .normal, barMetrics: .default)
-//        }
     }
     
     open func changeUIOnSwitch(_ index: Int, animated: Bool = true) {
