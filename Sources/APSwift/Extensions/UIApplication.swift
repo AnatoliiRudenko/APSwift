@@ -9,8 +9,8 @@ import UIKit
 
 public extension UIApplication {
     
-    class var topViewController: UIViewController? {
-        if var topController = UIApplication.shared.keyWindow?.rootViewController {
+    var topViewController: UIViewController? {
+        if var topController = keyWindow?.rootViewController {
             while let presentedViewController = topController.presentedViewController {
                 topController = presentedViewController
             }
