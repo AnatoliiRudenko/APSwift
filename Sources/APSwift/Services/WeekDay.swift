@@ -15,4 +15,23 @@ public enum WeekDay: Int, CaseIterable {
     case friday
     case saturday
     case sunday
+    
+    var title: String {
+        switch self {
+        case .monday:
+            return "Monday"
+        case .tueday:
+            return "Tueday"
+        case .wednesday:
+            return "Wednesday"
+        case .thursday:
+            return "Thursday"
+        case .friday:
+            return "Friday"
+        case .saturday:
+            return "Saturday"
+        case .sunday:
+            return "Sunday"
+        }
+    }
 }
