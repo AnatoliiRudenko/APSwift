@@ -5,37 +5,48 @@
 //  Created by Анатолий Руденко on 16.06.2022.
 //
 
-import Foundation
+import UIKit
 
 open class CircleDiagramView: BaseView {
     
     // MARK: - Props
-    let progressLayer = CAShapeLayer()
+    public let progressLayer = CAShapeLayer()
     
-    var diameter: CGFloat = 160
-    var maxValue: CGFloat = 100
-    var minValue: CGFloat = 0
-    var value: CGFloat {
+    public var diameter: CGFloat = 160
+    public var maxValue: CGFloat = 100
+    public var minValue: CGFloat = 0
+    public var value: CGFloat {
         currentValue
     }
     private var currentValue: CGFloat = 0
     
     // MARK: - Methods
-    override func setupComponents() {
+    override open func setupComponents() {
         super.setupComponents()
      
         setProgressUI()
     }
     
-    override func layoutSubviews() {
+    override open func layoutSubviews() {
         super.layoutSubviews()
         
         self.draw(value: value, animated: false)
     }
     
-    func setValue(_ value: CGFloat, animated: Bool = true) {
+    open func setValue(_ value: CGFloat, animated: Bool = true) {
         self.currentValue = value
         self.draw(value: value, animated: animated)
+    }
+    
+    open func setRelativeValue(_ relativeValue: CGFloat) {
+        var relativeValueToUse = relativeValue
+        if relativeValue < 0 {
+            relativeValueToUse = 0
+        }
+        if relativeValue > 1 {
+            relativeValueToUse = 1
+        }
+        setValue(relativeValueToUse * maxValue)
     }
 }
 

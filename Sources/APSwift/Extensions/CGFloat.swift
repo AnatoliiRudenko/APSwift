@@ -5,10 +5,10 @@
 //  Created by Анатолий Руденко on 16.06.2022.
 //
 
-import Foundation
+import UIKit
 
 public extension CGFloat {
-    
+
     var asRadians: CGFloat {
         self * .pi / 180
     }
