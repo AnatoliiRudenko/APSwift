@@ -7,7 +7,7 @@
 
 import Foundation
 
-open class CircleDiagramView: AppView {
+open class CircleDiagramView: BaseView {
     
     // MARK: - Props
     let progressLayer = CAShapeLayer()
