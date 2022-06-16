@@ -56,8 +56,8 @@ private extension CircleDiagramView {
     func draw(value: CGFloat, animated: Bool) {
         roundCorners(diameter * 0.5)
         let startRadians: CGFloat = -.pi / 2 + minValue.asRadians
-        let relativeValue = value / maxValue
-        let targetRadians = relativeValue.asRadians - startRadians
+        let valueRadians = value / maxValue * 2 * .pi
+        let targetRadians = valueRadians + startRadians
         let circularPath = UIBezierPath(arcCenter: CGPoint(x: diameter * 0.5, y: diameter * 0.5),
                                         radius: diameter * 0.5,
                                         startAngle: startRadians,
