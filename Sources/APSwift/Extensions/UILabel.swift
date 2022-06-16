@@ -21,4 +21,19 @@ public extension UILabel {
         numberOfLines = lines
         lineBreakMode = .byWordWrapping
     }
+    
+    func textToAttributedString(newAttributes: [NSAttributedString.Key: Any], for string: String?) -> NSMutableAttributedString? {
+        guard let text = text,
+              let string = string, !string.isEmpty,
+              let rangeOfString = text.range(of: string),
+              let nsRange = text.nsRange(from: rangeOfString)
+        else { return nil }
+        let attrString = text.addAttributes([.font: font, .foregroundColor: textColor], to: text)
+        attrString?.addAttributes(newAttributes, range: nsRange)
+        return attrString
+    }
+    
+    func setAttributedString(newAttributes: [NSAttributedString.Key: Any], for string: String?) {
+        attributedText = textToAttributedString(newAttributes: newAttributes, for: string)
+    }
 }
