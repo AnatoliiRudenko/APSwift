@@ -13,8 +13,8 @@ open class CircleDiagramView: BaseView {
     public let progressLayer = CAShapeLayer()
     
     public var diameter: CGFloat = 160
-    public var maxValue: CGFloat = 100
-    public var minValue: CGFloat = 0
+    open var maxValue: CGFloat = 100
+    open var minValue: CGFloat = 0
     public var value: CGFloat {
         currentValue
     }
