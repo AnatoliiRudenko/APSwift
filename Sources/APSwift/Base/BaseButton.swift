@@ -36,6 +36,11 @@ open class BaseButton: UIButton {
         self.init(frame: .zero)
     }
     
+    public convenience init(title: String?) {
+        self.init(frame: .zero)
+        self.setTitle(title)
+    }
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         setupComponents()
