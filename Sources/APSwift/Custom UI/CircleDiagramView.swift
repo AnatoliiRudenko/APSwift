@@ -38,7 +38,7 @@ open class CircleDiagramView: BaseView {
         self.draw(value: value, animated: animated)
     }
     
-    open func setRelativeValue(_ relativeValue: CGFloat) {
+    open func setRelativeValue(_ relativeValue: CGFloat, animated: Bool = true) {
         var relativeValueToUse = relativeValue
         if relativeValue < 0 {
             relativeValueToUse = 0
@@ -46,7 +46,7 @@ open class CircleDiagramView: BaseView {
         if relativeValue > 1 {
             relativeValueToUse = 1
         }
-        setValue(relativeValueToUse * maxValue)
+        setValue(relativeValueToUse * maxValue, animated: animated)
     }
 }
 
