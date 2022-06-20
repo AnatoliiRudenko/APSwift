@@ -9,6 +9,10 @@ import UIKit
 
 public extension UIScrollView {
     
+    func setSafeAreaBottomInset(extraValue: CGFloat = 0) {
+        contentInset.bottom = UIApplication.shared.safeAreaInsets.bottom + extraValue
+    }
+    
     func scrollToView(view: UIView?,
                       position: UITableView.ScrollPosition = .top,
                       animated: Bool = true) {
