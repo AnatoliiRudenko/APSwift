@@ -30,6 +30,7 @@ open class BaseTextView: UITextView {
             (newValue.isEmpty == false ? newValue : placeholder) :
             newValue
             shouldCallTextSetter = true
+            setTextColor()
         }
     }
     private var shouldCallTextSetter = true
@@ -86,5 +87,13 @@ extension BaseTextView: UITextViewDelegate {
         guard let maxLength = maxLength else { return true }
         let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
         return newText.count <= maxLength
+    }
+}
+
+// MARK: - Supporting methods
+private extension BaseTextView {
+    
+    func setTextColor() {
+        self.textColor =  text == placeholder ? placeholderColor : mainTextColor
     }
 }
