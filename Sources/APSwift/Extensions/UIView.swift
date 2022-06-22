@@ -183,7 +183,7 @@ public extension UIView {
 // MARK: - Constraints
 public extension UIView {
     
-    var constraints: [NSLayoutConstraint] {
+    var outsideConstraints: [NSLayoutConstraint] {
         var array = [NSLayoutConstraint]()
         guard let superview = superview else { return array }
         for constraint in superview.constraints {
@@ -198,7 +198,7 @@ public extension UIView {
     }
     
     func lowerPriorities() {
-        constraints.forEach {
+        outsideConstraints.forEach {
             $0.priority = .defaultLow
         }
     }
