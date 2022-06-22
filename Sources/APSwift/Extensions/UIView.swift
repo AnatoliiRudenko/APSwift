@@ -197,6 +197,10 @@ public extension UIView {
 // MARK: - Static
 public extension UIView {
     
+    static var new: UIView {
+        UIView()
+    }
+    
     static func stackView(_ axis: NSLayoutConstraint.Axis,
                           _ spacing: CGFloat,
                           _ subviews: [UIView],
