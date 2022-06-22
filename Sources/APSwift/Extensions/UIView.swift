@@ -180,6 +180,30 @@ public extension UIView {
     }
 }
 
+// MARK: - Constraints
+public extension UIView {
+    
+    var constraints: [NSLayoutConstraint] {
+        var array = [NSLayoutConstraint]()
+        guard let superview = superview else { return array }
+        for constraint in superview.constraints {
+            if let first = constraint.firstItem as? UIView, first == self {
+                array.append(constraint)
+            }
+            if let second = constraint.secondItem as? UIView, second == self {
+                array.append(constraint)
+            }
+        }
+        return array
+    }
+    
+    func lowerPriorities() {
+        constraints.forEach {
+            $0.priority = .defaultLow
+        }
+    }
+}
+
 // MARK: - Loader
 public extension UIView {
 
