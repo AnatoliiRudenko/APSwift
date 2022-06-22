@@ -94,6 +94,6 @@ extension BaseTextView: UITextViewDelegate {
 private extension BaseTextView {
     
     func setTextColor() {
-        self.textColor =  text == placeholder ? placeholderColor : mainTextColor
+        self.textColor = text.isEmpty ? placeholderColor : mainTextColor
     }
 }
