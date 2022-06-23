@@ -11,6 +11,7 @@ open class BaseButton: UIButton {
     
     open var didTap: (Closure)?
     public var animatesTap = true
+    // don't use with center content horizontal alignment
     public var leftImage: UIImage? {
         didSet {
             setImage(leftImage, left: true)

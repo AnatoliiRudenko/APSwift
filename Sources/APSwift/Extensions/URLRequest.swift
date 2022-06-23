@@ -8,31 +8,29 @@
 import Foundation
 
 public extension URLRequest {
-
+    
     var curlString: String {
-        guard let url = url else { return "" }
-        var baseCommand = #"curl "\#(url.absoluteString)""#
-
-        if httpMethod == "HEAD" {
-            baseCommand += " --head"
-        }
-
-        var command = [baseCommand]
-
-        if let method = httpMethod, method != "GET" && method != "HEAD" {
-            command.append("-X \(method)")
-        }
-
-        if let headers = allHTTPHeaderFields {
-            for (key, value) in headers where key != "Cookie" {
-                command.append("-H '\(key): \(value)'")
+        let method = "--location --request " + "\(self.httpMethod ?? "GET") "
+        // no matter what I do, the apostrophe always displays as "\'". If you know how to fix that - please let me know. Until then - have to mannulally delete all the \ to get a valid curl
+        let apostrophe = #"'"#
+        let url: String = "\(apostrophe)\(self.url?.absoluteString ?? "")\(apostrophe)"
+        
+        var cURL = "curl "
+        var header = ""
+        var data: String = ""
+        
+        if let httpHeaders = self.allHTTPHeaderFields, httpHeaders.keys.count > 0 {
+            for (key, value) in httpHeaders {
+                header += " --header " + "\(apostrophe)\(key): \(value)\(apostrophe)"
             }
         }
-
-        if let data = httpBody, let body = String(data: data, encoding: .utf8) {
-            command.append("-d '\(body)'")
+        
+        if let bodyData = self.httpBody, let bodyString = String(data: bodyData, encoding: .utf8),  !bodyString.isEmpty {
+            data = "--data \(apostrophe)\(bodyString)\(apostrophe)"
         }
-
-        return command.joined(separator: " \\\n\t")
+        
+        cURL += method + url + header + data
+        
+        return cURL
     }
 }
