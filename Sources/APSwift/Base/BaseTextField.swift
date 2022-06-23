@@ -61,6 +61,11 @@ open class BaseTextField: UITextField {
         self.init(frame: .zero)
     }
     
+    public convenience init(placeholder: String?) {
+        self.init(frame: .zero)
+        self.placeholder = placeholder
+    }
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         setupComponents()
