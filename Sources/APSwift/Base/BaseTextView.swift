@@ -36,6 +36,11 @@ open class BaseTextView: UITextView {
     private var shouldCallTextSetter = true
     
     // MARK: - Init
+    public convenience init(placeholder: String?) {
+        self.init(frame: .zero, textContainer: nil)
+        self.placeholder = placeholder
+    }
+    
     public override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         setupComponents()
