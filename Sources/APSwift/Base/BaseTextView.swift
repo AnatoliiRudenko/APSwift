@@ -38,7 +38,7 @@ open class BaseTextView: UITextView {
     // MARK: - Init
     public convenience init(placeholder: String?) {
         self.init(frame: .zero, textContainer: nil)
-        self.placeholder = placeholder
+        defer { self.placeholder = placeholder }
     }
     
     public override init(frame: CGRect, textContainer: NSTextContainer?) {
