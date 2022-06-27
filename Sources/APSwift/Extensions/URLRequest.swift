@@ -9,15 +9,17 @@ import Foundation
 
 public extension URLRequest {
     
+    // don't try to print(request.curlString.debugDescription) or run po request.curlString in debug console
+    // for you will see a string with a lot of unwanted backslashes.
+    // run print(request.curlString) from code to get desired result
     var curlString: String {
         let method = "--location --request " + "\(self.httpMethod ?? "GET") "
-        // no matter what I do, the apostrophe always displays as "\'". If you know how to fix that - please let me know. Until then - have to mannulally delete all the \ to get a valid curl
         let apostrophe = #"'"#
         let url: String = "\(apostrophe)\(self.url?.absoluteString ?? "")\(apostrophe)"
         
         var cURL = "curl "
         var header = ""
-        var data: String = ""
+        var data = ""
         
         if let httpHeaders = self.allHTTPHeaderFields, httpHeaders.keys.count > 0 {
             for (key, value) in httpHeaders {
@@ -26,11 +28,10 @@ public extension URLRequest {
         }
         
         if let bodyData = self.httpBody, let bodyString = String(data: bodyData, encoding: .utf8),  !bodyString.isEmpty {
-            data = "--data \(apostrophe)\(bodyString)\(apostrophe)"
+            data = " --data \(apostrophe)\(bodyString)\(apostrophe)"
         }
         
         cURL += method + url + header + data
-        
         return cURL
     }
 }
