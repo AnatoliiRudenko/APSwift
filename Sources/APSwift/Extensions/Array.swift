@@ -29,6 +29,12 @@ public extension Array {
         currentArray.remove(at: index)
         return currentArray
     }
+    
+    mutating func byReplacingElement(at index: Int, with element: Element) -> Array {
+        var currentArray = self
+        currentArray[index] = element
+        return currentArray
+    }
 }
 
 // MARK: - Query String

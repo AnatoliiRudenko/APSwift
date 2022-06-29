@@ -9,9 +9,9 @@ import Foundation
 
 public extension URLRequest {
     
-    // don't try to print(request.curlString.debugDescription) or run po request.curlString in debug console
-    // for you will see a string with a lot of unwanted backslashes.
-    // run print(request.curlString) from code to get desired result
+    // run po print(request.curlString) in debug console
+    // or print(request.curlString) from code
+    // to get desired string printed without extra backslashes
     var curlString: String {
         let method = "--location --request " + "\(self.httpMethod ?? "GET") "
         let apostrophe = #"'"#
