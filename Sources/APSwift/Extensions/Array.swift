@@ -24,13 +24,13 @@ public extension Array {
         values.map { key + "=" + $0 }.joined(separator: "&")
     }
     
-    mutating func byRemovingElement(at index: Int) -> Array {
+    func byRemovingElement(at index: Int) -> Array {
         var currentArray = self
         currentArray.remove(at: index)
         return currentArray
     }
     
-    mutating func byReplacingElement(at index: Int, with element: Element) -> Array {
+    func byReplacingElement(at index: Int, with element: Element) -> Array {
         var currentArray = self
         currentArray[index] = element
         return currentArray
