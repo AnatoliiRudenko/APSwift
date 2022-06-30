@@ -25,6 +25,12 @@ public extension Dictionary {
     }
 }
 
+public extension Dictionary where Value: Equatable {
+    func key(for value: Value) -> Key? {
+        first(where: { $1 == value })?.key
+    }
+}
+
 public extension Dictionary where Value: Comparable {
     var sortedByValue: [(Key, Value)] { return Array(self).sorted { $0.1 < $1.1 } }
 }
