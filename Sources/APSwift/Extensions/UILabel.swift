@@ -28,7 +28,9 @@ public extension UILabel {
               let rangeOfString = text.range(of: string),
               let nsRange = text.nsRange(from: rangeOfString)
         else { return nil }
-        let attrString = text.addAttributes([.font: font, .foregroundColor: textColor], to: text)
+        let attrString = text.addAttributes([.font: font as Any,
+                                             .foregroundColor: (textColor ?? .black) as Any],
+                                            to: text)
         attrString?.addAttributes(newAttributes, range: nsRange)
         return attrString
     }
