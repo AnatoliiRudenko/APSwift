@@ -15,13 +15,11 @@ public extension UIImageView {
     
     func setImage(url: URL?, placeholder: UIImage? = nil, qos: DispatchQoS.QoSClass = ImageManager.defaultQOS, completion: DataClosure<UIImage?>? = nil) {
         self.image = placeholder
-        DispatchQueue.global(qos: qos).async {
-            ImageManager.load(url: url) { [weak self] image in
-                if let image = image {
-                    self?.image = image
-                }
-                completion?(image)
+        ImageManager.load(url: url, qos: qos) { [weak self] image in
+            if let image = image {
+                self?.image = image
             }
+            completion?(image)
         }
     }
 }
