@@ -9,13 +9,13 @@ import UIKit
 
 public extension UIImageView {
     
-    func setImage(urlString: String?, placeholder: UIImage? = nil, qos: DispatchQoS.QoSClass = ImageManager.defaultQOS, completion: DataClosure<UIImage?>? = nil) {
-        setImage(url: URL(string: urlString ?? ""), placeholder: placeholder, qos: qos, completion: completion)
+    func setImage(urlString: String?, placeholder: UIImage? = nil, completion: DataClosure<UIImage?>? = nil) {
+        setImage(url: URL(string: urlString ?? ""), placeholder: placeholder, completion: completion)
     }
     
-    func setImage(url: URL?, placeholder: UIImage? = nil, qos: DispatchQoS.QoSClass = ImageManager.defaultQOS, completion: DataClosure<UIImage?>? = nil) {
+    func setImage(url: URL?, placeholder: UIImage? = nil, completion: DataClosure<UIImage?>? = nil) {
         self.image = placeholder
-        ImageManager.load(url: url, qos: qos) { [weak self] image in
+        ImageManager.load(url: url) { [weak self] image in
             if let image = image {
                 self?.image = image
             }
