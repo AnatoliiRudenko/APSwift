@@ -9,17 +9,21 @@ import UIKit
 
 public extension UIImageView {
     
-    func setImage(urlString: String?, placeholder: UIImage? = nil, completion: DataClosure<UIImage?>? = nil) {
-        setImage(url: URL(string: urlString ?? ""), placeholder: placeholder, completion: completion)
+    static var defaultQOS: DispatchQoS.QoSClass = .default
+    
+    func setImage(urlString: String?, placeholder: UIImage? = nil, qos: DispatchQoS.QoSClass = defaultQOS, completion: DataClosure<UIImage?>? = nil) {
+        setImage(url: URL(string: urlString ?? ""), placeholder: placeholder, qos: qos, completion: completion)
     }
     
-    func setImage(url: URL?, placeholder: UIImage? = nil, completion: DataClosure<UIImage?>? = nil) {
+    func setImage(url: URL?, placeholder: UIImage? = nil, qos: DispatchQoS.QoSClass = defaultQOS, completion: DataClosure<UIImage?>? = nil) {
         self.image = placeholder
-        ImageManager.load(url: url) { [weak self] image in
-            if let image = image {
-                self?.image = image
+        DispatchQueue.global(qos: qos).async {
+            ImageManager.load(url: url) { [weak self] image in
+                if let image = image {
+                    self?.image = image
+                }
+                completion?(image)
             }
-            completion?(image)
         }
     }
 }
