@@ -19,12 +19,12 @@ open class BaseSegmentedControl: UISegmentedControl {
     
     public var selectedFont: UIFont? {
         didSet {
-            setTitleTextAttributes([.font: font as Any], for: .selected)
+            setTitleTextAttributes([.font: selectedFont as Any], for: .selected)
         }
     }
     public var normalFont: UIFont? {
         didSet {
-            setTitleTextAttributes([.font: font as Any], for: .normal)
+            setTitleTextAttributes([.font: normalFont as Any], for: .normal)
         }
     }
     public var selectedTitleColor: UIColor? {
