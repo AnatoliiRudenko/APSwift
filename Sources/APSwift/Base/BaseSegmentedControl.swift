@@ -19,22 +19,22 @@ open class BaseSegmentedControl: UISegmentedControl {
     
     public var selectedFont: UIFont? {
         didSet {
-            setTextAttributes([.font: selectedFont as Any], for: .selected)
+            addTitleTextAttributes([.font: selectedFont as Any], for: .selected)
         }
     }
     public var normalFont: UIFont? {
         didSet {
-            setTextAttributes([.font: normalFont as Any], for: .normal)
+            addTitleTextAttributes([.font: normalFont as Any], for: .normal)
         }
     }
     public var selectedTitleColor: UIColor? {
         didSet {
-            setTextAttributes([.foregroundColor: selectedTitleColor as Any], for: .selected)
+            addTitleTextAttributes([.foregroundColor: selectedTitleColor as Any], for: .selected)
         }
     }
     public var normalTitleColor: UIColor? {
         didSet {
-            setTextAttributes([.foregroundColor: normalTitleColor as Any], for: .normal)
+            addTitleTextAttributes([.foregroundColor: normalTitleColor as Any], for: .normal)
         }
     }
     public var normalBGColor: UIColor? {
@@ -92,7 +92,7 @@ open class BaseSegmentedControl: UISegmentedControl {
         setSelectedSegmentBorder(animated: animated)
     }
     
-    func setTextAttributes(_ options: [NSAttributedString.Key: Any], for state: UIControl.State) {
+    func addTitleTextAttributes(_ options: [NSAttributedString.Key: Any], for state: UIControl.State) {
         let oldOptions = titleTextAttributes(for: state) ?? [:]
         let allOptions = options.merging(oldOptions) { first, second in
             first
