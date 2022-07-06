@@ -19,22 +19,22 @@ open class BaseSegmentedControl: UISegmentedControl {
     
     public var selectedFont: UIFont? {
         didSet {
-            setTitleTextAttributes([.font: selectedFont as Any], for: .selected)
+            setTextAttributes([.font: selectedFont as Any], for: .selected)
         }
     }
     public var normalFont: UIFont? {
         didSet {
-            setTitleTextAttributes([.font: normalFont as Any], for: .normal)
+            setTextAttributes([.font: normalFont as Any], for: .normal)
         }
     }
     public var selectedTitleColor: UIColor? {
         didSet {
-            setTitleTextAttributes([.foregroundColor: selectedTitleColor as Any], for: .selected)
+            setTextAttributes([.foregroundColor: selectedTitleColor as Any], for: .selected)
         }
     }
     public var normalTitleColor: UIColor? {
         didSet {
-            setTitleTextAttributes([.foregroundColor: normalTitleColor as Any], for: .normal)
+            setTextAttributes([.foregroundColor: normalTitleColor as Any], for: .normal)
         }
     }
     public var normalBGColor: UIColor? {
@@ -90,6 +90,14 @@ open class BaseSegmentedControl: UISegmentedControl {
     
     open func changeUIOnSwitch(_ index: Int, animated: Bool = true) {
         setSelectedSegmentBorder(animated: animated)
+    }
+    
+    func setTextAttributes(_ options: [NSAttributedString.Key: Any], for state: UIControl.State) {
+        let oldOptions = titleTextAttributes(for: state) ?? [:]
+        let allOptions = options.merging(oldOptions) { first, second in
+            first
+        }
+        setTitleTextAttributes(allOptions, for: state)
     }
     
     // MARK: - Height Constraint
