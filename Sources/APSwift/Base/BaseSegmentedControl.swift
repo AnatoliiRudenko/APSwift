@@ -17,6 +17,11 @@ open class BaseSegmentedControl: UISegmentedControl {
     public var normalBorderColor: UIColor?
     public var cornerRadius: CGFloat?
     
+    public var font: UIFont? {
+        didSet {
+            setTitleTextAttributes([.font: font as Any], for: .normal)
+        }
+    }
     public var selectedTitleColor: UIColor? {
         didSet {
             setTitleTextAttributes([.foregroundColor: selectedTitleColor as Any], for: .selected)
