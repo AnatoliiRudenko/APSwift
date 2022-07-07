@@ -38,4 +38,14 @@ public extension UILabel {
     func setAttributedString(newAttributes: [NSAttributedString.Key: Any], for string: String?) {
         attributedText = textToAttributedString(newAttributes: newAttributes, for: string)
     }
+    
+    func addAttributes(_ attributes: [NSAttributedString.Key: Any]) {
+        guard let attributedText = attributedText,
+              let rangeOfString = attributedText.string.range(of: attributedText.string),
+              let nsRange = attributedText.string.nsRange(from: rangeOfString)
+        else { return }
+        let currentAttrString = NSMutableAttributedString(attributedString: attributedText)
+        currentAttrString.addAttributes(attributes, range: nsRange)
+        self.attributedText = currentAttrString
+    }
 }
