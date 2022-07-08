@@ -43,9 +43,6 @@ open class BaseViewController: UIViewController, Coordinatable {
         super.viewDidLoad()
         
         self.setupComponents()
-        
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
-        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
     open override func viewDidAppear(_ animated: Bool) {
@@ -54,7 +51,12 @@ open class BaseViewController: UIViewController, Coordinatable {
         isOnFirstLayout = false
     }
     
-    open func setupComponents() {}
+    open func setupComponents() {
+        self.view.hideKeyboardWhenTappedAround()
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+    }
     
     // MARK: - Methods
     open func presentNativeOKCancelAlert(title: String?, message: String?, okAction: Closure?) {
