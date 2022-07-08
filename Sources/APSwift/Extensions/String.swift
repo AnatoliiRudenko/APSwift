@@ -21,12 +21,12 @@ public extension String {
         }
     }
     
-    func applyPattern(_ pattern: String, replacementLetterCharacter: Character?, replacementNumberCharacter: Character?) -> String {
-        var value = self.replacingOccurrences(of: ".*[^A-Za-z0-9 ].*", with: "", options: .regularExpression)
-        replaceCharacters(in: &value, pattern: pattern, replacementCharacter: replacementLetterCharacter)
-        replaceCharacters(in: &value, pattern: pattern, replacementCharacter: replacementNumberCharacter)
-        return value
-    }
+//    func applyPattern(_ pattern: String, replacementLetterCharacter: Character?, replacementNumberCharacter: Character?) -> String {
+//        var value = self.replacingOccurrences(of: ".*[^A-Za-z0-9 ].*", with: "", options: .regularExpression)
+//        replaceCharacters(in: &value, pattern: pattern, replacementCharacter: replacementLetterCharacter)
+//        replaceCharacters(in: &value, pattern: pattern, replacementCharacter: replacementNumberCharacter)
+//        return value
+//    }
     
     func applyPatternOnNumbers(_ pattern: String, replacementCharacter: Character) -> String {
         var pureNumber = self.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
