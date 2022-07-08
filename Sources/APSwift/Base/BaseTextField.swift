@@ -14,7 +14,7 @@ open class BaseTextField: UITextField {
     public var didChangeText: DataClosure<String?>?
     public var placeholderColor: UIColor?
     
-    public static var patternLetterCharacter: Character = "$"
+//    public static var patternLetterCharacter: Character = "$"
     public static var patternNumberCharacter: Character = "#"
     
     open override var placeholder: String? {
@@ -35,9 +35,10 @@ open class BaseTextField: UITextField {
     }
     
     // MARK: - Content Control Props
-    public var pattern: String? {
+    // set format according to patternNumberCharacter value. E.g. "####-## (###)"
+    public var numberPattern: String? {
         didSet {
-            maxLength = pattern?.count
+            maxLength = numberPattern?.count
         }
     }
     public var maxLength: Int?
@@ -52,6 +53,9 @@ open class BaseTextField: UITextField {
     open func editingChanged(_ textField: UITextField) {
         didChangeText?(textField.text)
         guard let text = textField.text else { return }
+        if let numberPattern = numberPattern {
+            textField.text = text.applyPatternOnNumbers(numberPattern, replacementCharacter: BaseTextField.patternNumberCharacter)
+        }
 //        if let pattern = pattern {
 //            textField.text = text.applyPattern(pattern,
 //                                               replacementLetterCharacter: BaseTextField.patternLetterCharacter,
