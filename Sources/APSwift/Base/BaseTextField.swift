@@ -13,7 +13,6 @@ open class BaseTextField: UITextField {
     public var insets: UIEdgeInsets = .zero
     public var didChangeText: DataClosure<String?>?
     public var placeholderColor: UIColor?
-    public var pattern: String?
     
     public static var patternLetterCharacter: Character = "$"
     public static var patternNumberCharacter: Character = "#"
@@ -35,12 +34,13 @@ open class BaseTextField: UITextField {
         }
     }
     
-    // MARK: - Max Length props
-    public var maxLength: Int? {
+    // MARK: - Content Control Props
+    public var pattern: String? {
         didSet {
-            addTarget(self, action: #selector(editingChanged(_:)), for: .editingChanged)
+            maxLength = pattern?.count
         }
     }
+    public var maxLength: Int?
     public var isFilled: Bool {
         guard let maxLength = maxLength else { return true }
         return (text ?? "").count == maxLength
