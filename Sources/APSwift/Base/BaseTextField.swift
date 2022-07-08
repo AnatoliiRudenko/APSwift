@@ -15,7 +15,7 @@ open class BaseTextField: UITextField {
     public var placeholderColor: UIColor?
     public var pattern: String?
     
-    public static var patternLetterCharacter: Character = "L"
+    public static var patternLetterCharacter: Character = "$"
     public static var patternNumberCharacter: Character = "#"
     
     open override var placeholder: String? {
