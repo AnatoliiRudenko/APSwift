@@ -21,15 +21,16 @@ public extension String {
         }
     }
     
-    func applyPatternOnNumbers(pattern: String, replacementCharacter: Character) -> String {
+    func applyPattern(_ pattern: String, replacementLetterCharacter: Character?, replacementNumberCharacter: Character?) -> String {
+        var value = self.replacingOccurrences(of: ".*[^A-Za-z0-9 ].*", with: "", options: .regularExpression)
+        replaceCharacters(in: &value, pattern: pattern, replacementCharacter: replacementLetterCharacter)
+        replaceCharacters(in: &value, pattern: pattern, replacementCharacter: replacementNumberCharacter)
+        return value
+    }
+    
+    func applyPatternOnNumbers(_ pattern: String, replacementCharacter: Character) -> String {
         var pureNumber = self.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
-        for index in 0 ..< pattern.count {
-            guard index < pureNumber.count else { return pureNumber }
-            let stringIndex = String.Index(utf16Offset: index, in: pattern)
-            let patternCharacter = pattern[stringIndex]
-            guard patternCharacter != replacementCharacter else { continue }
-            pureNumber.insert(patternCharacter, at: stringIndex)
-        }
+        replaceCharacters(in: &pureNumber, pattern: pattern, replacementCharacter: replacementCharacter)
         return pureNumber
     }
     
@@ -40,7 +41,7 @@ public extension String {
     
     var phoneNumberFormat: String {
         let pattern = "+# (###) ### ## ##"
-        return self.applyPatternOnNumbers(pattern: pattern, replacementCharacter: "#")
+        return self.applyPatternOnNumbers(pattern, replacementCharacter: "#")
     }
     
     // MARK: - Validity checks
@@ -123,5 +124,20 @@ public extension String {
     
     static func className(_ aClass: AnyClass) -> String {
         return NSStringFromClass(aClass).components(separatedBy: ".").last ?? ""
+    }
+}
+
+// MARK: - Supporting methods
+private extension String {
+    
+    func replaceCharacters(in value: inout String, pattern: String, replacementCharacter: Character?) {
+        guard let replacementCharacter = replacementCharacter else { return }
+        for index in 0 ..< pattern.count {
+            guard index < value.count else { return }
+            let stringIndex = String.Index(utf16Offset: index, in: pattern)
+            let patternCharacter = pattern[stringIndex]
+            guard patternCharacter != replacementCharacter else { continue }
+            value.insert(patternCharacter, at: stringIndex)
+        }
     }
 }

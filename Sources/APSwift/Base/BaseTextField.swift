@@ -13,6 +13,10 @@ open class BaseTextField: UITextField {
     public var insets: UIEdgeInsets = .zero
     public var didChangeText: DataClosure<String?>?
     public var placeholderColor: UIColor?
+    public var pattern: String?
+    
+    public static var patternLetterCharacter: Character = "L"
+    public static var patternNumberCharacter: Character = "#"
     
     open override var placeholder: String? {
         willSet {
@@ -48,7 +52,11 @@ open class BaseTextField: UITextField {
     open func editingChanged(_ textField: UITextField) {
         didChangeText?(textField.text)
         guard let text = textField.text else { return }
-        
+        if let pattern = pattern {
+            textField.text = text.applyPattern(pattern,
+                                               replacementLetterCharacter: BaseTextField.patternLetterCharacter,
+                                               replacementNumberCharacter: BaseTextField.patternNumberCharacter)
+        }
         if let maxLength = maxLength,
            text.count >= maxLength {
             onReachingMaxLength?()
