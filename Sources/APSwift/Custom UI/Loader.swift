@@ -11,7 +11,7 @@ import UIKit
 open class Loader: UIView {
     
     // MARK: - Props
-    public var size: CGFloat = 80
+    public var size: CGFloat = UIDevice.current.userInterfaceIdiom == .phone ? 80 : 120
     public var bgColor: UIColor = .white.withAlphaComponent(0.7)
     public var spinnerStyle: UIActivityIndicatorView.Style = .large
     public var spinnerColor: UIColor?
