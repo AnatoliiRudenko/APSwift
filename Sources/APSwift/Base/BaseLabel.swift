@@ -80,7 +80,18 @@ open class BaseLabel: UILabel {
 extension BaseLabel {
     
     open override func drawText(in rect: CGRect) {
-        super.drawText(in: rect.inset(by: insets))
+        var newRect = rect
+        switch contentMode {
+        case .top:
+            newRect.size.height = sizeThatFits(rect.size).height
+        case .bottom:
+            let height = sizeThatFits(rect.size).height
+            newRect.origin.y += rect.size.height - height
+            newRect.size.height = height
+        default:
+            break
+        }
+        super.drawText(in: newRect.inset(by: insets))
     }
     
     open override var intrinsicContentSize: CGSize {
