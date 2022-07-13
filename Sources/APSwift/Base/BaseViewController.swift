@@ -59,59 +59,6 @@ open class BaseViewController: UIViewController, Coordinatable {
     }
     
     // MARK: - Methods
-    open func presentNativeOKCancelAlert(title: String?, message: String?, okAction: Closure?) {
-        let alertController = UIAlertController(title: title,
-                                                message: message,
-                                                preferredStyle: .alert)
-        
-        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-            okAction?()
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alertController.addAction(okAction)
-        alertController.addAction(cancelAction)
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.present(alertController, animated: true, completion: nil)
-        }
-    }
-    
-    open func presentNativeOKAlert(title: String?, message: String?) {
-        let alertController = UIAlertController(title: title,
-                                                message: message,
-                                                preferredStyle: .alert)
-        
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(okAction)
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.present(alertController, animated: true, completion: nil)
-        }
-    }
-    
-    open func presentPermissonNotGrantedNativeAlert(title: String?, message: String?) {
-        let alertController = UIAlertController(title: title,
-                                                message: message,
-                                                preferredStyle: .alert)
-        
-        let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
-            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString),
-                  UIApplication.shared.canOpenURL(settingsUrl)
-            else { return }
-            UIApplication.shared.open(settingsUrl, completionHandler: nil)
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alertController.addAction(settingsAction)
-        alertController.addAction(cancelAction)
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.present(alertController, animated: true, completion: nil)
-        }
-    }
-    
-    open func presentNativeErrorAlert(_ message: String?) {
-        presentNativeOKAlert(title: "Error!", message: message ?? "Something went wrong")
-    }
     
     // MARK: - UI Properties
     public lazy var contentView = UIView()
@@ -122,6 +69,10 @@ open class BaseViewController: UIViewController, Coordinatable {
 extension BaseViewController: UIGestureRecognizerDelegate {
     
     open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        true
+    }
+    
+    open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         true
     }
 }
