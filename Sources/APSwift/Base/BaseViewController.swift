@@ -52,10 +52,6 @@ open class BaseViewController: UIViewController, Coordinatable {
     }
     
     open func setupComponents() {
-        self.hideKeyboardOnTap() { [weak self] gesture in
-            gesture.delegate = self
-        }
-        
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
