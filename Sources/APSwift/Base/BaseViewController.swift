@@ -71,10 +71,6 @@ extension BaseViewController: UIGestureRecognizerDelegate {
     open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         true
     }
-    
-    open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        true
-    }
 }
 
 // MARK: - Content View set up
