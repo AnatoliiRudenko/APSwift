@@ -1,6 +1,5 @@
 //
-//  AppTableView.swift
-//  Trade Union
+//  BaseTableView.swift
 //
 //  Created by Анатолий Руденко on 10.12.2021.
 //

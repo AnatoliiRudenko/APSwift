@@ -51,7 +51,7 @@ open class BaseTextField: UITextField {
     // MARK: - Methods
     @objc
     open func editingChanged(_ textField: UITextField) {
-        didChangeText?(textField.text)
+        defer { didChangeText?(textField.text) }
         guard let text = textField.text else { return }
         if let numberPattern = numberPattern {
             textField.text = text.applyPatternOnNumbers(numberPattern, replacementCharacter: BaseTextField.patternNumberCharacter)
