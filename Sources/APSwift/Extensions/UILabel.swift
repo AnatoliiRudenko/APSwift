@@ -23,15 +23,14 @@ public extension UILabel {
     }
     
     func textToAttributedString(newAttributes: [NSAttributedString.Key: Any], for string: String?) -> NSMutableAttributedString? {
-        guard let text = text,
-              let string = string, !string.isEmpty,
-              let rangeOfString = text.range(of: string),
-              let nsRange = text.nsRange(from: rangeOfString)
-        else { return nil }
-        let attrString = text.addAttributes([.font: font as Any,
-                                             .foregroundColor: (textColor ?? .black) as Any],
-                                            to: text)
-        attrString?.addAttributes(newAttributes, range: nsRange)
+        guard let text = text else { return nil }
+        let attrString = text.toAttributedString([.font: font as Any,
+                                                  .foregroundColor: (textColor ?? .black) as Any])
+        if let string = string, !string.isEmpty,
+           let rangeOfString = text.range(of: string),
+           let nsRange = text.nsRange(from: rangeOfString) {
+            attrString?.addAttributes(newAttributes, range: nsRange)
+        }
         return attrString
     }
     

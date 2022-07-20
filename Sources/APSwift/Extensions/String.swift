@@ -78,9 +78,8 @@ public extension String {
 // MARK: - Attributes
 public extension String {
     
-    func addAttributes(_ attributes: [NSAttributedString.Key: Any], to string: String?) -> NSMutableAttributedString? {
-        guard let string = string, !string.isEmpty,
-              let rangeOfString = self.range(of: string),
+    func toAttributedString(_ attributes: [NSAttributedString.Key: Any]) -> NSMutableAttributedString? {
+        guard let rangeOfString = self.range(of: self),
               let nsRange = self.nsRange(from: rangeOfString)
         else { return nil }
         let attrString = NSMutableAttributedString(string: self)
