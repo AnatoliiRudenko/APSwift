@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension NSMutableAttributedString {
+public extension NSMutableAttributedString {
     
     func addAttributes(_ attributes: [NSAttributedString.Key: Any], for string: String?) {
         guard let string = string, !string.isEmpty,
