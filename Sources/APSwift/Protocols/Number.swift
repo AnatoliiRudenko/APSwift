@@ -17,6 +17,13 @@ public extension Number {
         let divisor = pow(10.0, Double(places))
         return (self.asDouble * divisor).rounded() / divisor
     }
+    
+    var stringTruncatingTrailingZeros: String {
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 0
+        formatter.minimumIntegerDigits = 1
+        return formatter.string(from: NSNumber(floatLiteral: self.asDouble)) ?? "0"
+    }
 }
 
 // MARK: - Conformance
