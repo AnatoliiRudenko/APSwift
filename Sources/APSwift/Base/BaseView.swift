@@ -18,6 +18,7 @@ open class BaseView: UIView {
     
     public var animatesTap = true
     public var tapsThrough = false
+    public var isCircled = false
     public lazy var swipe: Swipe = {
         var swipe = Swipe()
         swipe.didSetDirection = { [weak self] direction in
@@ -42,6 +43,13 @@ open class BaseView: UIView {
     }
     
     open func setupComponents() {}
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        guard isCircled else { return }
+        roundCorners(bounds.width)
+    }
     
     // MARK: - Tap
     private func enableTap() {
