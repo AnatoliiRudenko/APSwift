@@ -9,27 +9,33 @@ import UIKit
 
 public extension UILabel {
     
-    func setLetterSpacedAttributedText(_ value: Double) {
-        let attrText = attributedText ?? textToAttributedString(newAttributes: <#T##[NSAttributedString.Key : Any]#>, for: <#T##String?#>)
-        if let textString = self.text {
-            let attributedString = NSMutableAttributedString(string: textString)
-            attributedString.addAttribute(.kern, value: value, range: NSRange(location: 0, length: attributedString.length - 1))
-            attributedText = attributedString
-        }
-    }
-    
     func multiline(_ lines: Int = 0) {
         numberOfLines = lines
         lineBreakMode = .byWordWrapping
     }
+}
+
+// MARK: - Attributes
+public extension UILabel {
     
+    var mutableAttributedText: NSMutableAttributedString? {
+        var attrText: NSMutableAttributedString?
+        if let attributedText = attributedText {
+            attrText = NSMutableAttributedString(attributedString: attributedText)
+        } else {
+            attrText = textToAttributedString(newAttributes: [:], for: self.text)
+        }
+        return attrText
+    }
+    
+    // when string value set to nil, function will apply changes to self.text string
     func textToAttributedString(newAttributes: [NSAttributedString.Key: Any], for string: String?) -> NSMutableAttributedString? {
         guard let text = text else { return nil }
         let attrString = text.toAttributedString([.font: font as Any,
                                                   .foregroundColor: (textColor ?? .black) as Any])
         let stringToUse = string ?? text
-        if !stringToUse.isEmpty,
-           let rangeOfString = text.range(of: string),
+        if !newAttributes.isEmpty,
+           let rangeOfString = text.range(of: stringToUse),
            let nsRange = text.nsRange(from: rangeOfString) {
             attrString?.addAttributes(newAttributes, range: nsRange)
         }
@@ -41,12 +47,21 @@ public extension UILabel {
     }
     
     func addAttributes(_ attributes: [NSAttributedString.Key: Any]) {
-        guard let attributedText = attributedText,
-              let rangeOfString = attributedText.string.range(of: attributedText.string),
-              let nsRange = attributedText.string.nsRange(from: rangeOfString)
+        guard let mutableAttributedText = mutableAttributedText,
+              let rangeOfString = mutableAttributedText.string.range(of: mutableAttributedText.string),
+              let nsRange = mutableAttributedText.string.nsRange(from: rangeOfString)
         else { return }
-        let currentAttrString = NSMutableAttributedString(attributedString: attributedText)
-        currentAttrString.addAttributes(attributes, range: nsRange)
-        self.attributedText = currentAttrString
+        mutableAttributedText.addAttributes(attributes, range: nsRange)
+        self.attributedText = mutableAttributedText
+    }
+    
+    func setLetterSpacedAttributedText(_ value: Double) {
+        addAttributes([.kern: value])
+    }
+    
+    func setLineSpacedAttributedText(_ value: Double) {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = value
+        addAttributes([.paragraphStyle: paragraphStyle])
     }
 }
