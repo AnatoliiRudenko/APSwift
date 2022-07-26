@@ -96,6 +96,9 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
         sectionFooterHeight = 0
         tableHeaderView = UIView(frame: .init(x: 0, y: 0, width: 0, height: 0.01))
         tableFooterView = UIView(frame: .init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 0.01))
+        if #available(iOS 15.0, *) {
+            sectionHeaderTopPadding = 0
+        }
     }
     
     // MARK: - Delegates

@@ -9,7 +9,8 @@ import UIKit
 
 public extension UILabel {
     
-    func setLetterSpacing(_ value: Double) {
+    func setLetterSpacedAttributedText(_ value: Double) {
+        let attrText = attributedText ?? textToAttributedString(newAttributes: <#T##[NSAttributedString.Key : Any]#>, for: <#T##String?#>)
         if let textString = self.text {
             let attributedString = NSMutableAttributedString(string: textString)
             attributedString.addAttribute(.kern, value: value, range: NSRange(location: 0, length: attributedString.length - 1))
@@ -26,7 +27,8 @@ public extension UILabel {
         guard let text = text else { return nil }
         let attrString = text.toAttributedString([.font: font as Any,
                                                   .foregroundColor: (textColor ?? .black) as Any])
-        if let string = string, !string.isEmpty,
+        let stringToUse = string ?? text
+        if !stringToUse.isEmpty,
            let rangeOfString = text.range(of: string),
            let nsRange = text.nsRange(from: rangeOfString) {
             attrString?.addAttributes(newAttributes, range: nsRange)
