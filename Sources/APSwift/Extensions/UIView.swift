@@ -248,6 +248,10 @@ public extension UIView {
         ContainerView(content: content, insets: insets)
     }
     
+    static func container<Content: UIView>(content: Content, minInsets: UIEdgeInsets) -> ContainerView<Content> {
+        ContainerView(content: content, minInsets: minInsets)
+    }
+    
     static func circle(radius: CGFloat, color: UIColor) -> UIView {
         let view = UIView()
         view.backgroundColor = color
