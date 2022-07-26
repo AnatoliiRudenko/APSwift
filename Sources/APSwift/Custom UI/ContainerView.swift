@@ -50,10 +50,10 @@ private extension ContainerView {
     func addGreaterThanOrEqualToConstraints() {
         guard let insets = minInsets else { return }
         content.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualToSuperview().inset(insets.top)
-            make.bottom.greaterThanOrEqualToSuperview().inset(insets.bottom)
-            make.left.greaterThanOrEqualToSuperview().inset(insets.left)
-            make.right.greaterThanOrEqualToSuperview().inset(insets.right)
+            make.top.lessThanOrEqualToSuperview().inset(insets.top)
+            make.bottom.lessThanOrEqualToSuperview().inset(insets.bottom)
+            make.left.lessThanOrEqualToSuperview().inset(insets.left)
+            make.right.lessThanOrEqualToSuperview().inset(insets.right)
             make.center.equalToSuperview()
         }
     }
