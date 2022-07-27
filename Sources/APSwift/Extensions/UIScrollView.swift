@@ -13,8 +13,9 @@ public extension UIScrollView {
         contentInset.bottom = UIApplication.shared.safeAreaInsets.bottom + extraValue
     }
     
-    func scrollToView(view: UIView?,
+    func scrollToView(_ view: UIView?,
                       position: UITableView.ScrollPosition = .top,
+                      extraY: CGFloat = 0,
                       animated: Bool = true) {
         
         guard let view = view,
@@ -40,7 +41,7 @@ public extension UIScrollView {
         }()
         
         scrollRectToVisible(CGRect(x: 0,
-                                   y: scrollPointY,
+                                   y: scrollPointY + extraY,
                                    width: 0.01,
                                    height: frame.height),
                             animated: animated)
