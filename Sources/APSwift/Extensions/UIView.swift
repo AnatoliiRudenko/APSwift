@@ -31,13 +31,13 @@ public extension UIView {
         }
     }
     
-    func fitSubviewIn(_ subview: UIView, minInsets: UIEdgeInsets = .zero) {
+    func fitSubviewIn(_ subview: UIView, minInsets: UIEdgeInsets) {
         addSubview(subview)
         subview.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualToSuperview().offset(insets.top)
-            make.left.greaterThanOrEqualToSuperview().offset(insets.left)
-            make.bottom.lessThanOrEqualToSuperview().offset(-insets.bottom)
-            make.right.lessThanOrEqualToSuperview().offset(-insets.right)
+            make.top.greaterThanOrEqualToSuperview().offset(minInsets.top)
+            make.left.greaterThanOrEqualToSuperview().offset(minInsets.left)
+            make.bottom.lessThanOrEqualToSuperview().offset(-minInsets.bottom)
+            make.right.lessThanOrEqualToSuperview().offset(-minInsets.right)
             make.center.equalToSuperview()
         }
     }
