@@ -26,4 +26,20 @@ open class BaseImageView: UIImageView {
     open func setupComponents() {
         contentMode = .scaleAspectFit
     }
+    
+    // MARK: - Height Constraint
+    public var height: CGFloat? {
+        didSet {
+            guard let value = self.height else {
+                self.heightConstraint.isActive = false
+                return
+            }
+            self.heightConstraint.constant = value
+            self.heightConstraint.isActive = true
+        }
+    }
+    
+    private lazy var heightConstraint: NSLayoutConstraint = {
+        self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
+    }()
 }
