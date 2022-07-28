@@ -7,7 +7,7 @@
 
 import UIKit
 
-open class ResizingImageView: UIImageView {
+open class ResizingImageView: BaseImageView {
     
     public var expectedWidth: CGFloat = UIScreen.main.bounds.width {
         didSet {
@@ -15,27 +15,10 @@ open class ResizingImageView: UIImageView {
             self.width = expectedWidth
         }
     }
+    
     public var fitsSuperviewWidth = true
     
     private var width: CGFloat = 0
-    
-    public convenience init() {
-        self.init(frame: CGRect())
-    }
-    
-    override public init(frame: CGRect) {
-        super.init(frame: frame)
-        setupComponents()
-    }
-    
-    required public init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupComponents()
-    }
-    
-    open func setupComponents() {
-        contentMode = .scaleAspectFit
-    }
     
     open override func layoutSubviews() {
         super.layoutSubviews()
