@@ -30,6 +30,21 @@ public extension UIView {
             make.edges.equalToSuperview().inset(inset)
         }
     }
+    
+    func fitSubviewIn(_ subview: UIView, minInsets: UIEdgeInsets = .zero) {
+        addSubview(subview)
+        subview.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualToSuperview().offset(insets.top)
+            make.left.greaterThanOrEqualToSuperview().offset(insets.left)
+            make.bottom.lessThanOrEqualToSuperview().offset(-insets.bottom)
+            make.right.lessThanOrEqualToSuperview().offset(-insets.right)
+            make.center.equalToSuperview()
+        }
+    }
+    
+    func fitSubviewIn(_ subview: UIView, minInset: CGFloat) {
+        fitSubviewIn(subview, minInsets: .allAround(minInset))
+    }
 }
 
 // MARK: - Visual
