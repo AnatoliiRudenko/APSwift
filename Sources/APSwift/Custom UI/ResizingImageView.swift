@@ -9,31 +9,31 @@ import UIKit
 
 open class ResizingImageView: UIImageView {
     
-    var expectedWidth: CGFloat = UIScreen.main.bounds.width {
+    public var expectedWidth: CGFloat = UIScreen.main.bounds.width {
         didSet {
             self.fitsSuperviewWidth = false
             self.width = expectedWidth
         }
     }
-    var fitsSuperviewWidth = true
+    public var fitsSuperviewWidth = true
     
     private var width: CGFloat = 0
     
-    convenience init() {
+    public convenience init() {
         self.init(frame: CGRect())
     }
     
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
-        setup()
+        setupComponents()
     }
     
     required public init?(coder: NSCoder) {
         super.init(coder: coder)
-        setup()
+        setupComponents()
     }
     
-    private func setup() {
+    open func setupComponents() {
         contentMode = .scaleAspectFit
     }
     
