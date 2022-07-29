@@ -11,6 +11,7 @@ open class BaseSlider: UISlider {
     
     // MARK: - Props
     public var reactsToTap = true
+    public var didChangeValue: DataClosure<Float>?
     
     // MARK: - Init
     public convenience init() {
@@ -28,8 +29,8 @@ open class BaseSlider: UISlider {
     }
     
     open func setupComponents() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        addGestureRecognizer(tap)
+        addTarget(self, action: #selector(sliderValueDidChange(_:)), for: .valueChanged)
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(_:))))
     }
 }
 
@@ -42,5 +43,10 @@ private extension BaseSlider {
         let percent = minimumValue + Float(location.x / bounds.width) * maximumValue
         setValue(percent, animated: true)
         sendActions(for: .valueChanged)
+    }
+    
+    @objc
+    func sliderValueDidChange(_ sender: UISlider) {
+        didChangeValue?(sender.value)
     }
 }
