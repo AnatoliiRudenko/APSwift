@@ -20,6 +20,11 @@ public extension UINavigationController {
             hairline.isHidden = false
         }
     }
+    
+    func popSeveralScreens(_ amount: Int, animated: Bool = true) {
+        let viewControllers: [UIViewController] = viewControllers as [UIViewController]
+        popToViewController(viewControllers[viewControllers.count - (1 + amount)], animated: animated)
+    }
 }
 
 private extension UINavigationController {
