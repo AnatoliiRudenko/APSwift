@@ -27,6 +27,13 @@ open class BaseView: UIView {
         return swipe
     }()
     
+    public var isEnabled: Bool = true {
+        didSet {
+            isUserInteractionEnabled = isEnabled
+            alpha = isEnabled ? 1 : 0.5
+        }
+    }
+    
     // MARK: - Init
     public convenience init() {
         self.init(frame: .zero)
