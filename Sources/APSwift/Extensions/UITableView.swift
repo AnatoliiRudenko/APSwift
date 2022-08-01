@@ -37,4 +37,10 @@ public extension UITableView {
     func reloadData(completion: @escaping Closure) {
         UIView.animate(withDuration: 0, animations: reloadData) { _ in completion() }
     }
+    
+    func removeExtraInsets() {
+        if #available(iOS 15.0, *) {
+            sectionHeaderTopPadding = 0
+        }
+    }
 }
