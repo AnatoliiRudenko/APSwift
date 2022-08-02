@@ -59,8 +59,13 @@ open class BaseViewController: UIViewController, Coordinatable {
     // MARK: - Methods
     
     // MARK: - UI Properties
-    public lazy var contentView = UIView()
     public lazy var scrollView = UIScrollView()
+    public lazy var contentView = UIView()
+    public lazy var contentStackView: UIStackView = {
+        let stackView: UIStackView = .stackView(.vertical, 16, [])
+        contentView.fitSubviewIn(stackView)
+        return stackView
+    }()
 }
 
 // MARK: - UIGestureRecognizerDelegate
