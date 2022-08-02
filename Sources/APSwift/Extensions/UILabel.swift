@@ -28,7 +28,7 @@ public extension UILabel {
         return attrText
     }
     
-    // when string value set to nil, function will apply changes to self.text string
+    /// when string value set to nil, function will apply changes to self.text string
     func textToAttributedString(newAttributes: [NSAttributedString.Key: Any], for string: String?) -> NSMutableAttributedString? {
         guard let text = text else { return nil }
         let attrString = text.toAttributedString([.font: font as Any,
@@ -46,9 +46,10 @@ public extension UILabel {
         attributedText = textToAttributedString(newAttributes: newAttributes, for: string)
     }
     
-    func addAttributes(_ attributes: [NSAttributedString.Key: Any]) {
+    /// when string value set to nil, function will apply changes to self.attributedText
+    func addAttributes(_ attributes: [NSAttributedString.Key: Any], for string: String?) {
         guard let mutableAttributedText = mutableAttributedText,
-              let rangeOfString = mutableAttributedText.string.range(of: mutableAttributedText.string),
+              let rangeOfString = mutableAttributedText.string.range(of: string ?? mutableAttributedText.string),
               let nsRange = mutableAttributedText.string.nsRange(from: rangeOfString)
         else { return }
         mutableAttributedText.addAttributes(attributes, range: nsRange)
@@ -56,12 +57,12 @@ public extension UILabel {
     }
     
     func setLetterSpacedAttributedText(_ value: Double) {
-        addAttributes([.kern: value])
+        addAttributes([.kern: value], for: nil)
     }
     
     func setLineSpacedAttributedText(_ value: Double) {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = value
-        addAttributes([.paragraphStyle: paragraphStyle])
+        addAttributes([.paragraphStyle: paragraphStyle], for: nil)
     }
 }
