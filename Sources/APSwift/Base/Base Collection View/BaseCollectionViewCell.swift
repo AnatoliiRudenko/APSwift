@@ -7,7 +7,7 @@
 
 import UIKit
 
-open class BaseCollectionViewCell: UICollectionViewCell {
+open class BaseCollectionViewCell<Data>: UICollectionViewCell {
     
     open func setData(_ data: Data) {}
     
