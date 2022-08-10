@@ -20,6 +20,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     // MARK: - Props
     public weak var contentDelegate: CollectionViewContentDelegate?
     public weak var selectionDelegate: CollectionViewSelectionDelegate?
+    public var automaticallyAdjustsHeight = false
     
     internal(set) open var data = [Data]()
     
@@ -28,6 +29,8 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         DispatchQueue.main.async { [weak self] in
             self?.reloadData {
                 completion?()
+                guard self?.automaticallyAdjustsHeight ?? false else { return }
+                self?.height = self?.contentHeight
             }
         }
     }
