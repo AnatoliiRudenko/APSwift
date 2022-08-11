@@ -17,6 +17,7 @@ open class ResizingImageView: BaseImageView {
     }
     
     public var fitsSuperviewWidth = true
+    public var setsSizeConstraints = false
     
     private var width: CGFloat = 0
     
@@ -36,6 +37,12 @@ open class ResizingImageView: BaseImageView {
         let myViewWidth = width
         let ratio = myViewWidth / myImageWidth
         let scaledHeight = myImageHeight * ratio
-        return CGSize(width: myViewWidth, height: scaledHeight)
+        let size = CGSize(width: myViewWidth, height: scaledHeight)
+        if setsSizeConstraints {
+            snp.remakeConstraints { make in
+                make.size.equalTo(size)
+            }
+        }
+        return size
     }
 }
