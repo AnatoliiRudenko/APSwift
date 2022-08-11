@@ -56,6 +56,14 @@ open class BaseButton: UIButton {
         self.addTarget(self, action: #selector(self.handleTap), for: .touchUpInside)
     }
     
+    @objc
+    func handleTap() {
+        didTap?()
+        if animatesTap {
+            animateTap()
+        }
+    }
+    
     // MARK: - UI Properties
     public lazy var leftImageView: UIImageView = {
         let imageView = UIImageView()
@@ -92,14 +100,6 @@ open class BaseButton: UIButton {
 
 // MARK: - Supporting Methods
 private extension BaseButton {
-    
-    @objc
-    func handleTap() {
-        didTap?()
-        if animatesTap {
-            animateTap()
-        }
-    }
     
     func setImage(_ image: UIImage?, left: Bool) {
         adjustToSettingImage()
