@@ -95,9 +95,12 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         selectionDelegate?.collectionView(collectionView, didSelectItemAt: indexPath, data: data[indexPath.row])
     }
     
+    // MARK: - Scroll View Delegate
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {}
     
     open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {}
+    
+    open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {}
     
     // MARK: - UICollectionViewDelegateFlowLayout
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
