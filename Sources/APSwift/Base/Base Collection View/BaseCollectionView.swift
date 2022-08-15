@@ -44,6 +44,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         collectionViewLayout as? UICollectionViewFlowLayout
     }
     
+    // cellHeight only gets considered when cellInRow has a value
     public var cellHeight: CGFloat?
     public var cellsInRow: Int?
     public var cellSize: CGSize {
@@ -55,7 +56,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
             + flowLayout.sectionInset.right
             + (flowLayout.minimumInteritemSpacing * CGFloat(cellsInRow - 1))
         let size = (bounds.width - totalSpace) / CGFloat(cellsInRow)
-        return CGSize(width: size, height: cellHeight ?? UICollectionViewFlowLayout.automaticSize.height)
+        return CGSize(width: size, height: cellHeight ?? size)
     }
     
     // MARK: - Init
