@@ -118,6 +118,10 @@ public extension String {
     }
 }
 
+public extension StringProtocol  {
+    var digits: [Int] { compactMap(\.wholeNumberValue) }
+}
+
 // MARK: - Static
 public extension String {
     

@@ -44,7 +44,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         collectionViewLayout as? UICollectionViewFlowLayout
     }
     
-    // cellHeight only gets considered when cellInRow has a value
+    // cellHeight only gets considered when cellsInRow has a value
     public var cellHeight: CGFloat?
     public var cellsInRow: Int?
     public var cellSize: CGSize {

@@ -12,31 +12,18 @@ public extension Date {
     func outputString(format: String,
                       timeZone: TimeZone? = nil,
                       locale: Locale = .current,
-                      hasDaySuffix: Bool = false) -> String? {
+                      hasDayOrdinalSuffix: Bool = false) -> String? {
         var outputFormat = format
-        if hasDaySuffix,
+        if hasDayOrdinalSuffix,
            let dayLastIndex = format.lastIndex(of: "d") {
             let nextIndex = format.index(after: dayLastIndex)
-            outputFormat.insert(contentsOf: "'\(daySuffix(day: self.get(.day)))'", at: nextIndex)
+            outputFormat.insert(contentsOf: "'\(self.get(.day).ordinalSuffix)'", at: nextIndex)
         }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = outputFormat
         dateFormatter.timeZone = timeZone
         dateFormatter.locale = locale
         return dateFormatter.string(from: self)
-    }
-    
-    func daySuffix(day: Int) -> String {
-        switch day {
-        case 1, 21, 31:
-            return "st"
-        case 2, 22:
-            return "nd"
-        case 3, 23:
-            return "rd"
-        default:
-            return "th"
-        }
     }
 }
 
