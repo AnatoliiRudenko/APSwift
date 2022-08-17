@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Int {
+public extension Int {
     
     var ordinalSuffix: String {
         guard self != 11, self != 12 else { return "th" }
