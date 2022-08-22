@@ -47,6 +47,11 @@ public extension ImageManager {
             completion(dict.valuesSortedByKey)
         }
     }
+    
+    static func cancel(_ url: URL?) {
+        guard let url = url else { return }
+        KingfisherManager.shared.downloader.cancel(url: url)
+    }
 }
 
 // MARK: - Full URL String methods
