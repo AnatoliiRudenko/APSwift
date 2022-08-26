@@ -45,6 +45,12 @@ public extension UIView {
     func fitSubviewIn(_ subview: UIView, minInset: CGFloat) {
         fitSubviewIn(subview, minInsets: .allAround(minInset))
     }
+    
+    func removeSubviews() {
+        subviews.forEach {
+            $0.removeFromSuperview()
+        }
+    }
 }
 
 // MARK: - Visual
