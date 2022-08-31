@@ -10,6 +10,10 @@ import UIKit
 // MARK: - Functional
 public extension UIView {
     
+    var allSubviews: [UIView] {
+        subviews.flatMap { [$0] + $0.allSubviews }
+    }
+    
     func addSubviews(_ subviews: [UIView]) {
         subviews.forEach({ addSubview($0) })
     }
