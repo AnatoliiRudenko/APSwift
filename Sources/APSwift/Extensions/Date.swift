@@ -9,10 +9,14 @@ import Foundation
 
 public extension Date {
     
-    func outputString(format: String,
-                      timeZone: TimeZone? = nil,
-                      locale: Locale = .current,
-                      hasDayOrdinalSuffix: Bool = false) -> String? {
+    func byAdding(_ component: Calendar.Component, value: Int) -> Date? {
+        Calendar.current.date(byAdding: component, value: value, to: self)
+    }
+    
+    func string(format: String,
+                timeZone: TimeZone? = nil,
+                locale: Locale = .current,
+                hasDayOrdinalSuffix: Bool = false) -> String? {
         var outputFormat = format
         if hasDayOrdinalSuffix,
            let dayLastIndex = format.lastIndex(of: "d") {
