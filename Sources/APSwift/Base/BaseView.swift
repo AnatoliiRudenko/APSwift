@@ -62,14 +62,14 @@ open class BaseView: UIView {
     }
     
     // MARK: - Scroll View
-    open func addScrollView() {
+    open func addScrollView(stickToBottom: Bool = false) {
         fitSubviewIn(scrollView)
         scrollView.addSubview(scrollContentView)
         scrollContentView.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
-            make.bottom.equalToSuperview().priority(250)
+            make.bottom.equalToSuperview().priority(stickToBottom ? 999 : 250)
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().priority(250)
+            make.centerY.equalToSuperview().priority(stickToBottom ? 999 : 250)
         }
     }
     
