@@ -34,8 +34,8 @@ open class BaseView: UIView {
         }
     }
     
-    private lazy var scrollView = UIScrollView()
-    private lazy var scrollContentView = BaseView()
+    public lazy var scrollView = UIScrollView()
+    public lazy var scrollContentView = BaseView()
     
     // MARK: - Init
     public convenience init() {
