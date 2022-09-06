@@ -9,6 +9,11 @@ import Foundation
 
 public extension Date {
     
+    func convertToTimeZone(initialTimeZone: TimeZone, timeZone: TimeZone) -> Date {
+        let delta = TimeInterval(timeZone.secondsFromGMT(for: self) - initialTimeZone.secondsFromGMT(for: self))
+        return addingTimeInterval(delta)
+    }
+    
     func byAdding(_ component: Calendar.Component, value: Int) -> Date? {
         Calendar.current.date(byAdding: component, value: value, to: self)
     }
