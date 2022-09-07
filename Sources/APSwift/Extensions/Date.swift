@@ -11,7 +11,7 @@ public extension Date {
     
     func convertToTimeZone(initialTimeZone: TimeZone, timeZone: TimeZone, wrappingComponents: Bool = false) -> Date? {
         let delta = TimeInterval(timeZone.secondsFromGMT(for: self) - initialTimeZone.secondsFromGMT(for: self))
-        return byAdding(.second, value: Int(delta), wrappingComponents: wrappingComponents)
+        return byAdding(.second, value: Int(-delta), wrappingComponents: wrappingComponents)
     }
     
     func byAdding(_ component: Calendar.Component, value: Int, wrappingComponents: Bool = false) -> Date? {
