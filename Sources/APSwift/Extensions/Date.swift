@@ -9,13 +9,13 @@ import Foundation
 
 public extension Date {
     
-    func convertToTimeZone(initialTimeZone: TimeZone, timeZone: TimeZone) -> Date? {
+    func convertToTimeZone(initialTimeZone: TimeZone, timeZone: TimeZone, wrappingComponents: Bool = false) -> Date? {
         let delta = TimeInterval(timeZone.secondsFromGMT(for: self) - initialTimeZone.secondsFromGMT(for: self))
-        return byAdding(.second, value: Int(delta))
+        return byAdding(.second, value: Int(delta), wrappingComponents: wrappingComponents)
     }
     
-    func byAdding(_ component: Calendar.Component, value: Int) -> Date? {
-        Calendar.current.date(byAdding: component, value: value, to: self)
+    func byAdding(_ component: Calendar.Component, value: Int, wrappingComponents: Bool = false) -> Date? {
+        Calendar.current.date(byAdding: component, value: value, to: self, wrappingComponents: wrappingComponents)
     }
     
     func string(format: String,
