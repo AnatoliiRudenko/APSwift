@@ -9,21 +9,21 @@ import Foundation
 
 public enum WeekDay: Int, CaseIterable {
     case monday
-    case tueday
+    case tuesday
     case wednesday
     case thursday
     case friday
     case saturday
     case sunday
     
-    public static let allCasesUSFormat: [WeekDay] = [.sunday, .monday, .tueday, .wednesday, .thursday, .friday, .saturday]
+    public static let allCasesUSFormat: [WeekDay] = [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
     
     public var title: String {
         switch self {
         case .monday:
             return "Monday"
-        case .tueday:
-            return "Tueday"
+        case .tuesday:
+            return "Tuesday"
         case .wednesday:
             return "Wednesday"
         case .thursday:
