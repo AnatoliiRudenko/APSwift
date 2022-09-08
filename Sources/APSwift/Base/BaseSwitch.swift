@@ -29,18 +29,20 @@ open class BaseSwitch: UISwitch {
         didSwitch(self)
     }
     
-    open func changeUIOnSwitch(_ isOn: Bool) { }
+    open func changeUIOnSwitch(_ isOn: Bool) {
+        setThumbColor()
+    }
     
     // MARK: - Overriden
     open override var isOn: Bool {
         didSet {
-            setThumbColor()
+            changeUIOnSwitch(isOn)
         }
     }
 
     open override func setOn(_ on: Bool, animated: Bool) {
         super.setOn(on, animated: animated)
-        setThumbColor()
+        changeUIOnSwitch(isOn)
     }
 
     // MARK: - Init
@@ -65,7 +67,6 @@ private extension BaseSwitch {
     @objc
     func didSwitch(_ sender: UISwitch) {
         didSwitchTo?(sender.isOn)
-        setThumbColor()
         changeUIOnSwitch(sender.isOn)
     }
     
