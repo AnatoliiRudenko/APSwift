@@ -9,6 +9,18 @@ import Foundation
 
 public extension Date {
     
+    static func dates(from fromDate: Date, to toDate: Date) -> [Date] {
+        var dates: [Date] = []
+        var date = fromDate
+        
+        while date <= toDate {
+            dates.append(date)
+            guard let newDate = Calendar.current.date(byAdding: .day, value: 1, to: date) else { break }
+            date = newDate
+        }
+        return dates
+    }
+    
     func convertToTimeZone(initialTimeZone: TimeZone, timeZone: TimeZone, wrappingComponents: Bool = false) -> Date? {
         let delta = TimeInterval(timeZone.secondsFromGMT(for: self) - initialTimeZone.secondsFromGMT(for: self))
         return byAdding(.second, value: Int(delta), wrappingComponents: wrappingComponents)
