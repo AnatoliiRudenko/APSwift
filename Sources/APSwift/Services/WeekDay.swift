@@ -36,4 +36,8 @@ public enum WeekDay: Int, CaseIterable {
             return "Sunday"
         }
     }
+    
+    public var shortTitle: String {
+        String(title.prefix(3))
+    }
 }
