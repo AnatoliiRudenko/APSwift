@@ -15,17 +15,19 @@ public extension Encodable {
         return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] } ?? [:]
     }
     
-    func filterFromEmptyFields(dictionary: inout [String: Any?]) {
-        let keysToRemove = dictionary.keys.filter {
-            guard let value = dictionary[$0] else { return false }
-            if let stringValue = value as? String,
-               stringValue.isEmpty {
-                return true
-            }
-            return value == nil
-        }
-        for key in keysToRemove {
-            dictionary.removeValue(forKey: key)
-        }
-    }
+//    var dictionaryFilteredFromEmptyFields: [String: Any?] {
+//        var dictionary = self.dictionary
+//        let keysToRemove = dictionary.keys.filter {
+//            guard let value = dictionary[$0] else { return false }
+//            if let stringValue = value as? String,
+//               stringValue.isEmpty {
+//                return true
+//            }
+//            return value == nil
+//        }
+//        for key in keysToRemove {
+//            dictionary.removeValue(forKey: key)
+//        }
+//        return dictionary
+//    }
 }
