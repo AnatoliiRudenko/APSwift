@@ -26,6 +26,9 @@ public extension Date {
         return byAdding(.second, value: Int(delta), wrappingComponents: wrappingComponents)
     }
     
+    /// wrappingComponents = false means bigger component will change  its value if target component goes beyond its natural limit.
+    /// E.g.
+    /// if hour == 23 and we add 1 hour => hour = 0, day += 1
     func byAdding(_ component: Calendar.Component, value: Int, wrappingComponents: Bool = false) -> Date? {
         Calendar.current.date(byAdding: component, value: value, to: self, wrappingComponents: wrappingComponents)
     }

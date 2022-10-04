@@ -52,6 +52,7 @@ open class BaseTextView: UITextView {
     }
 
     open func setupComponents() {
+        textContainer.lineFragmentPadding = 0
         delegate = self
     }
     
