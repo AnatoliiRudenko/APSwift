@@ -58,7 +58,7 @@ open class BaseView: UIView {
         super.layoutSubviews()
         
         guard isCircled else { return }
-        roundCorners(bounds.width)
+        roundCorners(bounds.width * 0.5)
     }
     
     // MARK: - Scroll View
