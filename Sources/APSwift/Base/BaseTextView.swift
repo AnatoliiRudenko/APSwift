@@ -10,6 +10,7 @@ import UIKit
 open class BaseTextView: UITextView {
 
     // MARK: - Props
+    public var didChangeText: DataClosure<String>?
     public var maxLength: Int?
     public lazy var mainTextColor: UIColor = textColor ?? .black
     public lazy var placeholderColor: UIColor = mainTextColor.withAlphaComponent(0.5)
@@ -84,6 +85,7 @@ extension BaseTextView: UITextViewDelegate {
     }
     
     open func textViewDidEndEditing(_ textView: UITextView) {
+        didChangeText?(textView.text)
         guard textView.text.isEmpty else { return }
         textView.text = placeholder
         textView.textColor = placeholderColor
