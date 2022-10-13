@@ -85,7 +85,6 @@ extension BaseTextView: UITextViewDelegate {
     }
     
     open func textViewDidEndEditing(_ textView: UITextView) {
-        didChangeText?(textView.text)
         guard textView.text.isEmpty else { return }
         textView.text = placeholder
         textView.textColor = placeholderColor
@@ -95,6 +94,10 @@ extension BaseTextView: UITextViewDelegate {
         guard let maxLength = maxLength else { return true }
         let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
         return newText.count <= maxLength
+    }
+    
+    open func textViewDidChange(_ textView: UITextView) {
+        didChangeText?(textView.text)
     }
 }
 
