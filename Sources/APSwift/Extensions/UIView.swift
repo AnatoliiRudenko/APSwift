@@ -232,12 +232,12 @@ public extension UIView {
 // MARK: - Loader
 public extension UIView {
 
-    @MainActor
+    @available(iOS 13.0, *)
     func showLoader() {
         Loader(parentView: self).show()
     }
     
-    @MainActor
+    @available(iOS 13.0, *)
     func hideLoader() {
         subviews.compactMap({ $0 as? Loader }).forEach { $0.hide() }
     }
