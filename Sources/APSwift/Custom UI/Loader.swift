@@ -7,7 +7,7 @@
 
 import UIKit
 
-@available(iOS 13.0, *)
+@MainActor
 open class Loader: UIView {
     
     // MARK: - Props
@@ -36,11 +36,6 @@ open class Loader: UIView {
             parentView?.bringSubviewToFront(self)
             return
         }
-        guard Thread.isMainThread else {
-            return DispatchQueue.main.async {
-                self.show()
-            }
-        }
         
         guard let parentView = parentView else { return }
         self.backgroundColor = bgColor
@@ -65,11 +60,6 @@ open class Loader: UIView {
     }
 
     open func hide() {
-        guard Thread.isMainThread else {
-            return DispatchQueue.main.async {
-                self.hide()
-            }
-        }
         self.spinner.stopAnimating()
         self.removeFromSuperview()
     }
