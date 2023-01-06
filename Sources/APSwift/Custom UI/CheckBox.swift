@@ -48,7 +48,7 @@ open class CheckBox: BaseView {
     }
     
     // MARK: - UI Properties
-    public let imageView: UIImageView = {
+    private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         return imageView
