@@ -41,7 +41,7 @@ open class CheckBoxView: BaseView {
     private let checkBoxLocatedToTheRightSide: Bool
     
     // MARK: - Init
-    init(checkBoxLocatedToTheRightSide: Bool) {
+    public init(checkBoxLocatedToTheRightSide: Bool) {
         self.checkBoxLocatedToTheRightSide = checkBoxLocatedToTheRightSide
         super.init(frame: .zero)
     }
