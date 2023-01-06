@@ -51,7 +51,7 @@ public extension UIColor {
 }
 
 public extension UIColor {
-    func image(size: CGSize) -> UIImage {
+    func asImage(size: CGSize) -> UIImage {
         return UIGraphicsImageRenderer(size: size).image { rendererContext in
             self.setFill()
             rendererContext.fill(CGRect(origin: .zero, size: size))
