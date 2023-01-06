@@ -73,7 +73,7 @@ open class CheckBoxView: BaseView {
         }
         
         didTap = { [weak self] in
-            self?.isChecked.toggle()
+            self?.checkbox.didTap?()
         }
     }
     
