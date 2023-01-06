@@ -8,12 +8,8 @@
 import UIKit
 
 public extension UIColor {
-
-    convenience init(hex: String) {
-        self.init(hex: hex, alpha: 1)
-    }
-
-    convenience init(hex: String, alpha: CGFloat) {
+    
+    convenience init(hex: String, alpha: CGFloat = 1) {
         var hexWithoutSymbol = hex
 
         if hexWithoutSymbol.hasPrefix("#") {
@@ -52,5 +48,13 @@ public extension UIColor {
             alpha: alpha
         )
     }
+}
 
+public extension UIColor {
+    func image(size: CGSize) -> UIImage {
+        return UIGraphicsImageRenderer(size: size).image { rendererContext in
+            self.setFill()
+            rendererContext.fill(CGRect(origin: .zero, size: size))
+        }
+    }
 }
