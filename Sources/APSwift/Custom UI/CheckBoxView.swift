@@ -38,9 +38,17 @@ open class CheckBoxView: BaseView {
         }
     }
     
-    public var checkBoxLocatedToTheRightSide = true
+    private let checkBoxLocatedToTheRightSide: Bool
     
     // MARK: - Init
+    init(checkBoxLocatedToTheRightSide: Bool) {
+        self.checkBoxLocatedToTheRightSide = checkBoxLocatedToTheRightSide
+        super.init(frame: .zero)
+    }
+    
+    required public init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     open override func setupComponents() {
         super.setupComponents()
         
