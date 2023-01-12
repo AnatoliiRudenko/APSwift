@@ -145,10 +145,15 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
                 self.heightConstraint.isActive = false
                 return
             }
+            if let heightConstraintPriority {
+                self.heightConstraint.priority = .init(rawValue: heightConstraintPriority)
+            }
             self.heightConstraint.constant = value
             self.heightConstraint.isActive = true
         }
     }
+    
+    public var heightConstraintPriority: Float?
     
     private lazy var heightConstraint: NSLayoutConstraint = {
         self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
