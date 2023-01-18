@@ -25,7 +25,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     public var onPaging: Closure?
     public var onScrollingBeyondTop: Closure?
     
-    public var plugView: BaseView?
+    public var plugView: UIView?
     public var hidesLastSeparator = true
     public var isHeightEqualToContentHeight = false
     public var mainHeader: (view: UIView, height: CGFloat?)?
