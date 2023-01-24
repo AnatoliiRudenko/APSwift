@@ -14,20 +14,4 @@ public extension Encodable {
         guard let data = try? encoder.encode(self) else { return [:] }
         return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] } ?? [:]
     }
-    
-//    var dictionaryFilteredFromEmptyFields: [String: Any?] {
-//        var dictionary = self.dictionary
-//        let keysToRemove = dictionary.keys.filter {
-//            guard let value = dictionary[$0] else { return false }
-//            if let stringValue = value as? String,
-//               stringValue.isEmpty {
-//                return true
-//            }
-//            return value == nil
-//        }
-//        for key in keysToRemove {
-//            dictionary.removeValue(forKey: key)
-//        }
-//        return dictionary
-//    }
 }

@@ -25,6 +25,19 @@ public extension Dictionary {
     }
 }
 
+public extension Dictionary where Key == String, Value == String {
+    
+    var queryItems: [URLQueryItem]? {
+        guard !isEmpty else { return nil }
+        var returnArray = [URLQueryItem]()
+        for (key, value) in self {
+            returnArray.append(URLQueryItem(name: key, value: value))
+        }
+        return returnArray
+    }
+}
+
+
 public extension Dictionary where Value: Equatable {
     func key(for value: Value) -> Key? {
         first(where: { $1 == value })?.key
