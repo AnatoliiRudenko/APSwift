@@ -10,7 +10,7 @@ import WebKit
 
 open class BaseWebViewController: UIViewController {
     
-    var webView: WKWebView!
+    public var webView: WKWebView!
     private var urlString: String?
     private var url: URL?
     private var titleToSet: String?
