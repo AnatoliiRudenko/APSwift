@@ -11,6 +11,8 @@ import WebKit
 open class BaseWebViewController: UIViewController {
     
     public var webView: WKWebView!
+    open var insets: UIEdgeInsets?
+    
     private var urlString: String?
     private var url: URL?
     private var titleToSet: String?
@@ -67,16 +69,12 @@ open class BaseWebViewController: UIViewController {
         
         view.backgroundColor = .white
         view.addSubview(webView)
-        NSLayoutConstraint.activate([
-            webView.leftAnchor
-                .constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor),
-            webView.topAnchor
-                .constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            webView.rightAnchor
-                .constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor),
-            webView.bottomAnchor
-                .constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
-        ])
+        webView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.left.equalTo(view.safeAreaLayoutGuide.snp.left)
+            make.right.equalTo(view.safeAreaLayoutGuide.snp.right)
+        }
     }
     
     // MARK: - Load URL
