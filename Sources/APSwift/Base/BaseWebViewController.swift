@@ -11,7 +11,6 @@ import WebKit
 open class BaseWebViewController: UIViewController {
     
     public var webView: WKWebView!
-    open var insets: UIEdgeInsets?
     
     private var urlString: String?
     private var url: URL?
