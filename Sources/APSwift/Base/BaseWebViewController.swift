@@ -17,13 +17,13 @@ open class BaseWebViewController: UIViewController {
     var titleToSet: String?
     
     // MARK: - Life Cycle
-    init(urlString: String?, title: String? = nil) {
+    public init(urlString: String?, title: String? = nil) {
         self.urlString = urlString
         self.titleToSet = title
         super.init(nibName: nil, bundle: nil)
     }
     
-    init(url: URL, title: String? = nil) {
+    public init(url: URL, title: String? = nil) {
         self.url = url
         self.titleToSet = title
         super.init(nibName: nil, bundle: nil)
