@@ -13,8 +13,7 @@ open class BaseWebViewController: UIViewController {
     var webView: WKWebView!
     private var urlString: String?
     private var url: URL?
-    
-    var titleToSet: String?
+    private var titleToSet: String?
     
     // MARK: - Life Cycle
     public init(urlString: String?, title: String? = nil) {
@@ -35,7 +34,9 @@ open class BaseWebViewController: UIViewController {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
-        addWebView()
+        
+        let configuration = createConfiguration()
+        setUpWebView(configuration: configuration)
         load()
         setupComponents()
     }
@@ -44,32 +45,35 @@ open class BaseWebViewController: UIViewController {
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         title = titleToSet
     }
     
     // MARK: - Web view config
-    private func addWebView() {
+    open func createConfiguration() -> WKWebViewConfiguration {
         let configuration = WKWebViewConfiguration()
         configuration.mediaTypesRequiringUserActionForPlayback = []
         configuration.allowsInlineMediaPlayback = true
         configuration.preferences.javaScriptEnabled = true
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
-        
+        return configuration
+    }
+    
+    open func setUpWebView(configuration: WKWebViewConfiguration) {
         webView = WKWebView(frame: CGRect(), configuration: configuration)
         webView.navigationDelegate = self
         webView.allowsBackForwardNavigationGestures = true
         webView.translatesAutoresizingMaskIntoConstraints = false
         
         view.backgroundColor = .white
-        
         view.addSubview(webView)
         NSLayoutConstraint.activate([
             webView.leftAnchor
-                .constraint(equalTo: self.view.leftAnchor),
+                .constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor),
             webView.topAnchor
                 .constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
             webView.rightAnchor
-                .constraint(equalTo: self.view.rightAnchor),
+                .constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor),
             webView.bottomAnchor
                 .constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         ])
@@ -81,8 +85,12 @@ open class BaseWebViewController: UIViewController {
         let urlRequest = URLRequest(url: url)
         webView.load(urlRequest)
     }
+}
+
+// MARK: - Supporting methods
+private extension BaseWebViewController {
     
-    private func getURL() -> URL? {
+    func getURL() -> URL? {
         guard let link = urlString,
               let encodedLink = link.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let url = URL(string: encodedLink)
