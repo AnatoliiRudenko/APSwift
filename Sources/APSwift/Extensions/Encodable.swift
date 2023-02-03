@@ -24,6 +24,16 @@ public extension Encodable {
     }
 }
 
+public extension Encodable {
+    
+    var hasValues: Bool {
+        Mirror(reflecting: self).children.reduce(false) { acc, val in
+            let subMirror = Mirror(reflecting: val.value)
+            return acc || (subMirror.displayStyle == .optional ? subMirror.children.count > 0 : true)
+        }
+    }
+}
+
 private extension Encodable {
     
     var jsonArrayData: Any? {
