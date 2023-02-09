@@ -7,6 +7,15 @@
 
 import UIKit
 
+// MARK: - Sizes
+public extension UINavigationController {
+    
+    var navBarHeight: CGFloat {
+        navigationBar.frame.size.height
+    }
+}
+
+// MARK: - Hairline
 public extension UINavigationController {
     
     func hideHairline() {
