@@ -12,10 +12,6 @@ public extension UIViewController {
     func absoluteFrame(of view: UIView) -> CGRect {
         view.convert(view.frame, to: self.view)
     }
-    
-    var navBarHeight: CGFloat {
-        navigationController?.navigationBar.frame.height ?? 0
-    }
 }
 
 // MARK: - UIAlerController pop ups
