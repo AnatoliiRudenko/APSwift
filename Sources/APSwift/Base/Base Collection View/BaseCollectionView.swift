@@ -108,6 +108,14 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         cellSize
     }
     
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        0
+    }
+    
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        0
+    }
+    
     // MARK: - Height Constraint
     public var height: CGFloat? {
         didSet {
