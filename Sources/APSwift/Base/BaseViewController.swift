@@ -17,6 +17,7 @@ open class BaseViewController: UIViewController, Coordinatable {
     open var _model: BaseViewModel?
     public var coordinator: Coordinator?
     public var isOnFirstLayout = true
+    public var hidesNavBar = false
     
     // MARK: - Content View
     public enum ContentContainerType {
@@ -45,11 +46,26 @@ open class BaseViewController: UIViewController, Coordinatable {
         self.setupComponents()
     }
     
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        guard hidesNavBar else { return }
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         isOnFirstLayout = false
     }
+    
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        guard hidesNavBar else { return }
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
     
     open func setupComponents() {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
