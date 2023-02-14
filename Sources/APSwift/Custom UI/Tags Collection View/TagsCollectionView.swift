@@ -51,7 +51,7 @@ open class TagsCollectionView<Cell: UICollectionViewCell, Data>: BaseCollectionV
         collectionViewLayout = layout
     }
     
-    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    open override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         lineSpacing
     }
 }
