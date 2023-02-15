@@ -44,3 +44,25 @@ public extension UITableView {
         }
     }
 }
+
+// MARK: - Loader
+public extension UITableView {
+
+    func showTableLoader(_ show: Bool) {
+        guard let superview else { return }
+        let id = "Loader container view above table view"
+        if show {
+            let containerView = UIView()
+            containerView.accessibilityIdentifier = id
+            superview.addSubview(containerView)
+            containerView.snp.makeConstraints { make in
+                make.edges.equalTo(self.snp.edges)
+            }
+            Loader(parentView: containerView).show()
+        } else {
+            let containerView = superview.subviews.first(where: { $0.accessibilityIdentifier == id })
+            containerView?.subviews.compactMap({ $0 as? Loader }).forEach { $0.hide() }
+            containerView?.removeFromSuperview()
+        }
+    }
+}

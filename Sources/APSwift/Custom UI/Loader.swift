@@ -73,11 +73,7 @@ open class Loader: UIView {
 @available(iOS 13.0, *)
 public extension Loader {
     
-    static func showRootLoader() {
-        UIApplication.shared.keyWindow?.showLoader()
-    }
-    
-    static func hideRootLoader() {
-        UIApplication.shared.keyWindow?.hideLoader()
+    static func showRootLoader(_ show: Bool) {
+        UIApplication.shared.keyWindow?.showLoader(show)
     }
 }
