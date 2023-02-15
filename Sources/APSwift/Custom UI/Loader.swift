@@ -82,6 +82,6 @@ open class Loader: UIView {
 public extension Loader {
     
     static func showRootLoader(_ show: Bool) {
-        UIApplication.shared.keyWindow?.showLoader(show)
+        UIApplication.shared.keyWindowGetter?.showLoader(show)
     }
 }
