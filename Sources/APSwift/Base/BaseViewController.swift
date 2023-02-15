@@ -128,17 +128,17 @@ private extension BaseViewController {
         }
         if sticksToBottom {
             contentView.snp.makeConstraints { make in
-                make.top.equalTo(scrollView.snp.top).inset(insets.top)
-                make.left.equalTo(scrollView.snp.left).inset(insets.left)
-                make.right.equalTo(scrollView.snp.right).inset(insets.right)
-                make.bottom.equalTo(scrollView.snp.bottom).inset(insets.bottom).priority(250)
-                make.centerX.equalTo(scrollView.snp.centerX)
+                make.top.equalToSuperview().inset(insets.top)
+                make.left.equalToSuperview().inset(insets.left)
+                make.right.equalToSuperview().inset(insets.right)
+                make.bottom.equalToSuperview().inset(insets.bottom).priority(250)
+                make.centerX.equalToSuperview()
                 
                 var offset = insets.top - insets.bottom
                 if offset > 0 {
                     offset *= -1
                 }
-                make.centerY.equalTo(scrollView.snp.centerY).offset(offset).priority(250)
+                make.centerY.equalToSuperview().offset(offset).priority(250)
             }
         } else {
             contentView.snp.makeConstraints { make in
