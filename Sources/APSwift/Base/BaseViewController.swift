@@ -22,7 +22,7 @@ open class BaseViewController: UIViewController, Coordinatable {
     // MARK: - Content View
     public enum ContentContainerType {
         case regular(insets: UIEdgeInsets = .zero, safeAreaRelatedSides: [Side])
-        case scrollView(insets: UIEdgeInsets = .zero, safeAreaRelatedSides: [Side])
+        case scrollView(insets: UIEdgeInsets = .zero, safeAreaRelatedSides: [Side], sticksToBottom: Bool = true)
     }
     
     public var contentContainerType: ContentContainerType = .regular(insets: .zero, safeAreaRelatedSides: []) {
@@ -98,9 +98,12 @@ private extension BaseViewController {
     func setupContentContainer() {
         switch contentContainerType {
         case let .regular(insets, safeAreaRelatedSides):
-            addContentView(insets: insets, safeAreaRelatedSides: safeAreaRelatedSides)
-        case let .scrollView(insets, safeAreaRelatedSides):
-            addScrollView(insets: insets, safeAreaRelatedSides: safeAreaRelatedSides)
+            addContentView(insets: insets,
+                           safeAreaRelatedSides: safeAreaRelatedSides)
+        case let .scrollView(insets, safeAreaRelatedSides, sticksToBottom):
+            addScrollView(insets: insets,
+                          safeAreaRelatedSides: safeAreaRelatedSides,
+                          sticksToBottom: sticksToBottom)
         }
     }
     
@@ -114,7 +117,7 @@ private extension BaseViewController {
         }
     }
     
-    func addScrollView(insets: UIEdgeInsets, safeAreaRelatedSides: [Side]) {
+    func addScrollView(insets: UIEdgeInsets, safeAreaRelatedSides: [Side], sticksToBottom: Bool) {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         scrollView.snp.makeConstraints { make in
@@ -123,13 +126,28 @@ private extension BaseViewController {
             make.right.equalTo(safeAreaRelatedSides.contains(where: { $0 == .right }) ? view.safeAreaLayoutGuide.snp.right : view.snp.right)
             make.bottom.equalTo(safeAreaRelatedSides.contains(where: { $0 == .bottom }) ? view.safeAreaLayoutGuide.snp.bottom : view.snp.bottom)
         }
-        contentView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(insets.top)
-            make.left.equalToSuperview().inset(insets.left)
-            make.right.equalToSuperview().inset(insets.right)
-            make.bottom.equalToSuperview().inset(insets.bottom).priority(250)
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().priority(250)
+        if sticksToBottom {
+            contentView.snp.makeConstraints { make in
+                make.top.equalTo(scrollView.snp.top).inset(insets.top)
+                make.left.equalTo(scrollView.snp.left).inset(insets.left)
+                make.right.equalTo(scrollView.snp.right).inset(insets.right)
+                make.bottom.equalTo(scrollView.snp.bottom).inset(insets.bottom).priority(250)
+                make.centerX.equalTo(scrollView.snp.centerX)
+                
+                var offset = insets.top - insets.bottom
+                if offset > 0 {
+                    offset *= -1
+                }
+                make.centerY.equalTo(scrollView.snp.centerY).offset(offset).priority(250)
+            }
+        } else {
+            contentView.snp.makeConstraints { make in
+                make.top.equalToSuperview().inset(insets.top)
+                make.left.equalToSuperview().inset(insets.left)
+                make.right.equalToSuperview().inset(insets.right)
+                make.bottom.equalToSuperview().inset(insets.bottom)
+                make.centerX.equalToSuperview()
+            }
         }
         scrollView.contentInsetAdjustmentBehavior = .never
     }
