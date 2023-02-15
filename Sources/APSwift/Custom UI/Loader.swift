@@ -31,7 +31,15 @@ open class Loader: UIView {
     }
     
     // MARK: - Methods
-    open func show() {
+    open func show(_ show: Bool) {
+        if show {
+            self.show()
+        } else {
+            self.hide()
+        }
+    }
+    
+    private func show() {
         guard self.superview == nil else {
             parentView?.bringSubviewToFront(self)
             return
@@ -59,7 +67,7 @@ open class Loader: UIView {
         self.spinner.startAnimating()
     }
 
-    open func hide() {
+    private func hide() {
         self.spinner.stopAnimating()
         self.removeFromSuperview()
     }

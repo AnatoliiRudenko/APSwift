@@ -235,9 +235,9 @@ public extension UIView {
     @available(iOS 13.0, *)
     func showLoader(_ show: Bool) {
         if show {
-            Loader(parentView: self).show()
+            Loader(parentView: self).show(true)
         } else {
-            subviews.compactMap({ $0 as? Loader }).forEach { $0.hide() }
+            subviews.compactMap({ $0 as? Loader }).forEach { $0.show(false) }
         }
     }
 }

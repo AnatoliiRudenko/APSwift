@@ -58,10 +58,10 @@ public extension UITableView {
             containerView.snp.makeConstraints { make in
                 make.edges.equalTo(self.snp.edges)
             }
-            Loader(parentView: containerView).show()
+            Loader(parentView: containerView).show(true)
         } else {
             let containerView = superview.subviews.first(where: { $0.accessibilityIdentifier == id })
-            containerView?.subviews.compactMap({ $0 as? Loader }).forEach { $0.hide() }
+            containerView?.subviews.compactMap({ $0 as? Loader }).forEach { $0.show(false) }
             containerView?.removeFromSuperview()
         }
     }
