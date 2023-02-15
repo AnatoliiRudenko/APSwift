@@ -21,8 +21,8 @@ open class BaseViewController: UIViewController, Coordinatable {
     
     // MARK: - Content View
     public enum ContentContainerType {
-        case regular(insets: UIEdgeInsets = .zero, safeAreaRelatedSides: [Side])
-        case scrollView(insets: UIEdgeInsets = .zero, safeAreaRelatedSides: [Side], sticksToBottom: Bool = true)
+        case regular(insets: UIEdgeInsets = .zero, safeAreaRelatedSides: [Side] = .all)
+        case scrollView(insets: UIEdgeInsets = .zero, safeAreaRelatedSides: [Side] = .exceptForBottom, sticksToBottom: Bool = true)
     }
     
     public var contentContainerType: ContentContainerType = .regular(insets: .zero, safeAreaRelatedSides: []) {
