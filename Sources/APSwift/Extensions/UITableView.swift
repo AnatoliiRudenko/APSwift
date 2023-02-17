@@ -45,6 +45,19 @@ public extension UITableView {
     }
 }
 
+// MARK: - Scroll
+public extension UITableView {
+    
+    func scrollTableToBottom(animated: Bool = true) {
+        let sections = numberOfSections
+        let rows = numberOfRows(inSection: sections - 1)
+        
+        scrollToRow(at: IndexPath(row: rows - 1, section: sections - 1),
+                    at: .bottom,
+                    animated: animated)
+    }
+}
+
 // MARK: - Loader
 public extension UITableView {
 
