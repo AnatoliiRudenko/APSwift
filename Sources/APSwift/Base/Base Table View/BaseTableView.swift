@@ -23,7 +23,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     internal(set) open var data = [Data]()
     
     public var onPaging: Closure?
-    public var onScrollingBeyondTop: Closure?
+    public var onRefreshing: Closure?
     
     public var plugView: UIView?
     public var hidesLastSeparator = true
@@ -134,7 +134,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     
     open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         if targetContentOffset.pointee.y <= 0 && scrollView.contentOffset.y <= 0 {
-            onScrollingBeyondTop?()
+            onRefreshing?()
         }
     }
     
