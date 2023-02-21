@@ -37,5 +37,5 @@ public struct Swipe {
         }
     }
     
-    internal var didSetDirection: DataClosure<UISwipeGestureRecognizer.Direction>?
+    public var didSetDirection: DataClosure<UISwipeGestureRecognizer.Direction>?
 }
