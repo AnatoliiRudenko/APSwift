@@ -43,6 +43,10 @@ public extension UITableView {
             sectionHeaderTopPadding = 0
         }
     }
+    
+    func hideSeparator(_ hide: Bool, for cell: UITableViewCell) {
+        cell.separatorInset = hide ? .init(top: 0, left: UIScreen.main.bounds.width, bottom: 0, right: 0) : separatorInset
+    }
 }
 
 // MARK: - Scroll
