@@ -8,7 +8,7 @@
 import Foundation
 
 /**
- Do you need to make several concurrent async calls disregarding the order? Good
+ Do you need to make several concurrent async calls disregarding the order? Good.
  call() method will return once every call returned
  
  Only to be used with async/await syntax!
@@ -22,19 +22,22 @@ public struct ConcurrentTasksHandler<T> {
         self.tasks = tasks
     }
     
-    public func call() async {
-        await withCheckedContinuation({ continuation in
+    @MainActor
+    public func call() async -> [T?] {
+        return await withCheckedContinuation({ continuation in
             let group = DispatchGroup()
-            for task in tasks {
+            var dict = [Int: T?]()
+            for (index, task) in tasks.enumerated() {
                 group.enter()
                 Task {
                     let response = await task.action()
+                    dict[index] = response as? T
                     task.callback?(response as? T)
                     group.leave()
                 }
             }
             group.notify(queue: .main) {
-                continuation.resume()
+                continuation.resume(returning: dict.valuesSortedByKey)
             }
         })
     }
