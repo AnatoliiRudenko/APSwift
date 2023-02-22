@@ -55,7 +55,7 @@ public extension UITableView {
     func scrollTableToBottom(animated: Bool = true) {
         let sections = numberOfSections
         let rows = numberOfRows(inSection: sections - 1)
-        
+        guard rows > 0, sections > 0 else { return }
         scrollToRow(at: IndexPath(row: rows - 1, section: sections - 1),
                     at: .bottom,
                     animated: animated)
