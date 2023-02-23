@@ -129,14 +129,6 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
         mainHeader?.height ?? sectionHeaderHeight
     }
     
-    open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        UITableView.automaticDimension
-    }
-    
-    open func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        2
-    }
-    
     // MARK: - UIScrollView Delegate
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if isLastCellVisible {
