@@ -10,10 +10,8 @@ import UIKit
 public extension UITextView {
     
     func centerVertically() {
-        let fittingSize = CGSize(width: bounds.width, height: CGFloat.greatestFiniteMagnitude)
-        let size = sizeThatFits(fittingSize)
-        let topOffset = (bounds.size.height - size.height * zoomScale) * 0.5
-        let positiveTopOffset = max(1, topOffset)
-        textContainerInset.top = positiveTopOffset
+        let rect = layoutManager.usedRect(for: textContainer)
+        let topInset = (bounds.size.height - rect.height) / 2.0
+        textContainerInset.top = max(0, topInset)
     }
 }
