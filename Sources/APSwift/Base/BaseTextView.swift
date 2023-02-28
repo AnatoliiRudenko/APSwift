@@ -58,13 +58,6 @@ open class BaseTextView: UITextView {
         delegate = self
     }
     
-    open override func layoutSubviews() {
-        super.layoutSubviews()
-
-        guard centersTextVertically else { return }
-        centerVertically()
-    }
-    
     // MARK: - Height Constraint
     public var height: CGFloat? {
         didSet {
@@ -106,6 +99,9 @@ extension BaseTextView: UITextViewDelegate {
     
     open func textViewDidChange(_ textView: UITextView) {
         didChangeText?(textView.text)
+        
+        guard centersTextVertically else { return }
+        centerVertically()
     }
 }
 
