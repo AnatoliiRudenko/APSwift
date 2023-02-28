@@ -12,7 +12,6 @@ open class BaseTextView: UITextView {
     // MARK: - Props
     public var didChangeText: DataClosure<String>?
     public var maxLength: Int?
-    public var centersTextVertically = false
     public lazy var mainTextColor: UIColor = textColor ?? .black
     public lazy var placeholderColor: UIColor = mainTextColor.withAlphaComponent(0.5)
     public var placeholder: String? {
@@ -99,9 +98,6 @@ extension BaseTextView: UITextViewDelegate {
     
     open func textViewDidChange(_ textView: UITextView) {
         didChangeText?(textView.text)
-        
-        guard centersTextVertically else { return }
-        centerVertically()
     }
 }
 
