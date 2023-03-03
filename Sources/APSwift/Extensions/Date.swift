@@ -21,6 +21,26 @@ public extension Date {
         return dates
     }
     
+    func isSameDay(as otherDate: Date) -> Bool {
+        let baseDate = self
+        let otherDate = otherDate
+        let baseDateComponents = Calendar.current.dateComponents(
+            [.day, .month, .year],
+            from: baseDate
+        )
+        let otherDateComponents = Calendar.current.dateComponents(
+            [.day, .month, .year],
+            from: otherDate
+        )
+        if baseDateComponents.year == otherDateComponents.year,
+           baseDateComponents.month == otherDateComponents.month,
+           baseDateComponents.day == otherDateComponents.day {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     func convertToTimeZone(initialTimeZone: TimeZone, timeZone: TimeZone, wrappingComponents: Bool = false) -> Date? {
         let delta = TimeInterval(timeZone.secondsFromGMT(for: self) - initialTimeZone.secondsFromGMT(for: self))
         return byAdding(.second, value: Int(delta), wrappingComponents: wrappingComponents)
