@@ -18,6 +18,11 @@ open class BaseViewController: UIViewController, Coordinatable {
     public var coordinator: Coordinator?
     public var isOnFirstLayout = true
     public var hidesNavBar = false
+    public var isSwipeBackEnabled = true {
+        didSet {
+            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = isSwipeBackEnabled
+        }
+    }
     
     // MARK: - Content View
     public enum ContentContainerType {
@@ -69,7 +74,7 @@ open class BaseViewController: UIViewController, Coordinatable {
     
     open func setupComponents() {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
-        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = isSwipeBackEnabled
     }
     
     // MARK: - Methods
