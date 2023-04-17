@@ -28,6 +28,14 @@ public struct Swipe {
             didSetDirection?(.up)
         }
     }
+    public var onAny: DataClosure<UISwipeGestureRecognizer>? {
+        didSet {
+            onLeft = onAny
+            onRight = onAny
+            onDown = onAny
+            onUp = onAny
+        }
+    }
     
-    internal var didSetDirection: DataClosure<UISwipeGestureRecognizer.Direction>?
+    public var didSetDirection: DataClosure<UISwipeGestureRecognizer.Direction>?
 }

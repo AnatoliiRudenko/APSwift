@@ -9,7 +9,7 @@ import UIKit
 
 open class SeparatorLine: BaseView {
     
-    private var lineHeight: CGFloat = 1 {
+    public var lineHeight: CGFloat = 1 {
         didSet {
             setHeight()
         }
@@ -40,6 +40,6 @@ private extension SeparatorLine {
 
 public extension UIView {
     static func separator(color: UIColor? = nil, height: CGFloat = 1) -> SeparatorLine {
-        .init(color: color)
+        .init(color: color, height: height)
     }
 }

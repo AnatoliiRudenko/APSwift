@@ -11,13 +11,37 @@ open class BaseTextField: UITextField {
     
     // MARK: - Props
     public var insets: UIEdgeInsets = .zero
+    public var didChangeText: DataClosure<String?>?
+    public var placeholderColor: UIColor?
     
-    // MARK: - Max Length props
-    public var maxLength: Int? {
-        didSet {
-            addTarget(self, action: #selector(editingChanged(_:)), for: .editingChanged)
+//    public static var patternLetterCharacter: Character = "$"
+    public static var patternNumberCharacter: Character = "#"
+    
+    open override var placeholder: String? {
+        willSet {
+            guard let newValue = newValue,
+                  let placeholderColor = placeholderColor
+            else { return }
+            attributedPlaceholder = NSAttributedString(string: newValue, attributes: [.foregroundColor : placeholderColor])
         }
     }
+    
+    open override var isEnabled: Bool {
+        get { super.isEnabled }
+        set {
+            super.isEnabled = newValue
+            self.alpha = newValue ? 1 : 0.5
+        }
+    }
+    
+    // MARK: - Content Control Props
+    // set format according to patternNumberCharacter value. E.g. "####-## (###)"
+    public var numberPattern: String? {
+        didSet {
+            maxLength = numberPattern?.count
+        }
+    }
+    public var maxLength: Int?
     public var isFilled: Bool {
         guard let maxLength = maxLength else { return true }
         return (text ?? "").count == maxLength
@@ -26,9 +50,17 @@ open class BaseTextField: UITextField {
     
     // MARK: - Methods
     @objc
-    func editingChanged(_ textField: UITextField) {
+    open func editingChanged(_ textField: UITextField) {
+        defer { didChangeText?(textField.text) }
         guard let text = textField.text else { return }
-        
+        if let numberPattern = numberPattern {
+            textField.text = text.applyPatternOnNumbers(numberPattern, replacementCharacter: BaseTextField.patternNumberCharacter)
+        }
+//        if let pattern = pattern {
+//            textField.text = text.applyPattern(pattern,
+//                                               replacementLetterCharacter: BaseTextField.patternLetterCharacter,
+//                                               replacementNumberCharacter: BaseTextField.patternNumberCharacter)
+//        }
         if let maxLength = maxLength,
            text.count >= maxLength {
             onReachingMaxLength?()
@@ -41,6 +73,11 @@ open class BaseTextField: UITextField {
         self.init(frame: .zero)
     }
     
+    public convenience init(placeholder: String?) {
+        self.init(frame: .zero)
+        self.placeholder = placeholder
+    }
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         setupComponents()
@@ -51,7 +88,9 @@ open class BaseTextField: UITextField {
         setupComponents()
     }
     
-    open func setupComponents() {}
+    open func setupComponents() {
+        addTarget(self, action: #selector(editingChanged), for: .editingChanged)
+    }
     
     // MARK: - Height Constraint
     public var height: CGFloat? {

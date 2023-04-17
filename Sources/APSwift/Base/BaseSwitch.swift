@@ -7,42 +7,46 @@
 
 import UIKit
 
-class BaseSwitch: UISwitch {
+open class BaseSwitch: UISwitch {
     
     // MARK: - Props
-    var didSwitchTo: DataClosure<Bool>?
+    public var didSwitchTo: DataClosure<Bool>?
     
-    var onThumbTintColor: UIColor? {
+    public var onThumbTintColor: UIColor? {
         didSet {
             setThumbColor()
         }
     }
-    var offThumbTintColor: UIColor? {
+    public var offThumbTintColor: UIColor? {
         didSet {
             setThumbColor()
         }
     }
     
     // MARK: - Methods
-    func imitateTap() {
+    public func imitateTap() {
         setOn(!isOn, animated: true)
         didSwitch(self)
+    }
+    
+    open func changeUIOnSwitch(_ isOn: Bool) {
+        setThumbColor()
     }
     
     // MARK: - Overriden
     open override var isOn: Bool {
         didSet {
-            setThumbColor()
+            changeUIOnSwitch(isOn)
         }
     }
 
     open override func setOn(_ on: Bool, animated: Bool) {
         super.setOn(on, animated: animated)
-        setThumbColor()
+        changeUIOnSwitch(isOn)
     }
 
     // MARK: - Init
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         setupComponents()
     }
@@ -63,7 +67,7 @@ private extension BaseSwitch {
     @objc
     func didSwitch(_ sender: UISwitch) {
         didSwitchTo?(sender.isOn)
-        setThumbColor()
+        changeUIOnSwitch(sender.isOn)
     }
     
     func setThumbColor() {

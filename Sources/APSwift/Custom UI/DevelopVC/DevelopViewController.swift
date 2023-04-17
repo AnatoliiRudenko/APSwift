@@ -11,12 +11,12 @@ import UIKit
 open class DevelopViewController: BaseViewController {
     
     // MARK: - Props
-    var text: String { "Данный раздел находится в разработке" }
+    open var text: String { "This screen is being developed" }
     
     private var titleText: String?
     
     // MARK: - Methods
-    convenience init(title: String) {
+    convenience public init(title: String) {
         self.init(nibName: nil, bundle: nil)
         self.titleText = title
     }
@@ -37,7 +37,7 @@ open class DevelopViewController: BaseViewController {
     }
     
     // MARK: - UI Properties
-    private lazy var label: BaseLabel = {
+    lazy var label: BaseLabel = {
         let label = BaseLabel()
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.multiline = true

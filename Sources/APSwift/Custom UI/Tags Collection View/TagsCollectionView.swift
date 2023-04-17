@@ -30,15 +30,15 @@ open class TagsCollectionView<Cell: UICollectionViewCell, Data>: BaseCollectionV
         })
     }
     
-    func setSizes(rowHeight: CGFloat, lineSpacing: CGFloat, itemSpacing: CGFloat) {
+    open func setSizes(rowHeight: CGFloat, lineSpacing: CGFloat, itemSpacing: CGFloat) {
         self.rowHeight = rowHeight
         self.lineSpacing = lineSpacing
         self.itemSpacing = itemSpacing
     }
     
-    var rowHeight: CGFloat = 22
-    var lineSpacing: CGFloat = 8
-    var itemSpacing: CGFloat = 4
+    open var rowHeight: CGFloat = 22
+    open var lineSpacing: CGFloat = 8
+    open var itemSpacing: CGFloat = 4
     
     open override func setupComponents() {
         super.setupComponents()
@@ -51,7 +51,7 @@ open class TagsCollectionView<Cell: UICollectionViewCell, Data>: BaseCollectionV
         collectionViewLayout = layout
     }
     
-    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    open override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         lineSpacing
     }
 }

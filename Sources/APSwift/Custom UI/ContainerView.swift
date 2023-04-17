@@ -11,10 +11,34 @@ open class ContainerView<Content: UIView>: BaseView {
 
     private(set) var content: Content
     private var insets: UIEdgeInsets = .zero
+    private var minInsets: UIEdgeInsets?
     
     open override func setupComponents() {
         super.setupComponents()
         addSubview(content)
+        minInsets == nil ? addEqualToConstraints() : addGreaterThanOrEqualToConstraints()
+    }
+
+    public init(content: Content, insets: UIEdgeInsets) {
+        self.content = content
+        self.insets = insets
+        super.init(frame: .zero)
+    }
+    
+    public init(content: Content, minInsets: UIEdgeInsets) {
+        self.content = content
+        self.minInsets = minInsets
+        super.init(frame: .zero)
+    }
+    
+    required public init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+private extension ContainerView {
+    
+    func addEqualToConstraints() {
         content.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(insets.top)
             make.bottom.equalToSuperview().inset(insets.bottom)
@@ -22,14 +46,15 @@ open class ContainerView<Content: UIView>: BaseView {
             make.right.equalToSuperview().inset(insets.right)
         }
     }
-
-    public init(content: Content, insets: UIEdgeInsets = .zero) {
-        self.content = content
-        self.insets = insets
-        super.init(frame: .zero)
-    }
     
-    required public init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    func addGreaterThanOrEqualToConstraints() {
+        guard let insets = minInsets else { return }
+        content.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualToSuperview().offset(insets.top)
+            make.left.greaterThanOrEqualToSuperview().offset(insets.left)
+            make.bottom.lessThanOrEqualToSuperview().offset(-insets.bottom)
+            make.right.lessThanOrEqualToSuperview().offset(-insets.right)
+            make.center.equalToSuperview()
+        }
     }
 }

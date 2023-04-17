@@ -9,7 +9,9 @@ import UIKit
 
 open class BaseButton: UIButton {
     
-    public var didTap: (Closure)?
+    open var didTap: (Closure)?
+    public var animatesTap = true
+    // don't use with center content horizontal alignment
     public var leftImage: UIImage? {
         didSet {
             setImage(leftImage, left: true)
@@ -22,9 +24,22 @@ open class BaseButton: UIButton {
     }
     public var textToImageOffset: CGFloat = 16
     
+    open override var isEnabled: Bool {
+        get { super.isEnabled }
+        set {
+            super.isEnabled = newValue
+            self.alpha = newValue ? 1 : 0.5
+        }
+    }
+    
     // MARK: - Init
     public convenience init() {
         self.init(frame: .zero)
+    }
+    
+    public convenience init(title: String?) {
+        self.init(frame: .zero)
+        self.setTitle(title)
     }
     
     public override init(frame: CGRect) {
@@ -41,8 +56,16 @@ open class BaseButton: UIButton {
         self.addTarget(self, action: #selector(self.handleTap), for: .touchUpInside)
     }
     
+    @objc
+    func handleTap() {
+        didTap?()
+        if animatesTap {
+            animateTap()
+        }
+    }
+    
     // MARK: - UI Properties
-    private lazy var leftImageView: UIImageView = {
+    public lazy var leftImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         addSubview(imageView)
@@ -51,6 +74,7 @@ open class BaseButton: UIButton {
     
     // MARK: - Resize to fit title label
     open override var intrinsicContentSize: CGSize {
+        guard leftImage != nil || rightImage != nil else { return super.intrinsicContentSize }
         let labelSize = titleLabel?.sizeThatFits(CGSize(width: titleLabel?.frame.size.width ?? 0, height: .greatestFiniteMagnitude)) ?? .zero
         let width: CGFloat = labelSize.width + contentEdgeInsets.left + contentEdgeInsets.right
         let height: CGFloat = labelSize.height + contentEdgeInsets.top + contentEdgeInsets.bottom
@@ -72,19 +96,10 @@ open class BaseButton: UIButton {
     private lazy var heightConstraint: NSLayoutConstraint = {
         self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
     }()
-    
-    private lazy var imagesRelatedInsets: UIEdgeInsets = .zero
-    private lazy var titleImagesRelatedInsets: UIEdgeInsets = .zero
 }
 
 // MARK: - Supporting Methods
 private extension BaseButton {
-    
-    @objc
-    func handleTap() {
-        didTap?()
-        animatesTap()
-    }
     
     func setImage(_ image: UIImage?, left: Bool) {
         adjustToSettingImage()

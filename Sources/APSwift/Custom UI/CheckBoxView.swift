@@ -38,9 +38,17 @@ open class CheckBoxView: BaseView {
         }
     }
     
-    public var checkBoxLocatedToTheRightSide = true
+    private let checkBoxLocatedToTheRightSide: Bool
     
     // MARK: - Init
+    public init(checkBoxLocatedToTheRightSide: Bool) {
+        self.checkBoxLocatedToTheRightSide = checkBoxLocatedToTheRightSide
+        super.init(frame: .zero)
+    }
+    
+    required public init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     open override func setupComponents() {
         super.setupComponents()
         
@@ -65,7 +73,7 @@ open class CheckBoxView: BaseView {
         }
         
         didTap = { [weak self] in
-            self?.isChecked.toggle()
+            self?.checkbox.didTap?()
         }
     }
     

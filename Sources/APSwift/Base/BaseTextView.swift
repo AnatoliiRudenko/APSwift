@@ -10,7 +10,9 @@ import UIKit
 open class BaseTextView: UITextView {
 
     // MARK: - Props
+    public var didChangeText: DataClosure<String>?
     public var maxLength: Int?
+    public var centersTextVertically = false
     public lazy var mainTextColor: UIColor = textColor ?? .black
     public lazy var placeholderColor: UIColor = mainTextColor.withAlphaComponent(0.5)
     public var placeholder: String? {
@@ -19,16 +21,28 @@ open class BaseTextView: UITextView {
             self.textColor = placeholderColor
         }
     }
+    
     open override var text: String! {
         get {
             super.text == placeholder ? "" : super.text
         }
         set {
-            super.text = newValue
+            let newValue = newValue ?? ""
+            super.text = shouldCallTextSetter ?
+            (newValue.isEmpty == false ? newValue : placeholder) :
+            newValue
+            shouldCallTextSetter = true
+            setTextColor()
         }
     }
+    private var shouldCallTextSetter = true
     
     // MARK: - Init
+    public convenience init(placeholder: String?) {
+        self.init(frame: .zero, textContainer: nil)
+        defer { self.placeholder = placeholder }
+    }
+    
     public override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         setupComponents()
@@ -40,8 +54,15 @@ open class BaseTextView: UITextView {
     }
 
     open func setupComponents() {
+        textContainer.lineFragmentPadding = 0
         delegate = self
-        backgroundColor = .clear
+    }
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+
+        guard centersTextVertically else { return }
+        centerVertically()
     }
     
     // MARK: - Height Constraint
@@ -66,6 +87,7 @@ extension BaseTextView: UITextViewDelegate {
     
     open func textViewDidBeginEditing(_ textView: UITextView) {
         guard textView.textColor == placeholderColor else { return }
+        shouldCallTextSetter = false
         textView.text = ""
         textView.textColor = mainTextColor
     }
@@ -80,5 +102,17 @@ extension BaseTextView: UITextViewDelegate {
         guard let maxLength = maxLength else { return true }
         let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
         return newText.count <= maxLength
+    }
+    
+    open func textViewDidChange(_ textView: UITextView) {
+        didChangeText?(textView.text)
+    }
+}
+
+// MARK: - Supporting methods
+private extension BaseTextView {
+    
+    func setTextColor() {
+        self.textColor = text.isEmpty ? placeholderColor : mainTextColor
     }
 }

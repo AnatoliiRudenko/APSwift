@@ -89,9 +89,9 @@ public struct StoredParameter<T> {
 }
 
 // MARK: - Supporting Methods
-extension StoredParameter {
+private extension StoredParameter {
     
-    private func setInKeychain(_ value: T) {
+     func setInKeychain(_ value: T) {
         let keychain = KeychainSwift(keyPrefix: self.keychainKeyPrefix)
         
         switch value {
@@ -112,7 +112,7 @@ extension StoredParameter {
         }
     }
     
-    private func getInKeychain() -> T? {
+    func getInKeychain() -> T? {
         let keychain = KeychainSwift(keyPrefix: self.keychainKeyPrefix)
         let value: Any?
         

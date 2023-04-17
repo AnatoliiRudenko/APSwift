@@ -7,35 +7,19 @@
 
 import UIKit
 
-open class ResizingImageView: UIImageView {
+open class ResizingImageView: BaseImageView {
     
-    var expectedWidth: CGFloat = UIScreen.main.bounds.width {
+    public var expectedWidth: CGFloat = UIScreen.main.bounds.width {
         didSet {
             self.fitsSuperviewWidth = false
             self.width = expectedWidth
         }
     }
-    var fitsSuperviewWidth = true
+    
+    public var fitsSuperviewWidth = true
+    public var setsSizeConstraints = false
     
     private var width: CGFloat = 0
-    
-    convenience init() {
-        self.init(frame: CGRect())
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setup()
-    }
-    
-    required public init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setup()
-    }
-    
-    private func setup() {
-        contentMode = .scaleAspectFit
-    }
     
     open override func layoutSubviews() {
         super.layoutSubviews()
@@ -53,6 +37,12 @@ open class ResizingImageView: UIImageView {
         let myViewWidth = width
         let ratio = myViewWidth / myImageWidth
         let scaledHeight = myImageHeight * ratio
-        return CGSize(width: myViewWidth, height: scaledHeight)
+        let size = CGSize(width: myViewWidth, height: scaledHeight)
+        if setsSizeConstraints {
+            snp.remakeConstraints { make in
+                make.size.equalTo(size)
+            }
+        }
+        return size
     }
 }

@@ -10,20 +10,20 @@ import WebKit
 
 open class BaseWebViewController: UIViewController {
     
-    var webView: WKWebView!
+    public var webView: WKWebView!
+    
     private var urlString: String?
     private var url: URL?
-    
-    var titleToSet: String?
+    private var titleToSet: String?
     
     // MARK: - Life Cycle
-    init(urlString: String?, title: String? = nil) {
+    public init(urlString: String?, title: String? = nil) {
         self.urlString = urlString
         self.titleToSet = title
         super.init(nibName: nil, bundle: nil)
     }
     
-    init(url: URL, title: String? = nil) {
+    public init(url: URL, title: String? = nil) {
         self.url = url
         self.titleToSet = title
         super.init(nibName: nil, bundle: nil)
@@ -35,7 +35,9 @@ open class BaseWebViewController: UIViewController {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
-        addWebView()
+        
+        let configuration = createConfiguration()
+        setUpWebView(configuration: configuration)
         load()
         setupComponents()
     }
@@ -44,35 +46,34 @@ open class BaseWebViewController: UIViewController {
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         title = titleToSet
     }
     
     // MARK: - Web view config
-    private func addWebView() {
+    open func createConfiguration() -> WKWebViewConfiguration {
         let configuration = WKWebViewConfiguration()
         configuration.mediaTypesRequiringUserActionForPlayback = []
         configuration.allowsInlineMediaPlayback = true
         configuration.preferences.javaScriptEnabled = true
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
-        
+        return configuration
+    }
+    
+    open func setUpWebView(configuration: WKWebViewConfiguration) {
         webView = WKWebView(frame: CGRect(), configuration: configuration)
         webView.navigationDelegate = self
         webView.allowsBackForwardNavigationGestures = true
         webView.translatesAutoresizingMaskIntoConstraints = false
         
         view.backgroundColor = .white
-        
         view.addSubview(webView)
-        NSLayoutConstraint.activate([
-            webView.leftAnchor
-                .constraint(equalTo: self.view.leftAnchor),
-            webView.topAnchor
-                .constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            webView.rightAnchor
-                .constraint(equalTo: self.view.rightAnchor),
-            webView.bottomAnchor
-                .constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
-        ])
+        webView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.left.equalTo(view.safeAreaLayoutGuide.snp.left)
+            make.right.equalTo(view.safeAreaLayoutGuide.snp.right)
+        }
     }
     
     // MARK: - Load URL
@@ -81,8 +82,12 @@ open class BaseWebViewController: UIViewController {
         let urlRequest = URLRequest(url: url)
         webView.load(urlRequest)
     }
+}
+
+// MARK: - Supporting methods
+private extension BaseWebViewController {
     
-    private func getURL() -> URL? {
+    func getURL() -> URL? {
         guard let link = urlString,
               let encodedLink = link.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let url = URL(string: encodedLink)
