@@ -18,7 +18,6 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/SnapKit/SnapKit.git", .upToNextMajor(from: "5.0.1")),
         .package(url: "https://github.com/onevcat/Kingfisher.git", .upToNextMajor(from: "7.0.0")),
-//        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.6.0")),
         .package(url: "https://github.com/evgenyneu/keychain-swift.git", .upToNextMajor(from: "20.0.0"))
         
     ],
@@ -30,7 +29,6 @@ let package = Package(
             dependencies: [
                 "SnapKit",
                 "Kingfisher",
-//                "Alamofire",
                 .product(name: "KeychainSwift", package: "keychain-swift")
             ]),
         .testTarget(
