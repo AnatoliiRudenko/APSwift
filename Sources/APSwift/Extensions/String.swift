@@ -13,15 +13,24 @@ public extension String {
         String(suffix(from: self.index(startIndex, offsetBy: count)))
     }
     
-    func applyPatternOnNumbers(pattern: String, replacementCharacter: Character) -> String {
-        var pureNumber = self.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
-        for index in 0 ..< pattern.count {
-            guard index < pureNumber.count else { return pureNumber }
-            let stringIndex = String.Index(utf16Offset: index, in: pattern)
-            let patternCharacter = pattern[stringIndex]
-            guard patternCharacter != replacementCharacter else { continue }
-            pureNumber.insert(patternCharacter, at: stringIndex)
+    func sliced(from: String, to: String) -> String? {
+        (range(of: from)?.upperBound).flatMap { substringFrom in
+            (range(of: to, range: substringFrom..<endIndex)?.lowerBound).map { substringTo in
+                String(self[substringFrom..<substringTo])
+            }
         }
+    }
+    
+//    func applyPattern(_ pattern: String, replacementLetterCharacter: Character?, replacementNumberCharacter: Character?) -> String {
+//        var value = self.replacingOccurrences(of: ".*[^A-Za-z0-9 ].*", with: "", options: .regularExpression)
+//        replaceCharacters(in: &value, pattern: pattern, replacementCharacter: replacementLetterCharacter)
+//        replaceCharacters(in: &value, pattern: pattern, replacementCharacter: replacementNumberCharacter)
+//        return value
+//    }
+    
+    func applyPatternOnNumbers(_ pattern: String, replacementCharacter: Character) -> String {
+        var pureNumber = self.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
+        replaceCharacters(in: &pureNumber, pattern: pattern, replacementCharacter: replacementCharacter)
         return pureNumber
     }
     
@@ -32,7 +41,7 @@ public extension String {
     
     var phoneNumberFormat: String {
         let pattern = "+# (###) ### ## ##"
-        return self.applyPatternOnNumbers(pattern: pattern, replacementCharacter: "#")
+        return self.applyPatternOnNumbers(pattern, replacementCharacter: "#")
     }
     
     // MARK: - Validity checks
@@ -66,6 +75,27 @@ public extension String {
     }
 }
 
+// MARK: - Attributes
+public extension String {
+    
+    func toAttributedString(_ attributes: [NSAttributedString.Key: Any]) -> NSMutableAttributedString? {
+        guard let rangeOfString = self.range(of: self),
+              let nsRange = self.nsRange(from: rangeOfString)
+        else { return nil }
+        let attrString = NSMutableAttributedString(string: self)
+        attrString.addAttributes(attributes, range: nsRange)
+        return attrString
+    }
+    
+    func nsRange(from range: Range<String.Index>) -> NSRange? {
+        guard let from = range.lowerBound.samePosition(in: utf16),
+              let to = range.upperBound.samePosition(in: utf16)
+        else { return nil }
+        return NSRange(location: utf16.distance(from: utf16.startIndex, to: from),
+                       length: utf16.distance(from: from, to: to))
+    }
+}
+
 // MARK: - HTML String
 public extension String {
     
@@ -88,10 +118,29 @@ public extension String {
     }
 }
 
+public extension StringProtocol  {
+    var digits: [Int] { compactMap(\.wholeNumberValue) }
+}
+
 // MARK: - Static
 public extension String {
     
     static func className(_ aClass: AnyClass) -> String {
         return NSStringFromClass(aClass).components(separatedBy: ".").last ?? ""
+    }
+}
+
+// MARK: - Supporting methods
+private extension String {
+    
+    func replaceCharacters(in value: inout String, pattern: String, replacementCharacter: Character?) {
+        guard let replacementCharacter = replacementCharacter else { return }
+        for index in 0 ..< pattern.count {
+            guard index < value.count else { return }
+            let stringIndex = String.Index(utf16Offset: index, in: pattern)
+            let patternCharacter = pattern[stringIndex]
+            guard patternCharacter != replacementCharacter else { continue }
+            value.insert(patternCharacter, at: stringIndex)
+        }
     }
 }

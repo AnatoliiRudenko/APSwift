@@ -1,6 +1,5 @@
 //
-//  AppTableView.swift
-//  Trade Union
+//  BaseTableView.swift
 //
 //  Created by Анатолий Руденко on 10.12.2021.
 //
@@ -24,10 +23,11 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     internal(set) open var data = [Data]()
     
     public var onPaging: Closure?
-    public var onScrollingBeyondTop: Closure?
+    public var onRefreshing: Closure?
     
-    public var plugView: BaseView?
+    public var plugView: UIView?
     public var hidesLastSeparator = true
+    public var isHeightEqualToContentHeight = false
     public var mainHeader: (view: UIView, height: CGFloat?)?
     
     public var contentHeight: CGFloat {
@@ -46,6 +46,8 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
         DispatchQueue.main.async { [weak self] in
             self?.reloadData {
                 completion?()
+                guard let self = self, self.isHeightEqualToContentHeight else { return }
+                self.height = self.contentHeight
             }
             self?.showPlugView(data.isEmpty)
         }
@@ -87,10 +89,19 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
         subscribe(self)
         separatorStyle = .none
         contentInsetAdjustmentBehavior = .never
+        separatorInset = .zero
         rowHeight = UITableView.automaticDimension
         estimatedRowHeight = 2
+        sectionHeaderHeight = 0
+        sectionFooterHeight = 0
         tableHeaderView = UIView(frame: .init(x: 0, y: 0, width: 0, height: 0.01))
         tableFooterView = UIView(frame: .init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 0.01))
+        removeExtraInsets()
+    }
+    
+    open func hideSeparatorIfNeeded(for cell: UITableViewCell, at indexPath: IndexPath) {
+        let shouldHideSeparator = hidesLastSeparator && indexPath.row == data.count - 1
+        super.hideSeparator(shouldHideSeparator, for: cell)
     }
     
     // MARK: - Delegates
@@ -101,8 +112,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeue(cell: Cell.self, indexPath: indexPath) else { return UITableViewCell() }
         contentDelegate?.tableView(self, cell: cell, indexPath: indexPath)
-        let shouldHideSeparator = hidesLastSeparator && indexPath.row == data.count - 1
-        cell.separatorInset = shouldHideSeparator ? .init(top: 0, left: UIScreen.main.bounds.width, bottom: 0, right: 0) : separatorInset
+        hideSeparatorIfNeeded(for: cell, at: indexPath)
         return cell
     }
     
@@ -128,7 +138,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
     
     open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         if targetContentOffset.pointee.y <= 0 && scrollView.contentOffset.y <= 0 {
-            onScrollingBeyondTop?()
+            onRefreshing?()
         }
     }
     
@@ -139,10 +149,15 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
                 self.heightConstraint.isActive = false
                 return
             }
+            if let heightConstraintPriority {
+                self.heightConstraint.priority = .init(rawValue: heightConstraintPriority)
+            }
             self.heightConstraint.constant = value
             self.heightConstraint.isActive = true
         }
     }
+    
+    public var heightConstraintPriority: Float?
     
     private lazy var heightConstraint: NSLayoutConstraint = {
         self.heightAnchor.constraint(equalToConstant: self.height ?? 0)

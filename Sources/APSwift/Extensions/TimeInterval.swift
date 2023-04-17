@@ -7,7 +7,7 @@
 
 import Foundation
 
-public var animationDuration: TimeInterval = 0.3
+public var animationDuration: TimeInterval = 0.25
 
 public extension TimeInterval {
     

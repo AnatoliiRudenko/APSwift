@@ -17,6 +17,24 @@ open class BaseViewController: UIViewController, Coordinatable {
     open var _model: BaseViewModel?
     public var coordinator: Coordinator?
     public var isOnFirstLayout = true
+    public var hidesNavBar = false
+    public var isSwipeBackEnabled = true {
+        didSet {
+            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = isSwipeBackEnabled
+        }
+    }
+    
+    // MARK: - Content View
+    public enum ContentContainerType {
+        case regular(insets: UIEdgeInsets = .zero, safeAreaRelatedSides: [Side] = .all)
+        case scrollView(insets: UIEdgeInsets = .zero, safeAreaRelatedSides: [Side] = .exceptForBottom, sticksToBottom: Bool = true)
+    }
+    
+    public var contentContainerType: ContentContainerType = .regular(insets: .zero, safeAreaRelatedSides: []) {
+        didSet {
+            setupContentContainer()
+        }
+    }
     
     // MARK: - Lifecycle
     public convenience init(
@@ -31,9 +49,13 @@ open class BaseViewController: UIViewController, Coordinatable {
         super.viewDidLoad()
         
         self.setupComponents()
+    }
+    
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
-        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        guard hidesNavBar else { return }
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     open override func viewDidAppear(_ animated: Bool) {
@@ -42,62 +64,29 @@ open class BaseViewController: UIViewController, Coordinatable {
         isOnFirstLayout = false
     }
     
-    open func setupComponents() {}
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        guard hidesNavBar else { return }
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
+    
+    open func setupComponents() {
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = isSwipeBackEnabled
+    }
     
     // MARK: - Methods
-    func presentNativeOKCancelAlert(title: String?, message: String?, okAction: Closure?) {
-        let alertController = UIAlertController(title: title,
-                                                message: message,
-                                                preferredStyle: .alert)
-        
-        let okAction = UIAlertAction(title: "ОК", style: .default) { _ in
-            okAction?()
-        }
-        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
-        alertController.addAction(okAction)
-        alertController.addAction(cancelAction)
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.present(alertController, animated: true, completion: nil)
-        }
-    }
     
-    func presentNativeOKAlert(title: String?, message: String?) {
-        let alertController = UIAlertController(title: title,
-                                                message: message,
-                                                preferredStyle: .alert)
-        
-        let okAction = UIAlertAction(title: "ОК", style: .default, handler: nil)
-        alertController.addAction(okAction)
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.present(alertController, animated: true, completion: nil)
-        }
-    }
-    
-    func presentPermissonNotGrantedNativeAlert(title: String?, message: String?) {
-        let alertController = UIAlertController(title: title,
-                                                message: message,
-                                                preferredStyle: .alert)
-        
-        let settingsAction = UIAlertAction(title: "Настройки", style: .default) { _ in
-            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString),
-                  UIApplication.shared.canOpenURL(settingsUrl)
-            else { return }
-            UIApplication.shared.open(settingsUrl, completionHandler: nil)
-        }
-        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
-        alertController.addAction(settingsAction)
-        alertController.addAction(cancelAction)
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.present(alertController, animated: true, completion: nil)
-        }
-    }
-    
-    func presentNativeErrorAlert(_ message: String?) {
-        presentNativeOKAlert(title: "Ошибка!", message: message ?? "Что-то пошло не так")
-    }
+    // MARK: - UI Properties
+    public lazy var scrollView = UIScrollView()
+    public lazy var contentView = UIView()
+    public lazy var contentStackView: UIStackView = {
+        let stackView: UIStackView = .stackView(.vertical, 16, [])
+        contentView.fitSubviewIn(stackView)
+        return stackView
+    }()
 }
 
 // MARK: - UIGestureRecognizerDelegate
@@ -107,3 +96,65 @@ extension BaseViewController: UIGestureRecognizerDelegate {
         true
     }
 }
+
+// MARK: - Content View set up
+private extension BaseViewController {
+    
+    func setupContentContainer() {
+        switch contentContainerType {
+        case let .regular(insets, safeAreaRelatedSides):
+            addContentView(insets: insets,
+                           safeAreaRelatedSides: safeAreaRelatedSides)
+        case let .scrollView(insets, safeAreaRelatedSides, sticksToBottom):
+            addScrollView(insets: insets,
+                          safeAreaRelatedSides: safeAreaRelatedSides,
+                          sticksToBottom: sticksToBottom)
+        }
+    }
+    
+    func addContentView(insets: UIEdgeInsets, safeAreaRelatedSides: [Side]) {
+        view.addSubview(contentView)
+        contentView.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaRelatedSides.contains(where: { $0 == .top }) ? view.safeAreaLayoutGuide.snp.top : view.snp.top).inset(insets.top)
+            make.left.equalTo(safeAreaRelatedSides.contains(where: { $0 == .left }) ? view.safeAreaLayoutGuide.snp.left : view.snp.left).inset(insets.left)
+            make.right.equalTo(safeAreaRelatedSides.contains(where: { $0 == .right }) ? view.safeAreaLayoutGuide.snp.right : view.snp.right).inset(insets.right)
+            make.bottom.equalTo(safeAreaRelatedSides.contains(where: { $0 == .bottom }) ? view.safeAreaLayoutGuide.snp.bottom : view.snp.bottom).inset(insets.bottom)
+        }
+    }
+    
+    func addScrollView(insets: UIEdgeInsets, safeAreaRelatedSides: [Side], sticksToBottom: Bool) {
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaRelatedSides.contains(where: { $0 == .top }) ? view.safeAreaLayoutGuide.snp.top : view.snp.top)
+            make.left.equalTo(safeAreaRelatedSides.contains(where: { $0 == .left }) ? view.safeAreaLayoutGuide.snp.left : view.snp.left)
+            make.right.equalTo(safeAreaRelatedSides.contains(where: { $0 == .right }) ? view.safeAreaLayoutGuide.snp.right : view.snp.right)
+            make.bottom.equalTo(safeAreaRelatedSides.contains(where: { $0 == .bottom }) ? view.safeAreaLayoutGuide.snp.bottom : view.snp.bottom)
+        }
+        if sticksToBottom {
+            contentView.snp.makeConstraints { make in
+                make.top.equalToSuperview().inset(insets.top)
+                make.left.equalToSuperview().inset(insets.left)
+                make.right.equalToSuperview().inset(insets.right)
+                make.bottom.equalToSuperview().inset(insets.bottom).priority(250)
+                make.centerX.equalToSuperview()
+                
+                var offset = insets.top - insets.bottom
+                if offset > 0 {
+                    offset *= -1
+                }
+                make.centerY.equalToSuperview().offset(offset).priority(250)
+            }
+        } else {
+            contentView.snp.makeConstraints { make in
+                make.top.equalToSuperview().inset(insets.top)
+                make.left.equalToSuperview().inset(insets.left)
+                make.right.equalToSuperview().inset(insets.right)
+                make.bottom.equalToSuperview().inset(insets.bottom)
+                make.centerX.equalToSuperview()
+            }
+        }
+        scrollView.contentInsetAdjustmentBehavior = .never
+    }
+}
+

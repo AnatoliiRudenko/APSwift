@@ -16,7 +16,7 @@ open class Coordinator: NSObject {
     var navigationController: UINavigationController
     var popUpView: BaseView?
     var bottomSheet: BottomSheet? {
-        UIApplication.topViewController as? BottomSheet
+        UIApplication.shared.topViewController as? BottomSheet
     }
     
     init(navigationController: UINavigationController) {
@@ -51,14 +51,11 @@ open class Coordinator: NSObject {
     open func developmentScreen(title: String) {
         goTo(vc: DevelopViewController(title: title))
     }
-}
-
-// MARK: - Pop up
-extension Coordinator {
     
+    // MARK: - Pop up
     open func showPopUp(_ popUpView: BaseView, animated: Bool = true) {
         popUpView.isHidden = true
-        UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.addSubview(popUpView)
+        UIApplication.shared.keyWindowGetter?.addSubview(popUpView)
         popUpView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -73,3 +70,4 @@ extension Coordinator {
         }
     }
 }
+

@@ -10,7 +10,7 @@ import UIKit
 open class BaseView: UIView {
     
     // MARK: - Props
-    public var didTap: (Closure)? {
+    open var didTap: (Closure)? {
         didSet {
             self.enableTap()
         }
@@ -18,6 +18,7 @@ open class BaseView: UIView {
     
     public var animatesTap = true
     public var tapsThrough = false
+    public var isCircled = false
     public lazy var swipe: Swipe = {
         var swipe = Swipe()
         swipe.didSetDirection = { [weak self] direction in
@@ -25,6 +26,16 @@ open class BaseView: UIView {
         }
         return swipe
     }()
+    
+    public var isEnabled: Bool = true {
+        didSet {
+            isUserInteractionEnabled = isEnabled
+            alpha = isEnabled ? 1 : 0.5
+        }
+    }
+    
+    public lazy var scrollView = UIScrollView()
+    public lazy var scrollContentView = BaseView()
     
     // MARK: - Init
     public convenience init() {
@@ -43,19 +54,35 @@ open class BaseView: UIView {
     
     open func setupComponents() {}
     
-    // MARK: - Tap
-    private func enableTap() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        addGestureRecognizer(tapGesture)
-        isUserInteractionEnabled = true
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        guard isCircled else { return }
+        roundCorners(bounds.width * 0.5)
+        clipsToBounds = true
     }
     
-    @objc
-    private func handleTap() {
-        didTap?()
-        if animatesTap {
-            animatesTap()
+    // MARK: - Scroll View
+    open func addScrollView(stickToBottom: Bool = false) {
+        fitSubviewIn(scrollView)
+        scrollView.addSubview(scrollContentView)
+        scrollContentView.snp.makeConstraints { make in
+            make.top.left.right.equalToSuperview()
+            make.bottom.equalToSuperview().priority(stickToBottom ? 999 : 250)
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().priority(stickToBottom ? 999 : 250)
         }
+    }
+    
+    // MARK: - Tap Through
+    open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        guard tapsThrough else { return super.point(inside: point, with: event) }
+        for subview in subviews {
+            if !subview.isHidden && subview.isUserInteractionEnabled && subview.point(inside: convert(point, to: subview), with: event) {
+                return true
+            }
+        }
+        return false
     }
     
     // MARK: - Height Constraint
@@ -73,22 +100,27 @@ open class BaseView: UIView {
     private lazy var heightConstraint: NSLayoutConstraint = {
         self.heightAnchor.constraint(equalToConstant: self.height ?? 0)
     }()
-    
-    // MARK: - Tap Through
-    open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        guard tapsThrough else { return super.point(inside: point, with: event) }
-        for subview in subviews {
-            if !subview.isHidden && subview.isUserInteractionEnabled && subview.point(inside: convert(point, to: subview), with: event) {
-                return true
-            }
-        }
-        return false
-    }
 }
 
 // MARK: - Supporting methods
 private extension BaseView {
     
+    // MARK: - Tap
+    private func enableTap() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        addGestureRecognizer(tapGesture)
+        isUserInteractionEnabled = true
+    }
+    
+    @objc
+    private func handleTap() {
+        didTap?()
+        if animatesTap {
+            animateTap()
+        }
+    }
+    
+    // MARK: - Swipe
     func addSwipe(_ direction: UISwipeGestureRecognizer.Direction) {
         let swipe = UISwipeGestureRecognizer(target: self, action: #selector(self.handleSwipe(gesture:)))
         swipe.direction = direction

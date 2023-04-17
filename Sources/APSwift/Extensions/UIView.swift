@@ -10,6 +10,10 @@ import UIKit
 // MARK: - Functional
 public extension UIView {
     
+    var allSubviews: [UIView] {
+        subviews.flatMap { [$0] + $0.allSubviews }
+    }
+    
     func addSubviews(_ subviews: [UIView]) {
         subviews.forEach({ addSubview($0) })
     }
@@ -28,6 +32,27 @@ public extension UIView {
         addSubview(subview)
         subview.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(inset)
+        }
+    }
+    
+    func fitSubviewIn(_ subview: UIView, minInsets: UIEdgeInsets) {
+        addSubview(subview)
+        subview.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualToSuperview().offset(minInsets.top)
+            make.left.greaterThanOrEqualToSuperview().offset(minInsets.left)
+            make.bottom.lessThanOrEqualToSuperview().offset(-minInsets.bottom)
+            make.right.lessThanOrEqualToSuperview().offset(-minInsets.right)
+            make.center.equalToSuperview()
+        }
+    }
+    
+    func fitSubviewIn(_ subview: UIView, minInset: CGFloat) {
+        fitSubviewIn(subview, minInsets: .allAround(minInset))
+    }
+    
+    func removeSubviews() {
+        subviews.forEach {
+            $0.removeFromSuperview()
         }
     }
 }
@@ -88,7 +113,7 @@ public extension UIView {
         animator.startAnimation()
     }
     
-    func animatesTap() {
+    func animateTap() {
         UIView.animate(withDuration: animationDuration * 0.5, delay: .zero, options: .curveLinear) { [weak self] in
             self?.alpha = 0.4
         } completion: { [weak self] _ in
@@ -123,12 +148,40 @@ public extension UIView {
     }
 }
 
+// MARK: - Border
+public extension UIView {
+    
+    func addBorder(color: UIColor, width: CGFloat = 1) {
+        layer.borderColor = color.cgColor
+        layer.borderWidth = width
+    }
+}
+
 // MARK: - Shadows
 public extension UIView {
     
     static var shadowLayerName: String { "shadow" }
     
-    func addShadowLayer(index: Int, color: UIColor, offset: CGSize, radius: CGFloat, opacity: Float) {
+    func setShadow(color: UIColor,
+                   radius: CGFloat,
+                   opacity: CGFloat,
+                   offset: CGSize,
+                   scale: Bool = true) {
+        layer.masksToBounds = false
+        layer.shadowColor = color.cgColor
+        layer.shadowOpacity = Float(opacity)
+        layer.shadowOffset = offset
+        layer.shadowRadius = radius
+        layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+        layer.shouldRasterize = true
+        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+    }
+    
+    func addShadowLayer(index: Int,
+                        color: UIColor,
+                        offset: CGSize,
+                        radius: CGFloat,
+                        opacity: Float) {
         let shadowLayer = CAShapeLayer()
         shadowLayer.name = UIView.shadowLayerName
         shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
@@ -144,6 +197,7 @@ public extension UIView {
     
     func removeShadows() {
         shadowLayers.forEach({ $0.removeFromSuperlayer() })
+        layer.shadowOffset = .zero
     }
     
     var shadowLayers: [CALayer] {
@@ -151,13 +205,59 @@ public extension UIView {
     }
 }
 
+// MARK: - Constraints
+public extension UIView {
+    
+    var outsideConstraints: [NSLayoutConstraint] {
+        var array = [NSLayoutConstraint]()
+        guard let superview = superview else { return array }
+        for constraint in superview.constraints {
+            if let first = constraint.firstItem as? UIView, first == self {
+                array.append(constraint)
+            }
+            if let second = constraint.secondItem as? UIView, second == self {
+                array.append(constraint)
+            }
+        }
+        return array
+    }
+    
+    func lowerPriorities() {
+        outsideConstraints.forEach {
+            $0.priority = .defaultLow
+        }
+    }
+}
+
+// MARK: - Loader
+public extension UIView {
+
+    @available(iOS 13.0, *)
+    func showLoader(_ show: Bool) {
+        if show {
+            Loader(parentView: self).show(true)
+        } else {
+            subviews.compactMap({ $0 as? Loader }).forEach { $0.show(false) }
+        }
+    }
+}
+
 // MARK: - Static
 public extension UIView {
     
-    static func stackView(_ axis: NSLayoutConstraint.Axis, _ spacing: CGFloat, _ subviews: [UIView], insets: UIEdgeInsets? = nil) -> UIStackView {
+    static var new: UIView {
+        UIView()
+    }
+    
+    static func stackView(_ axis: NSLayoutConstraint.Axis,
+                          _ spacing: CGFloat,
+                          _ subviews: [UIView],
+                          distribution: UIStackView.Distribution = .fill,
+                          insets: UIEdgeInsets? = nil) -> UIStackView {
         let stackView = UIStackView()
         stackView.axis = axis
         stackView.spacing = spacing
+        stackView.distribution = distribution
         stackView.addArrangedSubviews(subviews)
         if let insets = insets {
             stackView.setInsets(NSDirectionalEdgeInsets(top: insets.top,
@@ -170,6 +270,20 @@ public extension UIView {
     
     static func container<Content: UIView>(content: Content, insets: UIEdgeInsets) -> ContainerView<Content> {
         ContainerView(content: content, insets: insets)
+    }
+    
+    static func container<Content: UIView>(content: Content, minInsets: UIEdgeInsets) -> ContainerView<Content> {
+        ContainerView(content: content, minInsets: minInsets)
+    }
+    
+    static func circle(radius: CGFloat, color: UIColor) -> UIView {
+        let view = UIView()
+        view.backgroundColor = color
+        view.snp.makeConstraints { make in
+            make.size.equalTo(radius * 2)
+        }
+        view.roundCorners(radius)
+        return view
     }
     
     static func animate(animations: Closure?, completion: DataClosure<Bool>? = nil) {

@@ -9,29 +9,36 @@ import Foundation
 
 public extension Encodable {
     
-    var dictionary: [String: Any?] {
+    var dictionary: [String: Any] {
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(self) else { return [:] }
         return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] } ?? [:]
     }
     
-    var dictionaryWithoutEmptyFields: [String: Any?] {
-        var dict = dictionary
-        filterFromEmptyFields(dictionary: &dict)
-        return dictionary
+    var jsonCompatibleData: Any? {
+        guard let array = self as? Array<Encodable> else {
+            return dictionary
+        }
+        let value = array.map { $0.dictionary }
+        return value
     }
+}
+
+public extension Encodable {
     
-    func filterFromEmptyFields(dictionary: inout [String: Any?]) {
-        let keysToRemove = dictionary.keys.filter {
-            guard let value = dictionary[$0] else { return false }
-            if let stringValue = value as? String,
-               stringValue.isEmpty {
-                return true
-            }
-            return value == nil
+    var hasValues: Bool {
+        Mirror(reflecting: self).children.reduce(false) { acc, val in
+            let subMirror = Mirror(reflecting: val.value)
+            return acc || (subMirror.displayStyle == .optional ? subMirror.children.count > 0 : true)
         }
-        for key in keysToRemove {
-            dictionary.removeValue(forKey: key)
-        }
+    }
+}
+
+private extension Encodable {
+    
+    var jsonArrayData: Any? {
+        guard let array = self as? Array<Encodable> else { return nil }
+        let value = array.map { $0.dictionary }
+        return value
     }
 }

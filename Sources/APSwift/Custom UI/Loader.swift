@@ -11,17 +11,17 @@ import UIKit
 open class Loader: UIView {
     
     // MARK: - Props
-    var size: CGFloat = 80
-    var bgColor: UIColor = .white.withAlphaComponent(0.7)
-    var spinnerStyle: UIActivityIndicatorView.Style = .large
-    var spinnerColor: UIColor?
+    public var size: CGFloat = UIDevice.current.userInterfaceIdiom == .phone ? 80 : 120
+    public var bgColor: UIColor = .white.withAlphaComponent(0.7)
+    public var spinnerStyle: UIActivityIndicatorView.Style = .large
+    public var spinnerColor: UIColor?
     
     // MARK: - Init
-    convenience init(parentView: UIView) {
+    convenience public init(parentView: UIView) {
         self.init(frame: parentView.bounds, parentView: parentView)
     }
     
-    init(frame: CGRect, parentView: UIView) {
+    public init(frame: CGRect, parentView: UIView) {
         self.parentView = parentView
         super.init(frame: frame)
     }
@@ -31,50 +31,57 @@ open class Loader: UIView {
     }
     
     // MARK: - Methods
-    func show() {
-        guard loadingView.superview == nil else { return }
-        guard Thread.isMainThread else {
-            return DispatchQueue.main.async {
-                self.show()
-            }
+    open func show(_ show: Bool) {
+        if show {
+            self.show()
+        } else {
+            self.hide()
+        }
+    }
+    
+    private func show() {
+        guard self.superview == nil else {
+            parentView?.bringSubviewToFront(self)
+            return
         }
         
         guard let parentView = parentView else { return }
-        self.loadingView = UIView()
-        self.loadingView.backgroundColor = bgColor
+        self.backgroundColor = bgColor
         
         self.spinner = UIActivityIndicatorView(style: spinnerStyle)
         if let spinnerColor = spinnerColor {
             self.spinner.color = spinnerColor
         }
         
-        self.loadingView.addSubview(self.spinner)
-        parentView.addSubview(self.loadingView)
+        self.addSubview(self.spinner)
+        parentView.addSubview(self)
         
         self.spinner.snp.makeConstraints { make in
-            make.center.equalTo(self.loadingView.snp.center)
-            make.size.equalTo(80)
+            make.center.equalTo(self.snp.center)
+            make.size.equalTo(size)
         }
-        self.loadingView.snp.makeConstraints { make in
+        self.snp.makeConstraints { make in
             make.edges.equalTo(parentView.snp.edges)
         }
         
         self.spinner.startAnimating()
     }
 
-    func hide() {
-        guard Thread.isMainThread else {
-            return DispatchQueue.main.async {
-                self.hide()
-            }
-        }
+    private func hide() {
         self.spinner.stopAnimating()
-        self.loadingView.removeFromSuperview()
         self.removeFromSuperview()
     }
     
     // MARK: - UI Properties
     private lazy var spinner = UIActivityIndicatorView(style: spinnerStyle)
-    private var loadingView: UIView = UIView()
     private weak var parentView: UIView?
+}
+
+// MARK: - Static
+@available(iOS 13.0, *)
+public extension Loader {
+    
+    static func showRootLoader(_ show: Bool) {
+        UIApplication.shared.keyWindowGetter?.showLoader(show)
+    }
 }

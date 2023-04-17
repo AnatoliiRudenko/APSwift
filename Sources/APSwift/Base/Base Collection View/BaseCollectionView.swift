@@ -20,6 +20,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     // MARK: - Props
     public weak var contentDelegate: CollectionViewContentDelegate?
     public weak var selectionDelegate: CollectionViewSelectionDelegate?
+    public var automaticallyAdjustsHeight = false
     
     internal(set) open var data = [Data]()
     
@@ -28,6 +29,8 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         DispatchQueue.main.async { [weak self] in
             self?.reloadData {
                 completion?()
+                guard self?.automaticallyAdjustsHeight ?? false else { return }
+                self?.height = self?.contentHeight
             }
         }
     }
@@ -41,6 +44,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         collectionViewLayout as? UICollectionViewFlowLayout
     }
     
+    // cellHeight only gets considered when cellsInRow has a value
     public var cellHeight: CGFloat?
     public var cellsInRow: Int?
     public var cellSize: CGSize {
@@ -92,13 +96,24 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         selectionDelegate?.collectionView(collectionView, didSelectItemAt: indexPath, data: data[indexPath.row])
     }
     
+    // MARK: - Scroll View Delegate
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {}
     
     open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {}
     
+    open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {}
+    
     // MARK: - UICollectionViewDelegateFlowLayout
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         cellSize
+    }
+    
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        0
+    }
+    
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        0
     }
     
     // MARK: - Height Constraint
