@@ -150,7 +150,6 @@ private extension BaseSegmentedControl {
     }
     
     func deselect(animated: Bool = true) {
-        selectedSegmentIndex = UISegmentedControl.noSegment
         guard let normalBorderColor = normalBorderColor,
               let cornerRadius = cornerRadius
         else { return }
