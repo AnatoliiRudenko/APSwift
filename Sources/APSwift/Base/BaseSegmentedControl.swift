@@ -57,7 +57,11 @@ open class BaseSegmentedControl: UISegmentedControl {
         get { super.selectedSegmentIndex }
         set {
             super.selectedSegmentIndex = newValue
-            changeUIOnSwitch(newValue, animated: false)
+            if selectedSegmentIndex == UISegmentedControl.noSegment {
+                deselect(animated: false)
+            } else {
+                changeUIOnSwitch(newValue, animated: false)
+            }
         }
     }
     
@@ -131,7 +135,7 @@ private extension BaseSegmentedControl {
               let normalBorderColor = normalBorderColor,
               let cornerRadius = cornerRadius
         else { return }
-        let block = { [weak self] in
+        execute({ [weak self] in
             guard let self = self else { return }
             guard self.subviews.count > self.numberOfSegments else { return }
             let views = self.subviews.cutToFirst(Int(Double(self.subviews.count) * 0.5))
@@ -142,13 +146,21 @@ private extension BaseSegmentedControl {
                 $0.roundCorners(cornerRadius)
             }
             views[self.selectedSegmentIndex].addBorder(color: selectedBorderColor)
-        }
-        if animated {
-            UIView.animate {
-                block()
+        }, animated: animated)
+    }
+    
+    func deselect(animated: Bool = true) {
+        selectedSegmentIndex = UISegmentedControl.noSegment
+        guard let normalBorderColor = normalBorderColor,
+              let cornerRadius = cornerRadius
+        else { return }
+        execute({ [weak self] in
+            guard let self = self else { return }
+            self.clipsToBounds = false
+            self.subviews.forEach {
+                $0.addBorder(color: normalBorderColor)
+                $0.roundCorners(cornerRadius)
             }
-        } else {
-            block()
-        }
+        }, animated: animated)
     }
 }
