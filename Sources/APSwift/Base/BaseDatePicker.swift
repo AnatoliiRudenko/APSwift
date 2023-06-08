@@ -7,7 +7,7 @@
 
 import UIKit
 
-open class ViveDatePicker: UIDatePicker {
+open class BaseDatePicker: UIDatePicker {
     
     public var didSelectDate: DataClosure<Date>?
     
