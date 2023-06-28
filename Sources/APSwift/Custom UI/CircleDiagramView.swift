@@ -7,7 +7,7 @@
 
 import UIKit
 
-open class CircleDiagramView: BaseView {
+open class CircleProgressView: BaseView {
     
     // MARK: - Props
     public let progressLayer = CAShapeLayer()
@@ -51,15 +51,16 @@ open class CircleDiagramView: BaseView {
 }
 
 // MARK: - Supporting Methods
-private extension CircleDiagramView {
+private extension CircleProgressView {
     
     func draw(value: CGFloat, animated: Bool) {
         roundCorners(diameter * 0.5)
         let startRadians: CGFloat = -.pi / 2 + minValue.asRadians
         let valueRadians = value / maxValue * 2 * .pi
         let targetRadians = valueRadians + startRadians
-        let circularPath = UIBezierPath(arcCenter: CGPoint(x: diameter * 0.5, y: diameter * 0.5),
-                                        radius: diameter * 0.5,
+        let circularPath = UIBezierPath(arcCenter: CGPoint(x: diameter * 0.5,
+                                                           y: diameter * 0.5),
+                                        radius: diameter * 0.5 - progressLayer.lineWidth * 0.5,
                                         startAngle: startRadians,
                                         endAngle: targetRadians,
                                         clockwise: true)
