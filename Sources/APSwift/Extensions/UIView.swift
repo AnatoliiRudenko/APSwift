@@ -28,13 +28,6 @@ public extension UIView {
         }
     }
     
-    func fitSubviewIn(_ subview: UIView, inset: CGFloat) {
-        addSubview(subview)
-        subview.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(inset)
-        }
-    }
-    
     func fitSubviewIn(_ subview: UIView, minInsets: UIEdgeInsets) {
         addSubview(subview)
         subview.snp.makeConstraints { make in
