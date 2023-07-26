@@ -61,6 +61,7 @@ open class BaseTableView<Cell: UITableViewCell, Data>: UITableView, TableViewDel
                 make.edges.equalToSuperview()
                 make.center.equalToSuperview()
             }
+            plugView.layer.zPosition = -10 // we want it behind header/footer
         }
         plugView.setHidden(!show)
     }
