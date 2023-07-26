@@ -23,10 +23,10 @@ public extension Sequence {
         }
     }
     
+    /// A task group automatically waits for all of its
+    /// sub-tasks to complete, while also performing those
+    /// tasks in parallel:
     func concurrentForEach(_ operation: @escaping (Element) async -> Void) async {
-        // A task group automatically waits for all of its
-        // sub-tasks to complete, while also performing those
-        // tasks in parallel:
         await withTaskGroup(of: Void.self) { group in
             for element in self {
                 group.addTask {
@@ -36,6 +36,9 @@ public extension Sequence {
         }
     }
     
+    /// A task group automatically waits for all of its
+    /// sub-tasks to complete, while also performing those
+    /// tasks in parallel:
     func concurrentMap<T>(_ transform: @escaping (Element) async throws -> T) async throws -> [T] {
         let tasks = map { element in
             Task {
