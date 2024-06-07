@@ -10,22 +10,22 @@ import UIKit
 open class PageControlView: BaseView {
     
     // MARK: - Props
-    var activeColor: UIColor
-    var inactiveColor: UIColor
+    public var activeColor: UIColor
+    public var inactiveColor: UIColor
     
-    var circleDiameter: CGFloat = 8 {
+    public var circleDiameter: CGFloat = 8 {
         didSet {
             drawProgress(currentPhase: index)
         }
     }
     
-    var maxIndex: Int = 0 {
+    public var maxIndex: Int = 0 {
         didSet {
             drawProgress(currentPhase: index)
         }
     }
     
-    var index: Int = 0 {
+    public var index: Int = 0 {
         didSet {
             guard index <= maxIndex, index >= 0 else { return }
             drawProgress(currentPhase: index)
@@ -33,7 +33,7 @@ open class PageControlView: BaseView {
     }
     
     // MARK: - Init
-    init(activeColor: UIColor, inactiveColor: UIColor, maxIndex: Int = 0) {
+    public init(activeColor: UIColor, inactiveColor: UIColor, maxIndex: Int = 0) {
         self.activeColor = activeColor
         self.inactiveColor = inactiveColor
         self.maxIndex = maxIndex
@@ -57,7 +57,7 @@ open class PageControlView: BaseView {
     }
     
     // MARK: - UI Properties
-    let stackView: UIStackView = {
+    public let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 6
@@ -66,9 +66,9 @@ open class PageControlView: BaseView {
 }
 
 // MARK: - Supporting Methods
-extension PageControlView {
+private extension PageControlView {
     
-    private func drawProgress(currentPhase: Int) {
+    func drawProgress(currentPhase: Int) {
         var circles = [UIView]()
         for _ in 0..<maxIndex {
             circles.append(inactiveCircle)
@@ -78,19 +78,19 @@ extension PageControlView {
         stackView.addArrangedSubviews(circles)
     }
     
-    private var inactiveCircle: UIView {
+    var inactiveCircle: UIView {
         let view = self.drawCircle(diameter: circleDiameter)
         view.backgroundColor = inactiveColor
         return view
     }
     
-    private var activeCircle: UIView {
+    var activeCircle: UIView {
         let view = self.drawCircle(diameter: circleDiameter)
         view.backgroundColor = activeColor
         return view
     }
     
-    private func drawCircle(diameter: CGFloat) -> UIView {
+    func drawCircle(diameter: CGFloat) -> UIView {
         let circleView = UIView(frame: CGRect(x: 0, y: 0, width: diameter, height: diameter))
         circleView.clipsToBounds = true
         circleView.layer.cornerRadius = diameter * 0.5
