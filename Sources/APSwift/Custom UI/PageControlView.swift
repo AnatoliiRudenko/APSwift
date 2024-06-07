@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// Circles for tracking collection view progress
 open class PageControlView: BaseView {
     
     // MARK: - Props
@@ -48,10 +49,8 @@ open class PageControlView: BaseView {
         super.setupComponents()
         addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.height.lessThanOrEqualToSuperview()
-            make.centerX.equalToSuperview()
-            make.left.greaterThanOrEqualToSuperview()
-            make.right.lessThanOrEqualToSuperview()
+            make.height.width.equalToSuperview()
+            make.center.equalToSuperview()
         }
         drawProgress(currentPhase: 0)
     }
