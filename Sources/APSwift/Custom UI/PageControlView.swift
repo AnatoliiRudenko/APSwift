@@ -48,7 +48,7 @@ open class PageControlView: BaseView {
         super.setupComponents()
         addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
+            make.height.lessThanOrEqualToSuperview()
             make.centerX.equalToSuperview()
             make.left.greaterThanOrEqualToSuperview()
             make.right.lessThanOrEqualToSuperview()
