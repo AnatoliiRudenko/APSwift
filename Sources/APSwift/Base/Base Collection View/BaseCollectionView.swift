@@ -20,6 +20,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     // MARK: - Props
     public weak var contentDelegate: CollectionViewContentDelegate?
     public weak var selectionDelegate: CollectionViewSelectionDelegate?
+    public var userWillScrollToIndex: DataClosure<Int>?
     public var automaticallyAdjustsHeight = false
     
     internal(set) open var data = [Data]()
@@ -99,7 +100,16 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     // MARK: - Scroll View Delegate
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {}
     
-    open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {}
+    open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        if let userWillScrollToIndex {
+            let itemWidth = frame.width
+            let contentOffset = targetContentOffset.pointee.x
+            let targetItem = lround(Double(contentOffset/itemWidth))
+            let targetIndex = targetItem % data.count
+            userWillScrollToIndex(targetIndex)
+        }   
+    }
     
     open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {}
     
