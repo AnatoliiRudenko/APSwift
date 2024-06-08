@@ -50,13 +50,14 @@ public extension UIStackView {
         case both
     }
     
-    func addArrangedSubview(_ view: UIView, separatorLocation: SingleSubviewSeparatorLocation, separator: UIView = .separator()) {
+    func addArrangedSubview(_ view: UIView, separatorLocation: SingleSubviewSeparatorLocation, getSeparator: (() -> UIView)? = nil) {
+        let getSeparator: () -> UIView = getSeparator ?? getDefaultSeparator
         if separatorLocation == .top || separatorLocation == .both {
-            addArrangedSubview(separator)
+            addArrangedSubview(getSeparator())
         }
         addArrangedSubview(view)
         if separatorLocation == .bottom || separatorLocation == .both {
-            addArrangedSubview(separator)
+            addArrangedSubview(getSeparator())
         }
     }
     
@@ -66,9 +67,14 @@ public extension UIStackView {
         case top
         case bottom
         case both
+        case between
     }
     
     func addArrangedSubviews(_ views: [UIView], separatorLocation: SubviewsOutterSeparatorLocation, getSeparator: (() -> UIView)? = nil) {
+        guard separatorLocation != .between else {
+            addArrangedSubviewsWithSeparatorBetween(views, getSeparator: getSeparator)
+            return
+        }
         let getSeparator: () -> UIView = getSeparator ?? getDefaultSeparator
         if separatorLocation == .top || separatorLocation == .both {
             addArrangedSubview(getSeparator())
@@ -86,7 +92,7 @@ public extension UIStackView {
             return
         }
         guard views.count != 2 else {
-            addArrangedSubview(views.first ?? UIView(), separatorLocation: .bottom, separator: getSeparator())
+            addArrangedSubview(views.first ?? UIView(), separatorLocation: .bottom, getSeparator: getSeparator)
             addArrangedSubview(views.last ?? UIView())
             return
         }
@@ -96,7 +102,7 @@ public extension UIStackView {
                 addArrangedSubview(subView)
                 break
             }
-            addArrangedSubview(subView, separatorLocation: .bottom, separator: getSeparator())
+            addArrangedSubview(subView, separatorLocation: .bottom, getSeparator: getSeparator)
         }
     }
     
