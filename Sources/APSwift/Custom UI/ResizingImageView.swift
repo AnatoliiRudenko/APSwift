@@ -9,6 +9,8 @@ import UIKit
 
 open class ResizingImageView: BaseImageView {
     
+    public var didCalculateSize: DataClosure<CGSize>?
+    
     public var expectedWidth: CGFloat = UIScreen.main.bounds.width {
         didSet {
             self.fitsSuperviewWidth = false
@@ -39,9 +41,12 @@ open class ResizingImageView: BaseImageView {
         let scaledHeight = myImageHeight * ratio
         let size = CGSize(width: myViewWidth, height: scaledHeight)
         if setsSizeConstraints {
-            snp.remakeConstraints { make in
+            snp.makeConstraints { make in
                 make.size.equalTo(size)
             }
+        }
+        if let didCalculateSize {
+            didCalculateSize(size)
         }
         return size
     }
