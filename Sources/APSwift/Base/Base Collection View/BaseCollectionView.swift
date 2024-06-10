@@ -22,6 +22,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     public weak var selectionDelegate: CollectionViewSelectionDelegate?
     public var userWillScrollToIndex: DataClosure<Int>?
     public var automaticallyAdjustsHeight = false
+    public var alignsSingleItemLeft = false
     
     internal(set) open var data = [Data]()
     
@@ -124,6 +125,14 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         0
+    }
+    
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        if alignsSingleItemLeft, collectionView.numberOfItems(inSection: section) == 1 {
+            let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
+            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: collectionView.frame.width - flowLayout.itemSize.width)
+        }
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
     // MARK: - Height Constraint
