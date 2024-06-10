@@ -56,6 +56,8 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         guard let flowLayout = flowLayout else { return .zero }
         let totalSpace = flowLayout.sectionInset.left
             + flowLayout.sectionInset.right
+            + contentInset.left
+            + contentInset.right
             + (flowLayout.minimumInteritemSpacing * CGFloat(cellsInRow - 1))
         let size = (bounds.width - totalSpace) / CGFloat(cellsInRow)
         return CGSize(width: size, height: cellHeight ?? size)
@@ -67,7 +69,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         layout.scrollDirection = .horizontal
         self.init(frame: .zero, collectionViewLayout: layout)
     }
-
+    
     public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         setupComponents()
@@ -109,7 +111,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
             let targetItem = lround(Double(contentOffset/itemWidth))
             let targetIndex = targetItem % data.count
             userWillScrollToIndex(targetIndex)
-        }   
+        }
     }
     
     open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {}
