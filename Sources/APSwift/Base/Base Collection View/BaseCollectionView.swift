@@ -132,7 +132,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         if alignsSingleItemLeft, collectionView.numberOfItems(inSection: section) == 1 {
             let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: collectionView.frame.width - cellSize.width - contentInset.left)
+            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: collectionView.frame.width - cellSize.width - contentInset.left - contentInset.right)
         }
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
