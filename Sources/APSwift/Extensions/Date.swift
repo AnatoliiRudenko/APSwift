@@ -56,7 +56,7 @@ public extension Date {
     func string(format: String,
                 timeZone: TimeZone? = nil,
                 locale: Locale = .current,
-                hasDayOrdinalSuffix: Bool = false) -> String? {
+                hasDayOrdinalSuffix: Bool = false) -> String {
         var outputFormat = format
         if hasDayOrdinalSuffix,
            let dayLastIndex = format.lastIndex(of: "d") {
