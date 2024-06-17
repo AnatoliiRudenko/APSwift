@@ -18,7 +18,7 @@ public extension ImageManager {
     
     static func load(url: URL?) async -> UIImage? {
         guard let url = url else { return nil }
-        let resource = ImageResource(downloadURL: url)
+        let resource = KF.ImageResource(downloadURL: url)
         return await withCheckedContinuation({ continuation in
             KingfisherManager.shared.retrieveImage(with: resource, options: [.fromMemoryCacheOrRefresh], progressBlock: nil) { result in
                 switch result {

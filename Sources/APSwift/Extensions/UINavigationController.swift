@@ -7,6 +7,30 @@
 
 import UIKit
 
+public extension UINavigationController {
+    
+    func pushViewController(_ viewController: UIViewController,
+                            animated: Bool,
+                            completion: Closure? = nil) {
+        pushViewController(viewController, animated: animated)
+        guard animated, let coordinator = transitionCoordinator else {
+            DispatchQueue.main.async { completion?() }
+            return
+        }
+        coordinator.animate(alongsideTransition: nil) { _ in completion?() }
+    }
+    
+    func popViewController(animated: Bool,
+                           completion: Closure? = nil) {
+        popViewController(animated: animated)
+        guard animated, let coordinator = transitionCoordinator else {
+            DispatchQueue.main.async { completion?() }
+            return
+        }
+        coordinator.animate(alongsideTransition: nil) { _ in completion?() }
+    }
+}
+
 // MARK: - Sizes
 public extension UINavigationController {
     

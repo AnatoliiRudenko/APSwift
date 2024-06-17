@@ -20,7 +20,9 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     // MARK: - Props
     public weak var contentDelegate: CollectionViewContentDelegate?
     public weak var selectionDelegate: CollectionViewSelectionDelegate?
+    public var userWillScrollToIndex: DataClosure<Int>?
     public var automaticallyAdjustsHeight = false
+    public var alignsSingleItemLeft = false
     
     internal(set) open var data = [Data]()
     
@@ -54,6 +56,8 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         guard let flowLayout = flowLayout else { return .zero }
         let totalSpace = flowLayout.sectionInset.left
             + flowLayout.sectionInset.right
+            + contentInset.left
+            + contentInset.right
             + (flowLayout.minimumInteritemSpacing * CGFloat(cellsInRow - 1))
         let size = (bounds.width - totalSpace) / CGFloat(cellsInRow)
         return CGSize(width: size, height: cellHeight ?? size)
@@ -65,7 +69,7 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
         layout.scrollDirection = .horizontal
         self.init(frame: .zero, collectionViewLayout: layout)
     }
-
+    
     public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         setupComponents()
@@ -99,7 +103,16 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     // MARK: - Scroll View Delegate
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {}
     
-    open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {}
+    open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        if let userWillScrollToIndex {
+            let itemWidth = frame.width
+            let contentOffset = targetContentOffset.pointee.x
+            let targetItem = lround(Double(contentOffset/itemWidth))
+            let targetIndex = targetItem % data.count
+            userWillScrollToIndex(targetIndex)
+        }
+    }
     
     open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {}
     
@@ -114,6 +127,14 @@ open class BaseCollectionView<Cell: UICollectionViewCell, Data>: UICollectionVie
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         0
+    }
+    
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        if alignsSingleItemLeft, collectionView.numberOfItems(inSection: section) == 1 {
+            let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
+            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: collectionView.frame.width - cellSize.width - contentInset.left - contentInset.right)
+        }
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
     // MARK: - Height Constraint
