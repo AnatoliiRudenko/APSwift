@@ -9,7 +9,7 @@ import UIKit
 
 open class ContainerView<Content: UIView>: BaseView {
 
-    private(set) var content: Content
+    private(set) public var content: Content
     private var insets: UIEdgeInsets = .zero
     private var minInsets: UIEdgeInsets?
     
