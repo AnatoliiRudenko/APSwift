@@ -17,18 +17,33 @@ public enum ImageManager {
 public extension ImageManager {
     
     static func load(url: URL?) async -> UIImage? {
-        guard let url = url else { return nil }
+        guard let url else { return nil }
         let resource = KF.ImageResource(downloadURL: url)
-        return await withCheckedContinuation({ continuation in
-            KingfisherManager.shared.retrieveImage(with: resource, options: [.fromMemoryCacheOrRefresh], progressBlock: nil) { result in
-                switch result {
-                case .success(let value):
-                    continuation.resume(returning: value.image)
-                case .failure(let error):
-                    print("Error: \(error)")
+
+        return await withTaskCancellationHandler(operation: {
+            await withCheckedContinuation { continuation in
+                let task = KingfisherManager.shared.retrieveImage(
+                    with: resource,
+                    options: [.fromMemoryCacheOrRefresh],
+                    progressBlock: nil
+                ) { result in
+                    switch result {
+                    case .success(let value):
+                        continuation.resume(returning: value.image)
+                    case .failure:
+                        continuation.resume(returning: nil)
+                    }
+                }
+
+                // Defensive: if already cancelled before Kingfisher starts
+                if Task.isCancelled {
+                    task?.cancel()
                     continuation.resume(returning: nil)
                 }
             }
+        }, onCancel: {
+            // Cancel any ongoing download if the surrounding Task is cancelled
+            KingfisherManager.shared.downloader.cancel(url: url)
         })
     }
     
