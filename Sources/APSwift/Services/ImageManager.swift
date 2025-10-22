@@ -20,17 +20,17 @@ public extension ImageManager {
         guard let url else { return nil }
         let resource = KF.ImageResource(downloadURL: url)
 
-        return await withTaskCancellationHandler(operation: {
-            await withCheckedContinuation { continuation in
+        return try? await withTaskCancellationHandler(operation: {
+            try await withCheckedThrowingContinuation { continuation in
                 var resumed = false
                 let lock = NSLock()
 
-                func safeResume(_ image: UIImage?) {
+                func safeResume(_ result: Result<UIImage?, Error>) {
                     lock.lock()
                     defer { lock.unlock() }
                     guard !resumed else { return }
                     resumed = true
-                    continuation.resume(returning: image)
+                    continuation.resume(with: result)
                 }
 
                 let task = KingfisherManager.shared.retrieveImage(
@@ -40,20 +40,18 @@ public extension ImageManager {
                 ) { result in
                     switch result {
                     case .success(let value):
-                        safeResume(value.image)
-                    case .failure:
-                        safeResume(nil)
+                        safeResume(.success(value.image))
+                    case .failure(let error):
+                        safeResume(.failure(error))
                     }
                 }
 
-                // If the Task is cancelled before Kingfisher even starts
                 if Task.isCancelled {
                     task?.cancel()
-                    safeResume(nil)
+                    safeResume(.failure(CancellationError()))
                 }
             }
         }, onCancel: {
-            // Cancel any ongoing download if the surrounding Task is cancelled
             KingfisherManager.shared.downloader.cancel(url: url)
         })
     }
