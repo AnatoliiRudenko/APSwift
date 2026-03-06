@@ -57,7 +57,7 @@ open class BaseButton: UIButton {
     }
     
     @objc
-    func handleTap() {
+    open func handleTap() {
         didTap?()
         if animatesTap {
             animateTap()
