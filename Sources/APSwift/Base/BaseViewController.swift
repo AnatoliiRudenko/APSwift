@@ -7,13 +7,13 @@
 
 import UIKit
 
+@MainActor
 open class BaseViewModel: NSObject { }
 
-open class BaseViewController: UIViewController, Coordinatable {
+@MainActor
+open class BaseViewController: UIViewController {
     
     // MARK: - Props
-    open var _model: BaseViewModel?
-    public var coordinator: Coordinator?
     public var isOnFirstLayout = true
     public var hidesNavBar = false
     public var isSwipeBackEnabled = true {
@@ -35,13 +35,6 @@ open class BaseViewController: UIViewController, Coordinatable {
     }
     
     // MARK: - Lifecycle
-    public convenience init(
-        _model: BaseViewModel?
-    ) {
-        self.init(nibName: nil, bundle: nil)
-        
-        self._model = _model
-    }
     
     open override func viewDidLoad() {
         super.viewDidLoad()
