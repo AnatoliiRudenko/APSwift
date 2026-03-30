@@ -17,20 +17,45 @@ public enum ImageManager {
 public extension ImageManager {
     
     static func load(url: URL?) async -> UIImage? {
-        guard let url = url else { return nil }
+        guard let url else { return nil }
         let resource = KF.ImageResource(downloadURL: url)
-        return await withCheckedContinuation({ continuation in
-            KingfisherManager.shared.retrieveImage(with: resource, options: [.fromMemoryCacheOrRefresh], progressBlock: nil) { result in
-                switch result {
-                case .success(let value):
-                    continuation.resume(returning: value.image)
-                case .failure(let error):
-                    print("Error: \(error)")
-                    continuation.resume(returning: nil)
+
+        return try? await withTaskCancellationHandler(operation: {
+            try await withCheckedThrowingContinuation { continuation in
+                var resumed = false
+                let lock = NSLock()
+
+                func safeResume(_ result: Result<UIImage?, Error>) {
+                    lock.lock()
+                    defer { lock.unlock() }
+                    guard !resumed else { return }
+                    resumed = true
+                    continuation.resume(with: result)
+                }
+
+                let task = KingfisherManager.shared.retrieveImage(
+                    with: resource,
+                    options: [.fromMemoryCacheOrRefresh],
+                    progressBlock: nil
+                ) { result in
+                    switch result {
+                    case .success(let value):
+                        safeResume(.success(value.image))
+                    case .failure(let error):
+                        safeResume(.failure(error))
+                    }
+                }
+
+                if Task.isCancelled {
+                    task?.cancel()
+                    safeResume(.failure(CancellationError()))
                 }
             }
+        }, onCancel: {
+            KingfisherManager.shared.downloader.cancel(url: url)
         })
     }
+
     
     static func load(urls: [URL?]) async -> [UIImage?] {
         let tasks: [ConcurrentTask<UIImage>] = urls.compactMap({ url in

@@ -13,7 +13,7 @@ open class BaseTextView: UITextView {
     public var didChangeText: DataClosure<String>?
     public var maxLength: Int?
     public var centersTextVertically = false
-    public lazy var mainTextColor: UIColor = textColor ?? .black
+    public lazy var mainTextColor: UIColor = textColor ?? .label
     public lazy var placeholderColor: UIColor = mainTextColor.withAlphaComponent(0.5)
     public var placeholder: String? {
         didSet {

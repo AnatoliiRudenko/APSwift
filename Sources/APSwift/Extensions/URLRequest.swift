@@ -27,6 +27,16 @@ public extension URLRequest {
             }
         }
         
+        if let url = self.url {
+            let cookies = HTTPCookieStorage.shared.cookies(for: url) ?? []
+            for cookie in cookies {
+                if cookie.name == "PHPSESSID" {
+                    header += " --header \(apostrophe)Cookie: \(cookie.name)=\(cookie.value)\(apostrophe)"
+                    break
+                }
+            }
+        }
+        
         if let bodyData = self.httpBody, let bodyString = String(data: bodyData, encoding: .utf8),  !bodyString.isEmpty {
             data = " --data \(apostrophe)\(bodyString)\(apostrophe)"
         }
